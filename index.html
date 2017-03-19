@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title>TP1</title>
+        <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+        <!--Import utils-->
+        <script type="text/javascript" src="Utils/gl-matrix.js"></script>
+        <script type="text/javascript" src="Utils/webgl-utils.js"></script>
+
+        <!--Fragment shader-->
+        <script id="shader-fs" type="x-shader/x-fragment">
+            precision mediump float;
+
+            varying vec3 vVertexColor;
+            varying vec3 vLightWeighting;
+
+            uniform sampler2D uSampler;
+
+            void main(void){
+                gl_FragColor = vec4(vVertexColor.rgb * vLightWeighting, 1.0);
+            }
+        </script>
+        <!--Vertex shader-->
+        <script id="shader-vs" type="x-shader/x-vertex">
+            //Atributos de cada vertice
+            attribute vec3 aVertexPosition;
+            attribute vec3 aVertexNormal;
+            attribute vec3 aVertexColor;
+            //Matrices
+            uniform mat4 uViewMatrix;
+            uniform mat4 uModelMatrix;
+            uniform mat4 uPMatrix;
+            uniform mat3 uNMatrix;
+            //Iluminacion
+            uniform vec3 uAmbientColor;
+            uniform vec3 uLightPosition;
+            uniform vec3 uDirectionalColor;
+            uniform bool uUseLighting;
+            ////
+            varying vec3 vVertexColor;
+            varying vec3 vLightWeighting;
+
+            void main(void){
+                //Se transforma al vertice al espacio de camara
+                vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+                //Se transforma al vertice al espacio de la proyeccion
+                gl_Position = uPMatrix * pos_camera_view;
+                //El color no se modifica
+                vVertexColor = aVertexColor;
+                /********************************************/
+                //Calculos de iluminacion
+                vec3 light_dir = uLightPosition;
+                normalize(light_dir);
+                if(!uUseLighting){
+                    vLightWeighting = vec3(1.0, 1.0, 1.0);
+                } else {
+                    vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
+                    float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
+                    vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+                }
+            }
+        </script>
+
+        <script type="text/javascript" src="Utils/GlobalVariables.js"></script>
+        <script type="text/javascript" src="Utils/GLInitialization.js"></script>
+        <script type="text/javascript" src="Utils/Punto.js"></script>
+
+        <script type="text/javascript" src="CreacionSuperficies/Path.js"></script>
+        <script type="text/javascript" src="CreacionSuperficies/Shape.js"></script>
+        <script type="text/javascript" src="CreacionSuperficies/RevoltSurface.js"></script>
+        <script type="text/javascript" src="CreacionSuperficies/SweptSurface.js"></script>
+
+        <script type="text/javascript" src="Escena/SceneDrawing.js"></script>
+        <script type="text/javascript" src="Escena/SceneCreation.js"></script>
+
+        <script type="text/javascript" src="Modelado/Contenedor3D.js"></script>
+        <script type="text/javascript" src="Modelado/Objeto3D.js"></script>
+        <script type="text/javascript" src="Modelado/VertexGrid.js"></script>
+        <script type="text/javascript" src="Modelado/Color.js"></script>
+
+        <script type="text/javascript" src="Curvas/Curve.js"></script>
+        <script type="text/javascript" src="Curvas/Path.js"></script>
+        <script type="text/javascript" src="Curvas/BSplineCurve.js"></script>
+        <script type="text/javascript" src="Curvas/BSplinePath.js"></script>
+        <script type="text/javascript" src="Curvas/BezierCurve.js"></script>
+        <script type="text/javascript" src="Curvas/BezierPath.js"></script>
+
+        <script type="text/javascript" src="Objetos/Esfera.js"></script>
+    </head>
+
+    <body onload="webGLStart();">
+        <center>
+            <canvas id="mainCanvas" style="border: none;" width="1280" height="720">
+                Your browser does not support the HTML5 canvas element.
+            </scanvas>
+        </center>
+    </body>
+</html>
