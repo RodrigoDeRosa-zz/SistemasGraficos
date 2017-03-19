@@ -1,5 +1,8 @@
 class SweptSurface{
-    /*Superficie de barrido*/
+    /**Superficie de barrido.
+      * @param {shape} Shape Es la forma que sera barrida.
+      * @param {path} Path Camino por el que se hara el barrido.
+    */
     constructor(shape, path){
         this.shape = shape;
         this.path = path;

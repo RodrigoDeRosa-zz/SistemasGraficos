@@ -1,4 +1,8 @@
 class VertexGrid{
+    /**Grilla de vertices. Generador de indexBuffer.
+      * @param {rows} integer Numero de filas.
+      * @param {cols} integer Numero de columnas.
+    */
     constructor(rows, cols){
         this.rows = rows;
         this.cols = cols

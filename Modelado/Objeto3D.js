@@ -19,22 +19,28 @@ class Objeto3D extends Contenedor3D{
         this.colorBufferCreator = null;
         this.indexBufferCreator = null;
     }
-    /********METODOS DE MODELADO************/
-    /*Todos los creadores son objetos capaces de crear un buffer del tipo indicado,
-    a travez del metodo "setXXXXBuffer()".*/
-    /*Define al constructor de indexBuffer */
+    /**********METODOS DE MODELADO*************/
+    /**Define al constructor de indexBuffer.
+      * @param {indexer} Object Objeto con metodo setIndexBuffer que devuelve array
+    */
     setIndexCreator(indexer){
         this.indexBufferCreator = indexer;
     }
-    /*Define al constructor de colorBuffer*/
+    /**Define al constructor de colorBuffer.
+      * @param {colorer} Object Objeto con metodo setColorBuffer que devuelve array
+    */
     setColorCreator(colorer){
         this.colorBufferCreator = colorer;
     }
-    /*Define al constructor de positionBuffer*/
+    /**Define al constructor de positionBuffer
+      * @param {pasitioner} Object Objeto con metodo setPosBuffer que devuelve array
+    */
     setPosCreator(positioner){
         this.posBufferCreator = positioner;
     }
-    /*Define al constructor de normalBuffer*/
+    /**Define al constructor de normalBuffer.
+      * @param {normalC} Object Objeto con metodo setNormalBuffer que devuelve array
+    */
     setNormalCreator(normalC){
         this.normalBufferCreator = normalC;
     }
@@ -67,8 +73,13 @@ class Objeto3D extends Contenedor3D{
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webglIndexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indexBuffer), gl.STATIC_DRAW);
     }
-    /*Dibuja al objeto. Recibe la matriz de modelado base, la matriz de la camara y la matriz de proyeccion*/
-    //Override
+    /**Dibuja al objeto. Recibe la matriz de modelado base, la matriz de la camara
+      *y la matriz de proyeccion.
+      * **Override**
+      * @param {mMatrix} mat4 Matriz de modelado del padre.
+      * @param {CameraMatrix} mat4 Matriz de camara
+      * @param {pMatrix} mat4 Matriz de proyeccion
+     */
     draw(mMatrix, CameraMatrix, pMatrix){
         //Se crea una matriz nueva para no modificar la matriz del padre
         var modelMatrix = mat4.create();

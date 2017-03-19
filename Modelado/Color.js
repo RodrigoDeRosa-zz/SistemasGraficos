@@ -1,4 +1,8 @@
 class Color{
+    /**Objeto creador de buffers para colorear.
+      * @param {rows} integer Cantidad de filas.
+      * @param {cols} integer Cantidad de columnas.
+    */
     constructor(rows, cols){
         this.rows = rows;
         this.cols = cols;
@@ -14,9 +18,11 @@ class Color{
     setColorBuffer(){
         //TODO IN SUBCLASS
     }
-    /*Crea el buffer con las funciones de color recibidas.
-    Dichas funciones son del tipo f(i,j), siendo i las filas
-    y j las columnas.*/
+    /**Crea el buffer con las funciones de color recibidas.
+      * @param {r} function(i,j) Funcion que devuelve el rojo para cada par (i,j)
+      * @param {g} function(i,j) Funcion que devuelve el verde para cada par (i,j)
+      * @param {b} function(i,j) Funcion que devuelve el azul para cada par (i,j)
+    */
     _createBuffer(r, g, b){
         var buffer = [];
 

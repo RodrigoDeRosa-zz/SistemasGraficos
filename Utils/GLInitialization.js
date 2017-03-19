@@ -8,10 +8,12 @@ function webGLStart(){
     gl.enable(gl.DEPTH_TEST);
 
     createScene();
-    
+
     tick();
 }
-/*Inicializa GL*/
+/**Inicializa GL.
+  * @param {canvas} HTMLCanvas
+*/
 function initGL(canvas){
     try{
         gl = canvas.getContext("experimental-webgl");
@@ -22,7 +24,10 @@ function initGL(canvas){
         alert("ERROR: Could not initialise WebGL.");
     }
 }
-/*Genera el mShaderProgram del id pedido*/
+/**Genera y devuelve el mShaderProgram.
+  * @param {gl} GLProgram
+  * @param {id} string Identificador del shader a obtener
+*/
 function getShader(gl, id){
     var shaderScript = document.getElementById(id);
     if(!shaderScript) return null;

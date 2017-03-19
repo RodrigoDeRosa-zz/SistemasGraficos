@@ -14,22 +14,27 @@ class Shape{
     get levels(){
         return this.levels;
     }
-    /*Setter de cantidad de niveles*/
+    /**Setter de cantidad de niveles
+      * @param {n} integer Numero de niveles.
+    */
     set levels(n){
         this.levels = n;
     }
-    /*Devuelve un objeto de clase Punto, en la posicion pedida por parametro,
-    en la lista de posiciones.*/
+    /**Devuelve un objeto de clase Punto de la lista de posiciones.
+      * @param {index} integer Indice del objeto pedido.
+    */
     getPosition(index){
         return this.positions[index];
     }
-    /*Devuelve un objeto de clase Punto, en la posicion pedida por parametro,
-    en la lista de normales*/
+    /**Devuelve un objeto de clase Punto de la lista de normales.
+      * @param {index} integer Indice del objeto pedido.
+    */
     getNormal(index){
         return this.normals[index];
     }
-    /*Devuelve un objeto de clase Punto, en la posicion pedida por parametro,
-    en la lista de tangentes*/
+    /**Devuelve un objeto de clase Punto de la lista de tangentes.
+      * @param {index} integer Indice del objeto pedido.
+    */
     getTangent(index){
         return this.tangents[index];
     }

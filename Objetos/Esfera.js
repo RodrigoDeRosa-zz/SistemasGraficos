@@ -1,10 +1,14 @@
 class Esfera extends Objeto3D{
-    /*Esfera 3D*/
-    constructor(filas, columnas, color){
+    /**Esfera 3D
+      * @param {rows} integer Cantidad de bandas longitudinales
+      * @param {cols} integer Cantidad de bandas latitudinales
+      * @param {coor} Color Objeto de clase Color.
+    */
+    constructor(rows, cols, color){
         super();
 
-        this.rows = filas;
-        this.cols = columnas;
+        this.rows = rows;
+        this.cols = cols;
 
         this.setIndexCreator(new VertexGrid(filas, columnas));
         this.setPosCreator(this);

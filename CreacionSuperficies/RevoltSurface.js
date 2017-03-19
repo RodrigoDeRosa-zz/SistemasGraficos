@@ -1,4 +1,9 @@
 class RevoltSurface{
+    /**Superficie de revolucion.
+      * @param {shape} Shape Es la forma que será girada.
+      * @param {levels} integer Cantidad de niveles de la revolucion.
+      * @param {axis} vec3 Eje sobre el cual se hace la revolucion
+    */
     constructor(shape, levels, axis){
         this.shape = shape;
         this.levels = levels;
@@ -16,7 +21,7 @@ class RevoltSurface{
                 var rotMat = mat4.create();
                 mat4.identity(rotMat);
                 //angulo = 2PI(nivelActua)/(nivelesTotales-1)
-                mat4.rotate(rotMat, rotMat, (Math.PI*2*i)/(this.levels-1), axis);
+                mat4.rotate(rotMat, rotMat, (Math.PI*2*i)/(this.levels-1), this.axis);
                 /*Se transforma el punto con la matriz del nivel*/
                 vec3.transformMat4(vPos, vPos, rotMat);
 
@@ -41,7 +46,7 @@ class RevoltSurface{
                 /*Matriz de rotacion del nivel*/
                 var rotMat = mat4.create();
                 mat4.identity(rotMat);
-                mat4.rotate(rotMat, rotMat, (Math.PI*2*i)/(this.levels-1), axis);
+                mat4.rotate(rotMat, rotMat, (Math.PI*2*i)/(this.levels-1), this.axis);
                 /*Se transforma la normal con la matriz del nivel*/
                 vec3.transformMat4(vNormal, vNormal, rotMat);
 
