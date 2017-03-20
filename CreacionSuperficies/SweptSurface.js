@@ -19,7 +19,7 @@ class SweptSurface{
                 var tPos = vec3.fromValues(pos.x, pos.y, pos.z);
                 vec3.transformMat4(tPos, tPos, path.getLevelVertexMatrix(i));
                 /*Se guarda la posicion en el position buffer*/
-                for (var k = 0; k < 3, k++){
+                for (var k = 0; k < 3; k++){
                     buffer.push(tPos[k]);
                 }
             }
@@ -38,7 +38,7 @@ class SweptSurface{
                 var tNormal = vec3.fromValues(normal.x, normal.y, normal.z);
                 vec3.transformMat4(tNormal, tNormal, path.getLevelBasisMatrix(i));
                 /*Se guarda la normal en el normal buffer*/
-                for (var k = 0; k < 3, k++){
+                for (var k = 0; k < 3; k++){
                     buffer.push(tNormal[k]);
                 }
             }

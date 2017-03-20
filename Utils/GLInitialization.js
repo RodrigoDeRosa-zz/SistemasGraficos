@@ -1,11 +1,18 @@
 /*Inicia el glProgram y los shaders*/
 function webGLStart(){
-    var canvas = document.getElementById("mainCanvas");
-    initGL(canvas);
+    var mainCanvas = document.getElementById("mainCanvas");
+    initGL(mainCanvas);
     initShader();
-
+    setButtons();
+    
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
+
+    cameraController = new CameraController();
+    var orbit = new OrbitCamera();
+    orbit.setRadius(100);
+    cameraController.addCamera(orbit);
+    cameraController.init();
 
     createScene();
 

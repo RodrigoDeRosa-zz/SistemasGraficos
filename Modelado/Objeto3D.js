@@ -79,7 +79,7 @@ class Objeto3D extends Contenedor3D{
       * @param {mMatrix} mat4 Matriz de modelado del padre.
       * @param {CameraMatrix} mat4 Matriz de camara
       * @param {pMatrix} mat4 Matriz de proyeccion
-     */
+    */
     draw(mMatrix, CameraMatrix, pMatrix){
         //Se crea una matriz nueva para no modificar la matriz del padre
         var modelMatrix = mat4.create();

@@ -1,4 +1,4 @@
-/*Crea la escena*/
+/**Crea la escena*/
 function createScene(){
     scene = new Contenedor3D();
     scene.setShaderProgram(mShaderProgram);

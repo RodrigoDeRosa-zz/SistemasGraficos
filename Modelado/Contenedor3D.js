@@ -3,6 +3,8 @@ class Contenedor3D{
         this.matrix = null;
         this._setMatrix();
 
+        this.modified = true;
+
         this.children = [];
         this.shaderProgram = null;
     }
@@ -24,6 +26,7 @@ class Contenedor3D{
     */
     translate(x, y, z){
         mat4.translate(this.matrix, this.matrix, vec3.fromValues(x, y, z));
+        this.modified = true;
     }
     /**Rotacion sobre el eje dado por las coordenadas indicadas, en el angulo dado.
       * @param {angle} float Angulo de rotacion.
@@ -33,6 +36,7 @@ class Contenedor3D{
     */
     rotate(angle, x, y, z){
         mat4.rotate(this.matrix, this.matrix, angle, vec3.fromValues(x, y, z));
+        this.modified = true;
     }
     /**Escala en las proporciones dadas de x, y, z.
       * @param {x} float Escala en x.
@@ -41,18 +45,21 @@ class Contenedor3D{
     */
     scale(x, y, z){
         mat4.scale(this.matrix, this.matrix, vec3.fromValues(x, y, z));
+        this.modified = true;
     }
     /**Multiplica a derecha a la matriz del objeto.
       * @param {matrix} mat4 Matriz de modelado
     */
     applyMatrix(matrix){
         mat4.multiply(this.matrix, this.matrix, matrix);
+        this.modified = true;
     }
     /**Redefine a la matriz recibida como la matriz del objeto.
       * @param {matrix} mat4 Matriz de modelado.
     */
     setMatrix(matrix){
         this.matrix = matrix;
+        this.modified = true;
     }
     /**Agrega un hijo al contenedor.
       * @param {child} Contenedor3D Puede ser tambien un Objeto3D.
@@ -105,7 +112,7 @@ class Contenedor3D{
       * @param {mMatrix} mat4 Matriz de modelado del padre.
       * @param {CameraMatrix} mat4 Matriz de camara
       * @param {pMatrix} mat4 Matriz de proyeccion
-     */
+    */
     draw(mMatrix, CameraMatrix, pMatrix){
         //Se crea una matriz nueva para no modificar la matriz del padre
         var modelMatrix = mat4.create();

@@ -2,7 +2,7 @@ class Esfera extends Objeto3D{
     /**Esfera 3D
       * @param {rows} integer Cantidad de bandas longitudinales
       * @param {cols} integer Cantidad de bandas latitudinales
-      * @param {coor} Color Objeto de clase Color.
+      * @param {color} Color Objeto de clase Color.
     */
     constructor(rows, cols, color){
         super();
@@ -10,10 +10,10 @@ class Esfera extends Objeto3D{
         this.rows = rows;
         this.cols = cols;
 
-        this.setIndexCreator(new VertexGrid(filas, columnas));
+        this.setIndexCreator(new VertexGrid(rows, cols));
         this.setPosCreator(this);
         this.setNormalCreator(this);
-        if(!color) this.setColorCreator(new Gray(filas, columnas));
+        if(!color) this.setColorCreator(new Gray(rows, cols));
         else this.setColorCreator(color);
     }
     /*Creador de positionBuffer*/
