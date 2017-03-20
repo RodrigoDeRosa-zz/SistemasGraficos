@@ -11,7 +11,7 @@ class Path extends Shape{
         this.setVertexMatrices();
     }
     /**Define si se debe rotar los vertices en cada nivel del camino o no
-      * @param {bool} booleano.
+      * @param {bool} boolean
     */
     toggleRotate(bool){
         this.rotate = bool;
