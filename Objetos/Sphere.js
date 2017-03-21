@@ -1,4 +1,4 @@
-class Esfera extends Objeto3D{
+class Sphere extends Object3D{
     /**Esfera 3D
       * @param {rows} integer Cantidad de bandas longitudinales
       * @param {cols} integer Cantidad de bandas latitudinales

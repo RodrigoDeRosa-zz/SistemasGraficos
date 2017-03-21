@@ -1,4 +1,4 @@
-class Objeto3D extends Contenedor3D{
+class Object3D extends Container3D{
     /*Objeto 3D generico*/
     constructor(){
         super();

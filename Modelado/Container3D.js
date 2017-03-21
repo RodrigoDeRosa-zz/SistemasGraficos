@@ -1,4 +1,4 @@
-class Contenedor3D{
+class Container3D{
     constructor(){
         this.matrix = null;
         this._setMatrix();
