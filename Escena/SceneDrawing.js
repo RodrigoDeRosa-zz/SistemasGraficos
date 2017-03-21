@@ -25,7 +25,6 @@ function drawScene(){
         vec3.fromValues(0.001, 0.001, 0.001));
     scene.resetMatrix();
     scene.rotate(frame, 1, 0, 0);
-    scene.translate(4*Math.sin(frame), 4*Math.cos(frame), 4*Math.cos(frame)*Math.sin(frame));
     scene.draw(mat4.create(), CameraMatrix, pMatrix);
     frame += 0.1;
 }

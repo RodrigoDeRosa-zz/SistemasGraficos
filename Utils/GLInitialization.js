@@ -12,7 +12,6 @@ function webGLStart(){
     cameraController = new CameraController();
     /*Se crea la camara orbital*/
     var orbit = new OrbitCamera();
-    orbit.setRadius(100);
     /*Se agrega la camara orbital al controlador de camaras*/
     cameraController.addCamera(orbit);
     cameraController.init();

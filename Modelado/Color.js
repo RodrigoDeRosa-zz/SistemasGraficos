@@ -36,6 +36,9 @@ class Color{
 
         return buffer;
     }
+    setColorBuffer(){
+        return this._createBuffer(this.red, this.green, this.blue);
+    }
 }
 
 class Gray extends Color{
@@ -43,12 +46,9 @@ class Gray extends Color{
         super(rows, cols);
     }
     _setColorFunctions(){
-        this.red = function(i, j){return 1;};
-        this.green = function(i, j){return 1;};
-        this.blue = function(i, j){return 1;};
-    }
-    setColorBuffer(){
-        return this._createBuffer(this.red, this.green, this.blue);
+        this.red = function(i, j){return 0.33;};
+        this.green = function(i, j){return 0.33;};
+        this.blue = function(i, j){return 0.33;};
     }
 }
 
@@ -61,9 +61,6 @@ class Red extends Color{
         this.green = function(i, j){return 0;};
         this.blue = function(i, j){return 0;};
     }
-    setColorBuffer(){
-        return this._createBuffer(this.red, this.green, this.blue);
-    }
 }
 
 class Green extends Color{
@@ -74,9 +71,6 @@ class Green extends Color{
         this.red = function(i, j){return 0;};
         this.green = function(i, j){return 1;};
         this.blue = function(i, j){return 0;};
-    }
-    setColorBuffer(){
-        return this._createBuffer(this.red, this.green, this.blue);
     }
 }
 
@@ -89,7 +83,15 @@ class Blue extends Color{
         this.green = function(i, j){return 0;};
         this.blue = function(i, j){return 1;};
     }
-    setColorBuffer(){
-        return this._createBuffer(this.red, this.green, this.blue);
+}
+
+class Orange extends Color{
+    constructor(rows, cols){
+        super(rows, cols);
+    }
+    _setColorFunctions(){
+        this.red = function(i, j){return 0.7;};
+        this.green = function(i, j){return 0.3;};
+        this.blue = function(i, j){return 0;};
     }
 }
