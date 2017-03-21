@@ -4,13 +4,16 @@ function webGLStart(){
     initGL(mainCanvas);
     initShader();
     setButtons();
-    
+
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 
+    /*Se crea el controlador de camaras*/
     cameraController = new CameraController();
+    /*Se crea la camara orbital*/
     var orbit = new OrbitCamera();
     orbit.setRadius(100);
+    /*Se agrega la camara orbital al controlador de camaras*/
     cameraController.addCamera(orbit);
     cameraController.init();
 

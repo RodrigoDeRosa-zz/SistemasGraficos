@@ -14,7 +14,7 @@ class RevoltSurface{
         /*Para cada nivel de la revolucion se define cada punto de la forma*/
         for (var i = 0; i < this.levels; i++){
             /*Para cada punto de la forma se aplica la transformacion*/
-            for (var j = 0; j < this.shape.levels; j++){
+            for (var j = 0; j < this.shape.getLevels(); j++){
                 var pos = this.shape.getPosition(j);
                 var vPos = vec3.fromValues(pos.x, pos.y, pos.z);
                 /*Se define la matriz de rotacion del nivel*/
@@ -38,7 +38,7 @@ class RevoltSurface{
         /*Para cada nivel se calcula la normal de cada punto de la forma*/
         for (var i = 0; i < this.levels; i++){
             /*Para cada punto de la forma se aplica la transformacion*/
-            for (var j = 0; j < this.shape.levels; j++){
+            for (var j = 0; j < this.shape.getLevels(); j++){
                 var normal = this.shape.getNormal(j);
                 //PORQUE ESTAN ESOS MENOS!?!?!?!
                 var vNormal = vec3.fromValues(-normal.x, -normal.y, -normal.z);

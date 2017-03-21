@@ -10,9 +10,9 @@ class SweptSurface{
     setPosBuffer(){
         var buffer = [];
         /*En cada nivel se calcula la posicion de cada punto de la forma*/
-        for (var i = 0; i < this.path.levels; i++){
+        for (var i = 0; i < this.path.getLevels(); i++){
             /*Para cada punto de la forma se aplica la transformacion*/
-            for (var j = 0; j < this.shape.levels; j++){
+            for (var j = 0; j < this.shape.getLevels(); j++){
                 /*Se define la posicion*/
                 var pos = shape.getPosition(j);
                 /*Se transforma el punto con la matriz de nivel*/
@@ -29,9 +29,9 @@ class SweptSurface{
     setNormalBuffer(){
         var buffer = [];
         /*En cada nivel se calcula la normal de cada punto de la forma*/
-        for (var i = 0; i < this.path.levels; i++){
+        for (var i = 0; i < this.path.getLevels(); i++){
             /*Para cada punto de la forma se aplica la transformacion*/
-            for (var j = 0; j < this.shape.levels; j++){
+            for (var j = 0; j < this.shape.getLevels(); j++){
                 /*Se define la normal*/
                 var normal = shape.getNormal(j);
                 /*Se transforma el punto con la matriz del nivel*/

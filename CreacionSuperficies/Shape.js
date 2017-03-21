@@ -11,13 +11,13 @@ class Shape{
         this.setTangents();
     }
     /*Getter de cantidad de niveles*/
-    get levels(){
+    getLevels(){
         return this.levels;
     }
     /**Setter de cantidad de niveles
       * @param {n} integer Numero de niveles.
     */
-    set levels(n){
+    setLevels(n){
         this.levels = n;
     }
     /**Devuelve un objeto de clase Punto de la lista de posiciones.
