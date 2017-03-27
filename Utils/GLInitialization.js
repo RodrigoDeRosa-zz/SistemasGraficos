@@ -2,7 +2,9 @@
 function webGLStart(){
     var mainCanvas = document.getElementById("mainCanvas");
     initGL(mainCanvas);
-    initShader();
+    var rawVertex = getRawVertexShader();
+    var rawFragment = getRawFragmentShader();
+    initShader(rawVertex, rawFragment);
     setButtons();
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -37,23 +39,11 @@ function initGL(canvas){
   * @param {gl} GLProgram
   * @param {id} string Identificador del shader a obtener
 */
-function getShader(gl, id){
-    var shaderScript = document.getElementById(id);
-    if(!shaderScript) return null;
-
-    var str = "";
-    var k = shaderScript.firstChild;
-    while(k){
-        if(k.nodeType == 3) str += k.textContent;
-        k = k.nextSibling;
-    }
-
+function getShader(rawShader){
     var shader;
-    if (shaderScript.type == "x-shader/x-fragment") shader = gl.createShader(gl.FRAGMENT_SHADER);
-    else if (shaderScript.type == "x-shader/x-vertex") shader = gl.createShader(gl.VERTEX_SHADER);
-    else return nulll;
+    shader = gl.createShader(rawShader.getType());
 
-    gl.shaderSource(shader, str);
+    gl.shaderSource(shader, rawShader.getShaderCode());
     gl.compileShader(shader);
 
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)){
@@ -62,11 +52,14 @@ function getShader(gl, id){
     }
     return shader;
 }
-/*Inicializa el mShaderProgram*/
-function initShader(){
+/**Inicializa el mShaderProgram
+  * @param {rawVertex} RawVertexShader Objeto que contiene el string del vertex shader
+  * @param {rawFragment} RawFragmentShader Objeto que contiene el string del fragment shader
+*/
+function initShader(rawVertex, rawFragment){
     //Se crean los shaders de fragment y vertex
-    var fragmentShader = getShader(gl, "shader-fs");
-    var vertexShader = getShader(gl, "shader-vs");
+    var fragmentShader = getShader(rawFragment);
+    var vertexShader = getShader(rawVertex);
     //Se crea el mShaderProgram linkeandole los fragment y vertex shaders
     mShaderProgram = gl.createProgram();
     gl.attachShader(mShaderProgram, vertexShader);

@@ -1,9 +1,10 @@
 class Container3D{
     constructor(){
         this.matrix = null;
+        this.prevModelMatrix = null;
         this._setMatrix();
 
-        this.modified = true;
+        this.modified = false;
 
         this.children = [];
         this.shaderProgram = null;
@@ -12,6 +13,9 @@ class Container3D{
     _setMatrix(){
         this.matrix = mat4.create();
         mat4.identity(this.matrix);
+
+        this.prevModelMatrix = mat4.create();
+        mat4.identity(this.prevModelMatrix);
     }
 
     /**********METODOS DE MODELADO*********/
@@ -112,18 +116,23 @@ class Container3D{
       * @param {mMatrix} mat4 Matriz de modelado del padre.
       * @param {CameraMatrix} mat4 Matriz de camara
       * @param {pMatrix} mat4 Matriz de proyeccion
+      * @param {parentMod} bool Indica si el padre fue modificado o no
     */
-    draw(mMatrix, CameraMatrix, pMatrix){
+    draw(mMatrix, CameraMatrix, pMatrix, parentMod){
         //Se crea una matriz nueva para no modificar la matriz del padre
         var modelMatrix = mat4.create();
-        mat4.multiply(modelMatrix, mMatrix, this.matrix);
+        if(this.modified || parentMod){
+            mat4.multiply(modelMatrix, mMatrix, this.matrix);
+            this.prevModelMatrix = modelMatrix;
+            this.modified = false;
+        } else modelMatrix = this.prevModelMatrix;
         //Se hace un llamado al draw de los hijos, uno por uno.
-        this._drawChildren(modelMatrix, CameraMatrix, pMatrix);
+        this._drawChildren(modelMatrix, CameraMatrix, pMatrix, this.modified);
     }
     /**Dibuja a los hijos
       * @param Idem draw.
     */
-    _drawChildren(modelMatrix, CameraMatrix, pMatrix){
+    _drawChildren(modelMatrix, CameraMatrix, pMatrix, parentMod){
         for (var i = 0; i < this.children.length; i++){
             var child = this.children[i];
             child.draw(modelMatrix, CameraMatrix, pMatrix);

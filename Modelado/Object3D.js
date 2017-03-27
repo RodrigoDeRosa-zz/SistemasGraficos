@@ -79,13 +79,18 @@ class Object3D extends Container3D{
       * @param {mMatrix} mat4 Matriz de modelado del padre.
       * @param {CameraMatrix} mat4 Matriz de camara
       * @param {pMatrix} mat4 Matriz de proyeccion
+      * @param {parentMod} bool Indica si el padre fue modificado o no
     */
-    draw(mMatrix, CameraMatrix, pMatrix){
+    draw(mMatrix, CameraMatrix, pMatrix, parentMod){
         //Se crea una matriz nueva para no modificar la matriz del padre
         var modelMatrix = mat4.create();
-        mat4.multiply(modelMatrix, mMatrix, this.matrix);
+        if(this.modified || parentMod){
+            mat4.multiply(modelMatrix, mMatrix, this.matrix);
+            this.prevModelMatrix = modelMatrix;
+            this.modified = false;
+        } else modelMatrix = this.prevModelMatrix;
         //Se hace un llamado al draw de los hijos, uno por uno.
-        this._drawChildren(modelMatrix, CameraMatrix, pMatrix);
+        this._drawChildren(modelMatrix, CameraMatrix, pMatrix, this.modified);
         //Matriz de proyeccion y vista
         gl.uniformMatrix4fv(this.shaderProgram.pMatrixUniform, false, pMatrix);
         gl.uniformMatrix4fv(this.shaderProgram.ViewMatrixUniform, false, CameraMatrix);

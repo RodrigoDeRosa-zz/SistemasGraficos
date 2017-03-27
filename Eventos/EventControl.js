@@ -14,6 +14,10 @@ function setButtons(){
         cameraController.zoom(e.deltaY*e.deltaFactor);
     });
 
+    $('#mainCanvas').mouseout(function(e){
+        mouseDown = false;
+    });
+
     $("body").mouseup(function(e){
         mouseDown = false;
         resetMouse();
