@@ -1,29 +1,29 @@
 class Punto{
     /*Simula un punto en el espacio*/
     constructor(x, y, z){
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this._x = x;
+        this._y = y;
+        this._z = z;
     }
     /*Setters*/
     set x(value){
-        this.x = value;
+        this._x = value;
     }
     set y(value){
-        this.y = value;
+        this._y = value;
     }
     set z(value){
-        this.z = value;
+        this._z = value;
     }
     /*Getters*/
     get x(){
-        return this.x;
+        return this._x;
     }
     get y(){
-        return this.y;
+        return this._y;
     }
     get z(){
-        return this.z;
+        return this._z;
     }
 
 }
