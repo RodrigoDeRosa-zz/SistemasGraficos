@@ -86,11 +86,11 @@ class Object3D extends Container3D{
         var modelMatrix = mat4.create();
         if(this.modified || parentMod){
             mat4.multiply(modelMatrix, mMatrix, this.matrix);
-            this.prevModelMatrix = modelMatrix;
-            this.modified = false;
-        } else modelMatrix = this.prevModelMatrix;
+            mat4.multiply(this.prevModelMatrix, modelMatrix, mat4.create());
+        } else mat4.multiply(modelMatrix, this.prevModelMatrix, mat4.create());
         //Se hace un llamado al draw de los hijos, uno por uno.
-        this._drawChildren(modelMatrix, CameraMatrix, pMatrix, this.modified);
+        this._drawChildren(modelMatrix, CameraMatrix, pMatrix, this.modified || parentMod);
+        this.modified = false;
         //Matriz de proyeccion y vista
         gl.uniformMatrix4fv(this.shaderProgram.pMatrixUniform, false, pMatrix);
         gl.uniformMatrix4fv(this.shaderProgram.ViewMatrixUniform, false, CameraMatrix);
