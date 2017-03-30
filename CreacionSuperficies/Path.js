@@ -1,20 +1,20 @@
 class Path extends Shape{
-    constructor(levels){
+    /**Camino para la superficie de barrido
+      * @param {levels} int Niveles del camino.
+      * @param {rotate} bool Si se rotan o no los vertices a cada paso.
+    */
+    constructor(levels, rotate){
         super(levels);
         /*Indica si se hace cambio de base a cada paso o no*/
-        this.rotate = true;
+        if (rotate == null) this.rotate = true;
+        this.rotate = rotate;
+        (rotate == null) ? this.rotate = true : this.rotate = rotate;
         /*Arreglo de matrices de transformacion de cada nivel*/
         this.vertexMatrices = [];
         /*Arreglo de matrices de cambio de base para cada nivel*/
         this.basisMatrices = [];
         this.setBasisMatrices();
         this.setVertexMatrices();
-    }
-    /**Define si se debe rotar los vertices en cada nivel del camino o no
-      * @param {bool} boolean
-    */
-    toggleRotate(bool){
-        this.rotate = bool;
     }
     /*Crea el arreglo donde se guardan todas las matrices de cambio de base
     para cada nivel.*/
