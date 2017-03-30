@@ -1,4 +1,4 @@
-class Punto{
+class Point{
     /*Simula un punto en el espacio*/
     constructor(x, y, z){
         this._x = x;

@@ -1,6 +1,6 @@
 class Path extends Shape{
-    constructor(){
-        super();
+    constructor(levels){
+        super(levels);
         /*Indica si se hace cambio de base a cada paso o no*/
         this.rotate = true;
         /*Arreglo de matrices de transformacion de cada nivel*/
@@ -71,4 +71,17 @@ class Path extends Shape{
             this.vertexMatrices.push(vertexMat);
         }
     }
+    /**Devuelve la matriz de vertice del nivel pedido.
+      * @param {level} int Posicion de la matriz pedida
+    */
+    getLevelVertexMatrix(level){
+        return this.vertexMatrices[level];
+    }
+    /**Devuelve la matriz de cambio de base del nivel pedido.
+      * @param {level} int Posicion de la matriz pedida
+    */
+    getLevelBasisMatrix(level){
+        return this.basisMatrices[level];
+    }
+
 }

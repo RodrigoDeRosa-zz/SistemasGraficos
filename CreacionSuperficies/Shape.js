@@ -1,10 +1,10 @@
 class Shape{
     /*Forma para barrido y revolucion*/
-    constructor(){
-        this.positions = null;
-        this.normals = null;
-        this.tangents = null;
-        this.levels = null;
+    constructor(levels){
+        this.positions = [];
+        this.normals = [];
+        this.tangents = [];
+        this.levels = levels;
         /*Crean los arrays. Resposabilidad de las subclases*/
         this.setPositions();
         this.setNormals();

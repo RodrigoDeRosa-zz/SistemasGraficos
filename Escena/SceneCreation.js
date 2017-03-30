@@ -3,7 +3,7 @@ function createScene(){
     scene = new Container3D();
     scene.setShaderProgram(mShaderProgram);
 
-    var sol = new Sphere(60, 60, new Orange(60, 60));
+    var sol = new Cilinder(60, 60, new Orange(60, 60));
     sol.setShaderProgram(mShaderProgram);
     sol.build();
     sol.scale(8, 8, 8);
