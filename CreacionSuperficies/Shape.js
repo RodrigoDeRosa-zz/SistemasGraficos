@@ -1,14 +1,21 @@
 class Shape{
-    /*Forma para barrido y revolucion*/
-    constructor(levels){
+    /**Forma para barrido y revolucion
+      * @param {levels} int Cantidad de niveles de la forma.
+      * @param {setterList} vec3 Vector de 3 booleanos que indican si se setean
+      *ahora o en el hijo los buffers.
+    */
+    constructor(levels, setterList){
         this.positions = [];
         this.normals = [];
         this.tangents = [];
         this.levels = levels;
         /*Crean los arrays. Resposabilidad de las subclases*/
-        this.setPositions();
-        this.setNormals();
-        this.setTangents();
+        if(!setterList){ this.setPositions(); this.setNormals(); this.setTangents();}
+        else {
+            if(setterList[0]) this.setPositions();
+            if(setterList[1]) this.setNormals();
+            if(setterList[2]) this.setTangents();
+        }
     }
     /*Getter de cantidad de niveles*/
     getLevels(){

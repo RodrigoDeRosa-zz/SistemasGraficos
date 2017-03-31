@@ -3,11 +3,12 @@ function createScene(){
     scene = new Container3D();
     scene.setShaderProgram(mShaderProgram);
 
-    var sol = new RoundRing(60, 60, new Orange(60, 60));
+    var sol = new Ramp(60, 60);
     sol.setShaderProgram(mShaderProgram);
     sol.build();
+    sol.rotate(Math.PI/2.0, 0, 0, 1);
     sol.scale(8, 8, 8);
-
+/*
     var grupoTierraLuna = new Container3D();
     grupoTierraLuna.setShaderProgram(mShaderProgram);
 
@@ -24,7 +25,7 @@ function createScene(){
     grupoTierraLuna.addChild(luna);
     grupoTierraLuna.addChild(tierra);
     grupoTierraLuna.translate(20, 0, 0);
-
+*/
     scene.addChild(sol);
-    scene.addChild(grupoTierraLuna);
+//    scene.addChild(grupoTierraLuna);
 }

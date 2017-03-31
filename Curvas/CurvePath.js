@@ -46,7 +46,7 @@ class CurvePath{
       * el parametro en ese segmento.
     */
     getTangent(u){
-        var segPar = calculateParameter(u);
+        var segPar = this._calculateParameter(u);
         return this.curve.getTangent(segPar[1], this.segments[segPar[0]]);
     }
     /**Devuelve la normal en el parametro dado.
@@ -54,7 +54,7 @@ class CurvePath{
       * el parametro en ese segmento.
     */
     getNormal(u){
-        var segPar = calculateParameter(u);
+        var segPar = this._calculateParameter(u);
         return this.curve.getNormal(segPar[1], this.segments[segPar[0]]);
     }
 }

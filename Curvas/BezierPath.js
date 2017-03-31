@@ -24,7 +24,7 @@ class BezierPath extends CurvePath{
             }
             segments.push(segment);
         }
-        this.segments = segment;
+        this.segments = segments;
     }
 }
 class LinearBezierPath extends BezierPath{

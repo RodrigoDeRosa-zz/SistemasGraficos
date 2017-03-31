@@ -1,5 +1,5 @@
 class Curve{
-    /*Curva de bezier principal, solo tiene metodos*/
+    /*Curva general*/
     constructor(){
         this.basis = null;
         this.dBasis = null;
@@ -8,7 +8,7 @@ class Curve{
     puntos de control dados. Dichos puntos de control son objetos del tipo
     Punto, es decir, se accede a sus coordenadas con '.x', '.y', '.z'.*/
     getPosition(u, controlPoints){
-        var punto = new Punto(0, 0, 0);
+        var punto = new Point(0, 0, 0);
 
         for (var i = 0; i < controlPoints.length; i++){
             punto.x += this.basis[i](u)*controlPoints[i].x;
@@ -18,7 +18,7 @@ class Curve{
         return punto;
     }
     /*Idem getPosition pero con la tangente en dado U*/
-    getTangent(u, controPoints){
+    getTangent(u, controlPoints){
         var tangent = new Point(0, 0, 0);
 
         for (var i = 0; i < controlPoints.length; i++){
@@ -31,11 +31,14 @@ class Curve{
     /*Idem con la normal*/
     getNormal(u, controlPoints){
         /*Se obtiene la tangente en el punto*/
-        var tangent = this.getTangent(u, controPoints);
+        var tangent = this.getTangent(u, controlPoints);
         var tanVec = vec3.fromValues(tangent.x, tangent.y, tangent.z);
         /*Vector del eje Y*/
         var auxVec = vec3.create();
-        vec3.cross(auxVec, tanVec, vec3.fromValues(0, 1, 0));
+        var multiplyVec;
+        if (tangent.x == 0 && tangent.z == 0) multiplyVec = vec3.fromValues(-1, 0, 0);
+        else multiplyVec = vec3.fromValues(0, -1, 0);
+        vec3.cross(auxVec, tanVec, multiplyVec);
         /*Se obtiene el vector normal como el producto vectorial entre la
         tangente y el eje Y (si la tangente es vertical no funciona)*/
         var normVec = vec3.create();

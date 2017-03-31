@@ -1,5 +1,5 @@
-class Cilinder extends Object3D{
-    /**Cilindro 3D
+class Ramp extends Object3D{
+    /**Rampa hecha con curvas de bezier.
       * @param {rows} integer Niveles de la forma
       * @param {cols} integer Niveles del barrido
       * @param {color} Color Objeto de clase Color.
@@ -10,7 +10,10 @@ class Cilinder extends Object3D{
         this.rows = rows;
         this.cols = cols;
 
-        this.surface = new SweptSurface(new Circle(rows), new StraightLine(cols));
+        var shape = new RampShape(cols);
+        var path = new StraightLine(rows);
+
+        this.surface = new SweptSurface(shape, path);
 
         this.setIndexCreator(new VertexGrid(rows, cols));
         this.setPosCreator(this.surface);
