@@ -18,6 +18,8 @@ function webGLStart(){
     cameraController.addCamera(orbit);
     cameraController.init();
 
+    globalDrawType = gl.TRIANGLE_STRIP;
+
     createScene();
 
     tick();

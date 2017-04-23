@@ -22,6 +22,12 @@ function setButtons(){
         mouseDown = false;
         resetMouse();
     });
+
+    $("body").keydown(function(e){
+        if(e.keyCode == 76) globalDrawType = gl.LINE_LOOP; //L
+        if(e.keyCode == 86) globalDrawType = null;//V
+        if(e.keyCode == 70) globalDrawType = gl.TRIANGLE_STRIP;//F
+    });
 }
 
 function resetMouse(){

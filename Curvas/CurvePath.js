@@ -28,7 +28,7 @@ class CurvePath{
         var segment = Math.floor(Number(u));//Parte entera
         var parameter = u % 1; //Parte decimal
         if (segment >= this.segments.length){
-            segment = segments.length-1;
+            segment = this.segments.length-1;
             parameter = 0.99999999;
         }
         return [segment, parameter];

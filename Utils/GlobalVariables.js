@@ -1,6 +1,7 @@
 var gl;
 var mShaderProgram;
 var mainCanvas = document.getElementById("mainCanvas");
+var globalDrawType = null;
 
 var CameraMatrix = mat4.create();
 var mvMatrix = mat4.create();

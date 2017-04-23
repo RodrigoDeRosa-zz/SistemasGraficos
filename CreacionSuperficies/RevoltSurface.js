@@ -40,7 +40,6 @@ class RevoltSurface{
             /*Para cada punto de la forma se aplica la transformacion*/
             for (var j = 0; j < this.shape.getLevels(); j++){
                 var normal = this.shape.getNormal(j);
-                //PORQUE ESTAN ESOS MENOS!?!?!?!
                 var vNormal = vec3.fromValues(normal.x, normal.y, normal.z);
 
                 /*Matriz de rotacion del nivel*/

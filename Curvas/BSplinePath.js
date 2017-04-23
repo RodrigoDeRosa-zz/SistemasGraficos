@@ -24,7 +24,7 @@ class BSplinePath extends CurvePath{
             }
             segments.push(segment);
         }
-        this.segments = segment;
+        this.segments = segments;
     }
 }
 class LinearBSplinePath extends BSplinePath{

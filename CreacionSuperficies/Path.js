@@ -6,8 +6,6 @@ class Path extends Shape{
     constructor(levels, rotate){
         super(levels);
         /*Indica si se hace cambio de base a cada paso o no*/
-        if (rotate == null) this.rotate = true;
-        this.rotate = rotate;
         (rotate == null) ? this.rotate = true : this.rotate = rotate;
         /*Arreglo de matrices de transformacion de cada nivel*/
         this.vertexMatrices = [];

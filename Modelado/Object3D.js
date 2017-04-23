@@ -2,7 +2,7 @@ class Object3D extends Container3D{
     /*Objeto 3D generico*/
     constructor(){
         super();
-        this.drawType = gl.TRIANGLE_STRIP;
+        this.drawType = globalDrawType;
 
         this.posBuffer = null;
         this.indexBuffer = null;

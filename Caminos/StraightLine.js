@@ -1,6 +1,5 @@
 class StraightLine extends Path{
-    /**Linea recta sobre el eje Z. No es sobre el Y por la forma en la que
-      *se calculan las normales. (NO PUEDE SER VERTICAL EN NINGUN PUNTO)
+    /**Linea recta sobre el eje Z.
       * @param {levels} int Cantidad de niveles del camino.
       * @param {rotate} bool Si se rotan o no los vertices a cada paso.
     */
@@ -9,7 +8,7 @@ class StraightLine extends Path{
     }
     setPositions(){
         for (var i = 0.0; i < this.levels; i++){
-            var point = new Point(0, 0, 1/(1-i));
+            var point = new Point(0, 0, -0.5 + i/(this.levels-1));
             this.positions.push(point);
         }
     }

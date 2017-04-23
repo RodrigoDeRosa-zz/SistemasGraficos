@@ -2,6 +2,7 @@
 function tick() {
     if(lastReceiver == mainCanvas && mouseDown) cameraController.tick();
 
+
     requestAnimFrame(tick);
     drawScene();
 }
@@ -24,7 +25,7 @@ function drawScene(){
     scene.setupLighting(vec3.fromValues(0.0, 1000.0, 600.0), vec3.fromValues(0.3, 0.3, 0.3),
         vec3.fromValues(0.001, 0.001, 0.001));
     scene.resetMatrix();
-    scene.rotate(frame, 0, 1, 0);
+    //scene.rotate(frame, 0, 1, 0);
     scene.draw(mat4.create(), CameraMatrix, pMatrix, false);
-    frame += 0.0;
+    frame += 0.1;
 }
