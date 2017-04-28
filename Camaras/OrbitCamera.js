@@ -22,7 +22,7 @@ class OrbitCamera extends Camera{
     }
     /****Override***/
     initialise(){
-        this.radius = 500;
+        this.radius = 100;
         this.zoomSensibility = 0.5;
         this.sensibility = 0.009;
         this.theta = 0;
@@ -42,7 +42,7 @@ class OrbitCamera extends Camera{
     zoom(value){
         this.radius += value*this.zoomSensibility;
         if (this.radius < 10) this.radius = 10;
-        
+
         var eyeX = this.radius*Math.sin(this.theta)*Math.sin(this.phi);
         var eyeY = this.radius*Math.cos(this.phi);
         var eyeZ = this.radius*Math.cos(this.theta)*Math.sin(this.phi);

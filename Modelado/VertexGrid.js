@@ -3,7 +3,7 @@ class VertexGrid{
       * @param {rows} integer Numero de filas.
       * @param {cols} integer Numero de columnas.
     */
-    constructor(cols, rows){
+    constructor(rows, cols){
         this.rows = rows;
         this.cols = cols
     }

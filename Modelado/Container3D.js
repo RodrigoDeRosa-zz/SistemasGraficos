@@ -52,6 +52,13 @@ class Container3D{
         mat4.scale(this.matrix, this.matrix, vec3.fromValues(x, y, z));
         this.modified = true;
     }
+    /**Multiplica a izquierda a la matriz del objeto.
+    * @param {matrix} mat4 Matriz de modelado.
+    */
+    applyMatrixLeft(matrix){
+        mat4.multiply(this.matrix, matrix, this.matrix);
+        this.modified = true;
+    }
     /**Multiplica a derecha a la matriz del objeto.
       * @param {matrix} mat4 Matriz de modelado
     */

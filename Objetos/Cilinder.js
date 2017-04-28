@@ -10,7 +10,7 @@ class Cilinder extends Object3D{
         this.rows = rows;
         this.cols = cols;
 
-        this.surface = new SweptSurface(new Circle(rows), new StraightLine(cols));
+        this.surface = new SweptSurface(new Circle(cols), new StraightLine(rows));
 
         this.setIndexCreator(new VertexGrid(rows, cols));
         this.setPosCreator(this.surface);

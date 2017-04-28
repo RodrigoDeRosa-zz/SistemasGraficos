@@ -14,6 +14,8 @@
         <script type="text/javascript" src="Utils/GLInitialization.js"></script>
         <script type="text/javascript" src="Utils/Point.js"></script>
 
+        <script type="x-shader/x-vertex" id="vs-colored" src="Utils/Shaders/vs-colored.glsl"></script>
+
         <script type="text/javascript" src="Eventos/EventControl.js"></script>
 
         <script type="text/javascript" src="Camaras/Camera.js"></script>
@@ -30,6 +32,7 @@
 
         <script type="text/javascript" src="Formas/Circle.js"></script>
         <script type="text/javascript" src="Formas/BuildingShape.js"></script>
+        <script type="text/javascript" src="Formas/SidewalkShape.js"></script>
 
         <script type="text/javascript" src="Escena/SceneDrawing.js"></script>
         <script type="text/javascript" src="Escena/SceneCreation.js"></script>
@@ -46,10 +49,16 @@
         <script type="text/javascript" src="Curvas/BezierCurve.js"></script>
         <script type="text/javascript" src="Curvas/BezierPath.js"></script>
 
-        <script type="text/javascript" src="Objetos/Sphere.js"></script>
         <script type="text/javascript" src="Objetos/Cilinder.js"></script>
-        <script type="text/javascript" src="Objetos/RoundRing.js"></script>
-        <script type="text/javascript" src="Objetos/Building.js"></script>
+
+        <script type="text/javascript" src="Objetos/Block/Buildings/BuildingBody.js"></script>
+        <script type="text/javascript" src="Objetos/Block/Buildings/BuildingRoof.js"></script>
+        <script type="text/javascript" src="Objetos/Block/Buildings/BuildingConstructor.js"></script>
+        <script type="text/javascript" src="Objetos/Block/BuildingSet.js"></script>
+        <script type="text/javascript" src="Objetos/Block/Block.js"></script>
+        <script type="text/javascript" src="Objetos/Block/Sidewalk/SidewalkSide.js"></script>
+        <script type="text/javascript" src="Objetos/Block/Sidewalk/SidewalkTop.js"></script>
+        <script type="text/javascript" src="Objetos/Block/Sidewalk/Sidewalk.js"></script>
     </head>
 
     <body onload="webGLStart();">

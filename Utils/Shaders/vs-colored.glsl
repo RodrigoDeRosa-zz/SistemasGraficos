@@ -1,5 +1,3 @@
-function getRawVertexShader(){
-    var vertexShaderSource = `
 //Atributos de cada vertice
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
@@ -36,26 +34,4 @@ void main(void){
         float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
         vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
     }
-}`;
-    var rawVertex = new RawVertexShader();
-    rawVertex.setShaderCode(vertexShaderSource);
-
-    return rawVertex;
-}
-
-function getRawFragmentShader(){
-    var fragmentShaderSource = `
-precision mediump float;
-varying vec3 vVertexColor;
-varying vec3 vLightWeighting;
-
-uniform sampler2D uSampler;
-
-void main(void){
-    gl_FragColor = vec4(vVertexColor.rgb * vLightWeighting, 1.0);
-}`;
-    var rawFragment = new RawFragmentShader();
-    rawFragment.setShaderCode(fragmentShaderSource);
-
-    return rawFragment;
 }

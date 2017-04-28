@@ -38,8 +38,7 @@ function initGL(canvas){
     }
 }
 /**Genera y devuelve el mShaderProgram.
-  * @param {gl} GLProgram
-  * @param {id} string Identificador del shader a obtener
+  * @param {rawShader} RawShader Contiene el codigo del shader.
 */
 function getShader(rawShader){
     var shader;
