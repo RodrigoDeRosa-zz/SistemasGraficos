@@ -3,10 +3,6 @@ var mShaderProgram;
 var mainCanvas = document.getElementById("mainCanvas");
 var globalDrawType = null;
 
-var VERTEX = 0;
-var FRAGMENT = 0;
-var gShaderText;
-
 var CameraMatrix = mat4.create();
 var mvMatrix = mat4.create();
 var mvMatrixStack = [];
@@ -25,9 +21,15 @@ var scene;
 var cameraController;
 var frame = 0.0;
 
-var uniforms = {
-    t: {
-        type: 'f',
-        value: 0.0
-    }
-}
+var STREET_RIGHT = 0;
+var STREET_LEFT = 1;
+var STREET_TOP = 2;
+var STREET_BOTTOM = 3;
+
+var CROSS_BOTTOM_LEFT = 0;
+var CROSS_TOP_LEFT = 1;
+var CROSS_BOTTOM_RIGHT = 2;
+var CROSS_TOP_RIGHT = 3;
+
+var BLOCK_BUILDING = 0;
+var BLOCK_PARK = 1;

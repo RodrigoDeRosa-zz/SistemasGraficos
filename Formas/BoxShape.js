@@ -1,8 +1,6 @@
-class BuildingShape extends Shape{
-    /**Forma de los edificios.
-     * @param {type} integer Tipo de edificio cuya forma se espera. (Edificio 1, 2, etc.)
-    */
-    constructor(type){
+class BoxShape extends Shape{
+    /**Forma de una caja.*/
+    constructor(){
         var SHAPE_POINTS = 8;
         //Las normales y tangentes son identicas para todo tipo de edificio
         super(SHAPE_POINTS);

@@ -27,7 +27,7 @@ class BuildingConstructor{
       * @param {roof} BuildingRoof Techo del edificio que se debe colocar arriba de todo.
     */
     getBody(type, shader, color, roof){
-        var body = new BuildingBody(color);
+        var body = new Box(color);
         body.setShaderProgram(shader);
         body.build();
 
@@ -41,6 +41,7 @@ class BuildingConstructor{
     */
     getRoof(shader){
         var roof = new BuildingRoof();
+
         roof.setShaderProgram(shader);
         roof.build();
 
@@ -67,11 +68,12 @@ class BuildingConstructor{
         building.scale(x, y, z);
 
         roof.translate(0, y, 0);
-        roof.scale(x, 0, z);
+        roof.rotate(Math.PI/2, 1, 0, 0);
+        roof.scale(x, z, 0);
     }
     /*Define una altura aleatoria entre 0.3 y 1 para los edificios.*/
     getRandomY(){
-        var y = Math.random() + 0.3;
+        var y = Math.random() + 0.45;
         if (y > 1.0) y = 1.0;
         return y;
     }

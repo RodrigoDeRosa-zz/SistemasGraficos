@@ -52,6 +52,17 @@ class Gray extends Color{
     }
 }
 
+class DarkGray extends Color{
+    constructor(rows, cols){
+        super(rows, cols);
+    }
+    _setColorFunctions(){
+        this.red = function(i, j){return 0.13;};
+        this.green = function(i, j){return 0.13;};
+        this.blue = function(i, j){return 0.13;};
+    }
+}
+
 class Red extends Color{
     constructor(rows, cols){
         super(rows, cols);

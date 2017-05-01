@@ -11,14 +11,14 @@ class BuildingRoof extends Object3D{
     /*Es un cuadrado en el XZ.*/
     setPosBuffer(){
         var buffer = [
-            -0.5, 0.5, -0.5,
-            0.5, 0.5, -0.5,
-            0.5, 0.5, 0.5,
-            -0.5, 0.5, 0.5
+            -0.5, -0.5, 0,
+            0.5, -0.5, 0,
+            0.5, 0.5, 0,
+            -0.5, 0.5, 0
         ];
         return buffer;
     }
-    /*Todas las normales van para salientes.*/
+    /*Todas las normales van salientes.*/
     setNormalBuffer(){
         var buffer = [
             0, 1, 0,

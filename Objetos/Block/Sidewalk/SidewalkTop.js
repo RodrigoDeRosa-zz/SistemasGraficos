@@ -1,12 +1,13 @@
 class SidewalkTop extends Object3D{
     /**Parte de arriba de la vereda*/
-    constructor(){
+    constructor(color){
         super();
 
         this.setIndexCreator(new VertexGrid(2, 28));
         this.setPosCreator(this);
         this.setNormalCreator(this);
-        this.setColorCreator(new Gray(2, 28));
+        if (!color) this.setColorCreator(new Gray(2, 28));
+        else this.setColorCreator(color);
     }
     setPosBuffer(){
         var buffer = [];
@@ -62,7 +63,7 @@ class SidewalkTop extends Object3D{
         for (var i = 0; i < 56; i++){
             buffer.push(0.0);
             buffer.push(0.0);
-            buffer.push(1.0);
+            buffer.push(-1.0);
         }
         return buffer;
     }
