@@ -22,7 +22,7 @@ class OrbitCamera extends Camera{
     }
     /****Override***/
     initialise(){
-        this.radius = 100;
+        this.radius = 300;
         this.zoomSensibility = 0.5;
         this.sensibility = 0.009;
         this.theta = 0;

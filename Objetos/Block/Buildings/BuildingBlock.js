@@ -2,16 +2,16 @@ class BuildingBlock extends Container3D{
     /**Manzana con 16 edificios.
       * @param {shader} ShaderProgram
     */
-    constructor(shader, noBuildings){
+    constructor(shader, noBuildings, color){
         super();
         this.setShaderProgram(shader);
-        if (!noBuildings) this.generateBlock(shader);
+        if (!noBuildings) this.generateBlock(shader, color);
         this.addSidewalk(shader);
     }
     /**Genera la manzana creando cada uno de los 4 sets.
       * @param {shader} ShaderProgram
     */
-    generateBlock(shader){
+    generateBlock(shader, color){
         var color = new Orange(2, 8);
 
         var set1 = new BuildingSet(shader, color);

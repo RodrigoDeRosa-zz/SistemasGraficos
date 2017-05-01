@@ -46,9 +46,9 @@ class Gray extends Color{
         super(rows, cols);
     }
     _setColorFunctions(){
-        this.red = function(i, j){return 0.33;};
-        this.green = function(i, j){return 0.33;};
-        this.blue = function(i, j){return 0.33;};
+        this.red = function(i, j){return 0.5;};
+        this.green = function(i, j){return 0.5;};
+        this.blue = function(i, j){return 0.5;};
     }
 }
 
@@ -57,9 +57,9 @@ class DarkGray extends Color{
         super(rows, cols);
     }
     _setColorFunctions(){
-        this.red = function(i, j){return 0.13;};
-        this.green = function(i, j){return 0.13;};
-        this.blue = function(i, j){return 0.13;};
+        this.red = function(i, j){return 0.25;};
+        this.green = function(i, j){return 0.25;};
+        this.blue = function(i, j){return 0.25;};
     }
 }
 
@@ -101,8 +101,41 @@ class Orange extends Color{
         super(rows, cols);
     }
     _setColorFunctions(){
-        this.red = function(i, j){return 0.7;};
+        this.red = function(i, j){return 1.0;};
         this.green = function(i, j){return 0.3;};
         this.blue = function(i, j){return 0;};
+    }
+}
+
+class Yellow extends Color{
+    constructor(rows, cols){
+        super(rows, cols);
+    }
+    _setColorFunctions(){
+        this.red = function(i, j){return 1.0;};
+        this.green = function(i, j){return 1.0;};
+        this.blue = function(i, j){return 0.0;};
+    }
+}
+
+class Cyan extends Color{
+    constructor(rows, cols){
+        super(rows, cols);
+    }
+    _setColorFunctions(){
+        this.red = function(i, j){return 0.0;};
+        this.green = function(i, j){return 1.0;};
+        this.blue = function(i, j){return 1.0;};
+    }
+}
+
+class Magenta extends Color{
+    constructor(rows, cols){
+        super(rows, cols);
+    }
+    _setColorFunctions(){
+        this.red = function(i, j){return 1.0;};
+        this.green = function(i, j){return 0.0;};
+        this.blue = function(i, j){return 1.0;};
     }
 }

@@ -19,11 +19,11 @@ class Street extends Box{
             case STREET_LEFT:
                 this.translate(-0.7, -0.015, 0); break;
             case STREET_TOP:
-                this.translate(0, -0.015, 0.7);
+                this.translate(0, -0.015, -0.7);
                 this.rotate(Math.PI/2, 0, 1, 0);
                 break;
             case STREET_BOTTOM:
-                this.translate(0, -0.015, -0.7);
+                this.translate(0, -0.015, 0.7);
                 this.rotate(Math.PI/2, 0, 1, 0);
                 break;
             default:
