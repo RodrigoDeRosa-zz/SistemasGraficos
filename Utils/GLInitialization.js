@@ -7,7 +7,7 @@ function webGLStart(){
     initShader(rawVertex, rawFragment);
     setButtons();
 
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.0, 0.60, 0.60, 1.0);
     gl.enable(gl.DEPTH_TEST);
 
     /*Se crea el controlador de camaras*/
