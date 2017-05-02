@@ -2,7 +2,6 @@ class Object3D extends Container3D{
     /*Objeto 3D generico*/
     constructor(){
         super();
-        this.drawType = globalDrawType;
 
         this.posBuffer = null;
         this.indexBuffer = null;
@@ -117,6 +116,6 @@ class Object3D extends Container3D{
         //Index
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webglIndexBuffer);
         //Draw
-        gl.drawElements(this.drawType, this.indexBuffer.length, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(globalDrawType, this.indexBuffer.length, gl.UNSIGNED_SHORT, 0);
     }
 }
