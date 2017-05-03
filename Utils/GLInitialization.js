@@ -10,6 +10,8 @@ function webGLStart(){
     gl.clearColor(0.0, 0.60, 0.60, 1.0);
     gl.enable(gl.DEPTH_TEST);
 
+    curveController = new CurveController();
+
     /*Se crea el controlador de camaras*/
     cameraController = new CameraController();
     /*Se crea la camara orbital*/

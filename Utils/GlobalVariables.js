@@ -1,6 +1,7 @@
 var gl;
 var mShaderProgram;
 var mainCanvas = document.getElementById("mainCanvas");
+var curveCanvas = document.getElementById("curveCanvas");
 var globalDrawType = null;
 
 var CameraMatrix = mat4.create();
@@ -10,6 +11,7 @@ var pMatrix = mat4.create();
 
 var mouse = {x:0, y:0};
 var mouseDown = false;
+var onDrag = false;
 var lastReceiver = null;
 
 var previousClientX = 0;
@@ -19,6 +21,7 @@ var lastMouseY = null;
 
 var scene;
 var cameraController;
+var curveController;
 var frame = 0.0;
 
 var STREET_RIGHT = 0;

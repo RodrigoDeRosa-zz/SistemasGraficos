@@ -2,6 +2,43 @@
     <head>
         <title>TP1</title>
         <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+        <body onload="webGLStart();">
+            <style>
+                body{
+                    background-color: #000000;
+                    color: #FFFFFF;
+                }
+                #mainCanvas{
+                    border: 5px solid blue;
+                    position: absolute;
+                    top: 80px;
+                    left: 0px;
+                }
+                #curveCanvas{
+                    border:5px solid cyan;
+                    background-color: #ffffff;
+                    position: absolute;
+                    top: 80px;
+                    left: 1290px;
+                    cursor: crosshair;
+                }
+                #button{
+                    position: absolute;
+                    top: 500px;
+                    left: 1490px;
+                }
+            </style>
+            <center>
+                <h2>Trabajo Pr&aacute;ctico - De Rosa</h2>
+                <button onclick="createScene();" id="button"> Generar</button>
+                <canvas id="mainCanvas" style="border: none;" width="1280" height="720">
+                    Your browser does not support the HTML5 canvas element.
+                </scanvas>
+            </center>
+            <canvas id="curveCanvas" width="400" height="400">
+                Your browser does not support the HTML5 canvas tag.
+            </scanvas>
+        </body>
         <!--Import utils-->
         <script type="text/javascript" src="Utils/gl-matrix.js"></script>
         <script type="text/javascript" src="Utils/webgl-utils.js"></script>
@@ -14,7 +51,6 @@
         <script type="text/javascript" src="Utils/GLInitialization.js"></script>
         <script type="text/javascript" src="Utils/Point.js"></script>
 
-        <script type="text/javascript" src="Events/EventControl.js"></script>
 
         <script type="text/javascript" src="Cameras/Camera.js"></script>
         <script type="text/javascript" src="Cameras/OrbitCamera.js"></script>
@@ -45,6 +81,10 @@
         <script type="text/javascript" src="Curves/BezierCurve.js"></script>
         <script type="text/javascript" src="Curves/BezierPath.js"></script>
 
+        <script type="text/javascript" src="HighwayControl/CurveController.js"></script>
+
+        <script type="text/javascript" src="Events/EventControl.js"></script>
+
         <script type="text/javascript" src="Objects/Box.js"></script>
 
         <script type="text/javascript" src="Objects/Block/Street/Street.js"></script>
@@ -65,12 +105,4 @@
 
         <script type="text/javascript" src="Objects/Grid/Grid.js"></script>
     </head>
-
-    <body onload="webGLStart();">
-        <center>
-            <canvas id="mainCanvas" style="border: none;" width="1300" height="700">
-                Your browser does not support the HTML5 canvas element.
-            </scanvas>
-        </center>
-    </body>
 </html>

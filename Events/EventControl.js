@@ -21,12 +21,22 @@ function setButtons(){
     $("body").mouseup(function(e){
         mouseDown = false;
         resetMouse();
+        onDrag = false;
     });
 
     $("body").keydown(function(e){
         if(e.keyCode == 76) globalDrawType = gl.LINE_LOOP; //L
         if(e.keyCode == 86) globalDrawType = null;//V
         if(e.keyCode == 70) globalDrawType = gl.TRIANGLE_STRIP;//F
+    });
+
+    $("#curveCanvas").mousemove(function(e){
+        if (mouseDown) curveController.initDragging(e);
+    });
+
+    $("#curveCanvas").mousedown(function(e){
+        lastReceiver = curveCanvas;
+        mouseDown = true;
     });
 }
 

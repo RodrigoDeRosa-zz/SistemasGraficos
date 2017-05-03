@@ -3,6 +3,7 @@ function tick() {
     if(lastReceiver == mainCanvas && mouseDown) cameraController.tick();
 
     requestAnimFrame(tick);
+    curveController.animate();
     drawScene();
 }
 /**Setea todo lo necesario para el dibujado y dibuja los objetos de la escena*/
