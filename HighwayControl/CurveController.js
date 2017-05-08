@@ -5,6 +5,7 @@ class CurveController{
         this.curve = new QuadraticBSplinePath(this.controlPoints);
         this.ctx = curveCanvas.getContext("2d");
         this.index;
+        this.modified = true;
         this.blockType = [];
         this.setBlocks();
         this.animate();
@@ -27,6 +28,7 @@ class CurveController{
             onDrag = true;
             this.controlPoints[this.index].x = e.pageX - pos.left;
             this.controlPoints[this.index].y = e.pageY - pos.top;
+            this.modified = true;
         }
     }
     /*Se fija se se clickeo algun punto de control y devuelve el indice*/
@@ -140,8 +142,11 @@ class CurveController{
     }
     /*Maneja el dibujado de la curva y el movimiento de los puntos de control*/
     animate(){
-        this.ctx.clearRect ( 0 , 0 , 400 , 400 );
-        this.resetBlocks();
-        this.drawCurve();
+        if (this.modified){
+            this.ctx.clearRect ( 0 , 0 , 400 , 400 );
+            this.resetBlocks();
+            this.drawCurve();
+            this.modified = false;
+        }
     }
 }
