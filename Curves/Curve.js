@@ -33,12 +33,14 @@ class Curve{
         /*Se obtiene la tangente en el punto*/
         var tangent = this.getTangent(u, controlPoints);
         var tanVec = vec3.fromValues(tangent.x, tangent.y, tangent.z);
-        /*Vector del eje Y*/
+        /*Se normaliza la tangente*/
+        var nTan = vec3.create();
+        vec3.normalize(nTan, tanVec);
+        /*Vector del eje Y (o X si esta en el eje Y la curva)*/
         var auxVec = vec3.create();
-        var multiplyVec;
+        var multiplyVec = vec3.fromValues(0, -1, 0);
         if (tangent.x == 0 && tangent.z == 0) multiplyVec = vec3.fromValues(-1, 0, 0);
-        else multiplyVec = vec3.fromValues(0, -1, 0);
-        vec3.cross(auxVec, tanVec, multiplyVec);
+        vec3.cross(auxVec, nTan, multiplyVec);
         /*Se obtiene el vector normal como el producto vectorial entre la
         tangente y el eje Y (si la tangente es vertical no funciona)*/
         var normVec = vec3.create();

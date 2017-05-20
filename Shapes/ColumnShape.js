@@ -22,23 +22,19 @@ class ColumnShape extends Shape{
         for (var u = 0.0; u < 1.0; u += deltaU){
             this.positions.push(this.curve1.getPosition(u));
         }
-        console.log(this.positions.length);
         /*Y ahora se le agregan los vertices del segmento recto central*/
         this.positions.push(this.p2);
         this.positions.push(new Point(0.10, 0.45, 0));
         this.positions.push(this.p3);
-        console.log(this.positions.length);
         /*Ahora se agrega el segmento diagonal*/
         deltaU = 0.25;
         for (var u = 0.0; u < 1.0; u += deltaU){
             this.positions.push(this.curve2.getPosition(u));
         }
-        console.log(this.positions.length);
         /*Y ahora el ultimo segmento recto*/
         this.positions.push(this.p5);
         this.positions.push(new Point(0.5, 0.95, 0));
         this.positions.push(new Point(0.5, 1.0, 0));
-        console.log(this.positions.length);
     }
     setNormals(){
         var zPos = new Point(1, 0, 0);

@@ -3,11 +3,11 @@ class LightBody extends Object3D{
     constructor(color){
         super();
 
-        var SHAPE_POINTS = 10;
-        var SWEPT_STEPS = 14;
+        var SHAPE_POINTS = 6;
+        var SWEPT_STEPS = 30;
 
-        this.shape = new Circle(SHAPE_POINTS, 0.01);
-        this.path = new LightBodyPath(SWEPT_STEPS, true);
+        this.shape = new Circle(SHAPE_POINTS, 0.01, 0.1);
+        this.path = new LightBodyPath(SWEPT_STEPS);
 
         this.surface = new SweptSurface(this.shape, this.path);
 
