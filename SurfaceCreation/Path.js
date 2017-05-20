@@ -40,9 +40,9 @@ class Path extends Shape{
             vec3.normalize(vBin, vBin);
             /*Se define la matriz*/
             matrix = [ vNorm[0], vNorm[1], vNorm[2], 0,
-                       vBin[0], vBin[1], vBin[2], 0,
-                       vTan[0], vTan[1], vTan[2], 0,
-                       0,        0,       0,       1];
+                        vBin[0],  vBin[1],  vBin[2], 0,
+                        vTan[0],  vTan[1],  vTan[2], 0,
+                              0,        0,        0, 1];
             /*Se agrega la matriz a la lista*/
             this.basisMatrices.push(matrix);
         }

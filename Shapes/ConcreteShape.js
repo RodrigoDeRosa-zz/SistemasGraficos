@@ -7,23 +7,23 @@ class ConcreteShape extends Shape{
         /*La forma se recorre desde bottomleft y se da la vuelta.
          *Se repiten puntos para lograr facetado.
         */
-        var bottomLeft = new Point(-0.525, -0.05, 0);
-        var bottomRight = new Point(0.525, -0.05, 0);
-        var topRightExterior = new Point(0.525, 0.1, 0);
-        var topRightInterior = new Point(0.5, 0.1, 0);
-        var midRight = new Point(0.45, 0.05, 0);
-        var midLeft = new Point(-0.45, 0.05, 0);
-        var topLeftInterior = new Point(-0.5, 0.1, 0);
-        var topLeftExterior = new Point(-0.525, 0.1, 0);
+        var bottomLeft = new Point(-1.06, -0.05, 0);
+        var bottomRight = new Point(-0.01, -0.05, 0);
+        var topRightExterior = new Point(-0.01, 0.1, 0);
+        var topRightInterior = new Point(-0.035, 0.1, 0);
+        var midRight = new Point(-0.085, 0.05, 0);
+        var midLeft = new Point(-0.985, 0.05, 0);
+        var topLeftInterior = new Point(-1.035, 0.1, 0);
+        var topLeftExterior = new Point(-1.06, 0.1, 0);
         //Misma forma corrida 1.2 en x
-        var bottomLeft2 = new Point(0.675, -0.05, 0);
-        var bottomRight2 = new Point(1.725, -0.05, 0);
-        var topRightExterior2 = new Point(1.725, 0.1, 0);
-        var topRightInterior2 = new Point(1.7, 0.1, 0);
-        var midRight2 = new Point(1.65, 0.05, 0);
-        var midLeft2 = new Point(0.75, 0.05, 0);
-        var topLeftInterior2 = new Point(0.7, 0.1, 0);
-        var topLeftExterior2 = new Point(0.675, 0.1, 0);
+        var bottomLeft2 = new Point(0.01, -0.05, 0);
+        var bottomRight2 = new Point(1.06, -0.05, 0);
+        var topRightExterior2 = new Point(1.06, 0.1, 0);
+        var topRightInterior2 = new Point(1.035, 0.1, 0);
+        var midRight2 = new Point(0.985, 0.05, 0);
+        var midLeft2 = new Point(0.085, 0.05, 0);
+        var topLeftInterior2 = new Point(0.035, 0.1, 0);
+        var topLeftExterior2 = new Point(0.01, 0.1, 0);
 
         this.positions = [
             bottomLeft,

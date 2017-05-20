@@ -24,8 +24,8 @@ function drawScene(){
     //Dibujado
     scene.setupLighting(vec3.fromValues(400.0, 100.0, 600.0), vec3.fromValues(0.3, 0.3, 0.3),
         vec3.fromValues(0.001, 0.001, 0.001));
-    //scene.resetMatrix();
-    //scene.rotate(frame, 0, 1, 0);
+    scene.resetMatrix();
+    scene.rotate(frame, 0, 1, 0);
     scene.draw(mat4.create(), CameraMatrix, pMatrix, false);
     frame += 0.05;
 }

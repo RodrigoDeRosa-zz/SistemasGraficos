@@ -1,14 +1,15 @@
-class BuildingRoof extends Object3D{
+class BoxCover extends Object3D{
     /**Techo de un edificio.*/
-    constructor(){
+    constructor(color){
         super();
 
         this.setIndexCreator(this); //Es un cuadrado.
         this.setPosCreator(this);
         this.setNormalCreator(this);
-        this.setColorCreator(new Gray(2, 2));
+        if (!color) this.setColorCreator(new Gray(2, 2));
+        else this.setColorCreator(color);
     }
-    /*Es un cuadrado en el XZ.*/
+    /*Es un cuadrado en el XY.*/
     setPosBuffer(){
         var buffer = [
             -0.5, -0.5, 0,

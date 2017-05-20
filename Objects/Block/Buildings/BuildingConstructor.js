@@ -40,7 +40,7 @@ class BuildingConstructor{
       * @param {shader} ShaderProgram Shader del edificio a crear.
     */
     getRoof(shader){
-        var roof = new BuildingRoof();
+        var roof = new BoxCover();
 
         roof.setShaderProgram(shader);
         roof.build();

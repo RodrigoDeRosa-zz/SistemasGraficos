@@ -7,15 +7,15 @@ class AsphaltShape extends Shape{
     setPositions(){
         /*Es un segmento recto con dos mini diagonales en las puntas*/
         this.positions = [
-            new Point(-0.5, 0, 0),
-            new Point(-0.45, 0.06, 0),
-            new Point(0.45, 0.06, 0),
-            new Point(0.5, 0, 0),
+            new Point(-1.05, 0, 0),
+            new Point(-0.995, 0.06, 0),
+            new Point(-0.075, 0.06, 0),
+            new Point(-0.025, 0, 0),
             //Se repite corrido 1.2 en x
-            new Point(0.7, 0, 0),
-            new Point(0.75, 0.06, 0),
-            new Point(1.65, 0.06, 0),
-            new Point(1.7, 0, 0)
+            new Point(0.025, 0, 0),
+            new Point(0.075, 0.06, 0),
+            new Point(0.995, 0.06, 0),
+            new Point(1.05, 0, 0)
         ]
     }
     setNormals(){
