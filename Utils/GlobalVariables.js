@@ -21,6 +21,7 @@ var lastMouseY = null;
 
 var scene;
 var cameraController;
+var carControl;
 var curveController;
 var frame = 0.0;
 
