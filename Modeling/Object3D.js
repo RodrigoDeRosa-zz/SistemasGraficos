@@ -4,6 +4,9 @@ class Object3D extends Container3D{
         super();
 
         this.texture = null;
+        this.id = null;
+        this.building = false;
+        this.street = false;
 
         this.posBuffer = null;
         this.indexBuffer = null;
@@ -54,14 +57,15 @@ class Object3D extends Container3D{
     setNormalCreator(normalC){
         this.normalBufferCreator = normalC;
     }
-
     /**********METODOS DE DIBUJADO**********/
     /*Construye los buffers con las funciones constructoras*/
     build(){
         this.posBuffer = this.posBufferCreator.setPosBuffer();
         this.normalBuffer = this.normalBufferCreator.setNormalBuffer();
         if (this.colorBufferCreator) this.colorBuffer = this.colorBufferCreator.setColorBuffer();
-        if (this.textureBufferCreator) this.textureBuffer = this.textureBufferCreator.setTextureBuffer();
+        if (this.textureBufferCreator){
+            this.textureBuffer = this.textureBufferCreator.setTextureBuffer();
+        }
         this.indexBuffer = this.indexBufferCreator.setIndexBuffer();
 
         this.setUpWebGLBuffers();
@@ -71,26 +75,36 @@ class Object3D extends Container3D{
         this.webglPosBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webglPosBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.posBuffer), gl.STATIC_DRAW);
+        this.webglPosBuffer.itemSize = 3;
+        this.webglPosBuffer.numItems = this.posBuffer.length / 3;
 
         this.webglNormalBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normalBuffer), gl.STATIC_DRAW);
+        this.webglNormalBuffer.itemSize = 3;
+        this.webglNormalBuffer.numItems = this.normalBuffer.length / 3;
 
         if (this.colorBuffer){
             this.webglColorBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webglColorBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colorBuffer), gl.STATIC_DRAW);
+            this.webglColorBuffer.itemSize = 3;
+            this.webglColorBuffer.numItems = this.colorBuffer.length / 3;
         }
 
         if (this.textureBuffer){
-            this.webgl_texture_coord_buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_texture_coord_buffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.texture_coord_buffer), gl.STATIC_DRAW);
+            this.webglTextureBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webglTextureBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.textureBuffer), gl.STATIC_DRAW);
+            this.webglTextureBuffer.itemSize = 2;
+            this.webglTextureBuffer.numItems = this.textureBuffer.length / 2;
         }
 
         this.webglIndexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webglIndexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indexBuffer), gl.STATIC_DRAW);
+        this.webglIndexBuffer.itemSize = 1;
+        this.webglIndexBuffer.numItems = this.indexBuffer.length;
     }
     /**Dibuja al objeto. Recibe la matriz de modelado base, la matriz de la camara
       *y la matriz de proyeccion.
@@ -110,35 +124,32 @@ class Object3D extends Container3D{
         //Se hace un llamado al draw de los hijos, uno por uno.
         this._drawChildren(modelMatrix, CameraMatrix, pMatrix, this.modified || parentMod);
         this.modified = false;
+        /*Se indica que shader se debe usar*/
+        gl.useProgram(this.shaderProgram);
         //Matriz de proyeccion y vista
         gl.uniformMatrix4fv(this.shaderProgram.pMatrixUniform, false, pMatrix);
         gl.uniformMatrix4fv(this.shaderProgram.ViewMatrixUniform, false, CameraMatrix);
 
-        var itemSize = 3;
-        var texItemSize = 2;
         //Position
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webglPosBuffer);
-        gl.vertexAttribPointer(this.shaderProgram.vertexPositionAttribute, itemSize, gl.FLOAT, false, 0, 0);
+        gl.vertexAttribPointer(this.shaderProgram.vertexPositionAttribute, this.webglPosBuffer.itemSize, gl.FLOAT, false, 0, 0);
         //Color
         if (this.webglColorBuffer){
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webglColorBuffer);
-            gl.vertexAttribPointer(this.shaderProgram.vertexColorAttribute, itemSize, gl.FLOAT, false, 0, 0);
+            gl.vertexAttribPointer(this.shaderProgram.vertexColorAttribute, this.webglColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
         }
         //Texture
         if (this.webglTextureBuffer){
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_texture_coord_buffer);
-            gl.vertexAttribPointer(shaderProgramTexturedObject.textureCoordAttribute, texItemSize, gl.FLOAT, false, 0, 0);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webglTextureBuffer);
+            gl.vertexAttribPointer(this.shaderProgram.textureCoordAttribute, this.webglTextureBuffer.itemSize, gl.FLOAT, false, 0, 0);
         }
-        //Texture loading
-        if (this.texture){
-            gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, this.texture);
-            gl.uniform1i(this.shaderProgram.samplerUniform, 0);
-        }
+        //Se setea el id dependiendo el shader para definir la textura
+        if (this.building) gl.vertexAttrib1f(idBuilding, this.id);
+        if (this.street) gl.vertexAttrib1f(idStreet, this.id);
 
         //Normal
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer, itemSize, gl.FLOAT, false, 0, 0);
-        gl.vertexAttribPointer(this.shaderProgram.vertexNormalAttribute, itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer);
+        gl.vertexAttribPointer(this.shaderProgram.vertexNormalAttribute, this.webglNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
         //Matriz de normales. Se define como la traspuesta de la inversa de la matriz de modelado
         gl.uniformMatrix4fv(this.shaderProgram.ModelMatrixUniform, false, modelMatrix);
@@ -151,6 +162,6 @@ class Object3D extends Container3D{
         //Index
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webglIndexBuffer);
         //Draw
-        gl.drawElements(globalDrawType, this.indexBuffer.length, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(globalDrawType, this.webglIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
     }
 }

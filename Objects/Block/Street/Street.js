@@ -3,7 +3,9 @@ class Street extends Box{
       * @param {position} integer Posicion en la que va la calle relativa a una manzana
     */
     constructor(shader, position){
-        super(new DarkGray(2, 8));
+        super(null, true);
+        this.street = true;
+        this.id = 0.0;
 
         this.translateStreet(position);
         this.scale(0.2, 0.01, 1.2);
@@ -29,5 +31,20 @@ class Street extends Box{
             default:
                 alert("Street position not defined!");
         }
+    }
+    /**
+     @Override
+    */
+    build(){
+        this.posBuffer = this.posBufferCreator.setPosBuffer();
+        this.normalBuffer = this.normalBufferCreator.setNormalBuffer();
+        if (this.colorBufferCreator) this.colorBuffer = this.colorBufferCreator.setColorBuffer();
+        /*La diferencia esta aca! necesito el pos buffer ya seteado y que ancho y alto sean 1*/
+        if (this.textureBufferCreator){
+            this.textureBuffer = this.setTextureBuffer(1, 1);
+        }
+        this.indexBuffer = this.indexBufferCreator.setIndexBuffer();
+
+        this.setUpWebGLBuffers();
     }
 }

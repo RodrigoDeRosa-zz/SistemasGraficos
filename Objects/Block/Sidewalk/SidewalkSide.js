@@ -1,6 +1,6 @@
 class SidewalkSide extends Object3D{
     /*Vereda de una manzana*/
-    constructor(color){
+    constructor(color, texture){
         super();
 
         var SWEPT_STEPS = 2;
@@ -14,7 +14,14 @@ class SidewalkSide extends Object3D{
         this.setIndexCreator(new VertexGrid(SWEPT_STEPS, SHAPE_POINTS));
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
-        if (!color) this.setColorCreator(new Gray(SWEPT_STEPS, SHAPE_POINTS));
-        else this.setColorCreator(color);
+        if (texture) {
+            this.setTextureCreator(this.surface);
+            this.street = true;
+            this.id = 2.0;
+        }else{
+            if (!color) this.setColorCreator(new Gray(SWEPT_STEPS, SHAPE_POINTS));
+            else this.setColorCreator(color);
+        }
+
     }
 }

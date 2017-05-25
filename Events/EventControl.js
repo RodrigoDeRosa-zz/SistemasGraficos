@@ -22,6 +22,7 @@ function setButtons(){
         mouseDown = false;
         resetMouse();
         onDrag = false;
+        curveController.modified = true; //Para despintar el circulo
     });
 
     $("body").keydown(function(e){

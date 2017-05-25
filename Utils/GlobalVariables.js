@@ -1,6 +1,7 @@
 var gl;
 var mShaderProgram;
 var buildingShader;
+var streetShader;
 var mainCanvas = document.getElementById("mainCanvas");
 var curveCanvas = document.getElementById("curveCanvas");
 var globalDrawType = null;
@@ -25,6 +26,9 @@ var cameraController;
 var carControl;
 var curveController;
 var frame = 0.0;
+
+var idStreet;
+var idBuilding;
 
 var STREET_RIGHT = 0;
 var STREET_LEFT = 1;

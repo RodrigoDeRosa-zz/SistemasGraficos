@@ -37,7 +37,7 @@ class BuildingBlock extends Container3D{
       * @param {shader} ShaderProgram
     */
     addSidewalk(shader){
-        var sidewalk = new Sidewalk(shader);
+        var sidewalk = new Sidewalk(shader, null, true);
         sidewalk.setShaderProgram(shader);
 
         this.addChild(sidewalk);

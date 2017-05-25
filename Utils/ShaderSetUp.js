@@ -60,8 +60,6 @@ precision mediump float;
 varying vec3 vVertexColor;
 varying vec3 vLightWeighting;
 
-uniform sampler2D uSampler;
-
 void main(void){
     gl_FragColor = vec4(vVertexColor.rgb * vLightWeighting, 1.0);
 }`;
@@ -73,64 +71,164 @@ void main(void){
 
 function getBuildingRawVertexShader(){
     var vertexShaderSource = `
-attribute vec3 aVertexPosition;
-attribute vec3 aVertexNormal;
-attribute vec2 aTextureCoord;
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+    attribute float aID;
 
-uniform mat4 uViewMatrix;
-uniform mat4 uModelMatrix;
-uniform mat4 uPMatrix;
-uniform mat3 uNMatrix;
+    uniform mat4 uViewMatrix;
+    uniform mat4 uModelMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat3 uNMatrix;
 
-uniform vec3 uAmbientColor;
+    uniform vec3 uAmbientColor;
+    uniform vec3 uLightPosition;
+    uniform vec3 uDirectionalColor;
 
-uniform vec3 uLightPosition;
-uniform vec3 uDirectionalColor;
+    uniform bool uUseLighting;
 
-uniform bool uUseLighting;
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+    varying float vID;
 
-varying vec2 vTextureCoord;
-varying vec3 vLightWeighting;
+    void main(void) {
 
-void main(void) {
-    // Transformamos al v�rtice al espacio de la c�mara
-    vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+        // Transformamos al v�rtice al espacio de la c�mara
+        vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
 
-    // Transformamos al v�rtice al espacio de la proyecci�n
-    gl_Position = uPMatrix * pos_camera_view;
+        // Transformamos al v�rtice al espacio de la proyecci�n
+        gl_Position = uPMatrix * pos_camera_view;
 
-    // Coordenada de textura sin modifiaciones
-    vTextureCoord = aTextureCoord;
+        //Se pasa el id
+        vID = aID;
 
-    ////////////////////////////////////////////
-    // Calculos de la iluminaci�n
-    vec3 light_dir =  uLightPosition - vec3( pos_camera_view );
-    normalize(light_dir);
-    if (!uUseLighting){
+        // Coordenada de textura sin modifiaciones
+        vTextureCoord = aTextureCoord;
+
+        ////////////////////////////////////////////
+        // Calculos de la iluminaci�n
+        vec3 light_dir =  uLightPosition - vec3( pos_camera_view );
+        normalize(light_dir);
+        if (!uUseLighting)
+        {
             vLightWeighting = vec3(1.0, 1.0, 1.0);
-    } else {
-        vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
-        float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
-        vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
-    }
-    ////////////////////////////////////////////
-}`;
+        }
+        else
+        {
+            vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
+            float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
+            vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+        }
+        ////////////////////////////////////////////
+    }`;
 
     return getRawVertexShader(vertexShaderSource);
 }
 
 function getBuildingRawFragmentShader(){
     var fragmentShaderSource = `
-precision mediump float;
+    precision highp float;
 
-varying vec2 vTextureCoord;
-varying vec3 vLightWeighting;
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
 
-uniform sampler2D uSampler;
+    uniform sampler2D sTop1;
+    uniform sampler2D sTop2;
+    uniform sampler2D sTop3;
 
-void main(void) {
-    vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-    gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
-}`;
+    varying float vID;
+
+    void main(void) {
+        vec4 textureColor;
+
+        if (vID == 0.0) textureColor = texture2D(sTop1, vec2(vTextureCoord.s, vTextureCoord.t));
+        else if (vID == 1.0) textureColor = texture2D(sTop2, vec2(vTextureCoord.s, vTextureCoord.t));
+        else if (vID == 2.0) textureColor = texture2D(sTop3, vec2(vTextureCoord.s, vTextureCoord.t));
+
+        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+    }
+`;
+    return getRawFragmentShader(fragmentShaderSource);
+}
+
+/**********************************CALLES**********************************************/
+
+function getStreetRawVertexShader(){
+    var vertexShaderSource = `
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+    attribute float aID;
+
+    uniform mat4 uViewMatrix;
+    uniform mat4 uModelMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat3 uNMatrix;
+
+    uniform vec3 uAmbientColor;
+    uniform vec3 uLightPosition;
+    uniform vec3 uDirectionalColor;
+
+    uniform bool uUseLighting;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+    varying float vID;
+
+    void main(void) {
+
+        // Transformamos al v�rtice al espacio de la c�mara
+        vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+
+        // Transformamos al v�rtice al espacio de la proyecci�n
+        gl_Position = uPMatrix * pos_camera_view;
+        //Se pasa el id del objeto
+        vID = aID;
+        // Coordenada de textura sin modifiaciones
+        vTextureCoord = aTextureCoord;
+
+        ////////////////////////////////////////////
+        // Calculos de la iluminaci�n
+        vec3 light_dir =  uLightPosition - vec3( pos_camera_view );
+        normalize(light_dir);
+        if (!uUseLighting)
+        {
+            vLightWeighting = vec3(1.0, 1.0, 1.0);
+        }
+        else
+        {
+            vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
+            float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
+            vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+        }
+        ////////////////////////////////////////////
+    }`;
+
+    return getRawVertexShader(vertexShaderSource);
+}
+
+function getStreetRawFragmentShader(){
+    var fragmentShaderSource = `
+    precision highp float;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    uniform sampler2D streetTex;
+    uniform sampler2D crossTex;
+    uniform sampler2D sidewalkTex;
+
+    varying float vID;
+
+    void main(void) {
+        vec4 textureColor;
+
+        if (vID == 0.0) textureColor = texture2D(streetTex, vec2(vTextureCoord.s, vTextureCoord.t));
+        else if (vID == 1.0) textureColor = texture2D(crossTex, vec2(vTextureCoord.s, vTextureCoord.t));
+        else if (vID == 2.0) textureColor = texture2D(sidewalkTex, vec2(vTextureCoord.s, vTextureCoord.t));
+
+        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+    }
+`;
     return getRawFragmentShader(fragmentShaderSource);
 }

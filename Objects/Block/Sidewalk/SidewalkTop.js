@@ -1,13 +1,19 @@
 class SidewalkTop extends Object3D{
     /**Parte de arriba de la vereda*/
-    constructor(color){
+    constructor(color, texture){
         super();
 
         this.setIndexCreator(new VertexGrid(2, 28));
         this.setPosCreator(this);
         this.setNormalCreator(this);
-        if (!color) this.setColorCreator(new Gray(2, 28));
-        else this.setColorCreator(color);
+        if(texture){
+            this.setTextureCreator(this);
+            this.street = true;
+            this.id = 2.0;
+        } else {
+            if (!color) this.setColorCreator(new Gray(2, 28));
+            else this.setColorCreator(color);
+        }
     }
     setPosBuffer(){
         var buffer = [];

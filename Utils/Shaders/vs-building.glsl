@@ -1,6 +1,7 @@
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
 attribute vec2 aTextureCoord;
+attribute float aID;
 
 uniform mat4 uViewMatrix;
 uniform mat4 uModelMatrix;
@@ -8,7 +9,6 @@ uniform mat4 uPMatrix;
 uniform mat3 uNMatrix;
 
 uniform vec3 uAmbientColor;
-
 uniform vec3 uLightPosition;
 uniform vec3 uDirectionalColor;
 
@@ -16,6 +16,7 @@ uniform bool uUseLighting;
 
 varying vec2 vTextureCoord;
 varying vec3 vLightWeighting;
+varying float vID;
 
 void main(void) {
 
@@ -24,6 +25,9 @@ void main(void) {
 
     // Transformamos al v�rtice al espacio de la proyecci�n
     gl_Position = uPMatrix * pos_camera_view;
+
+    //Se pasa el id
+    vID = aID;
 
     // Coordenada de textura sin modifiaciones
     vTextureCoord = aTextureCoord;

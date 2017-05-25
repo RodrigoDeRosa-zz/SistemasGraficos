@@ -31,17 +31,17 @@ class Grid extends Container3D{
         var type = this.blockType[x+(this.n-1)/2][z+(this.n-1)/2];
         if (z == 0){
             if (x == 0) block = new CentralBlock(this.shader, type);
-            if (x > 0) block = new zAxisBlock(this.shader, type, 1);
-            if (x < 0) block = new zAxisBlock(this.shader, type, -1);
+            if (x > 0) block = new zAxisBlock(this.shader, streetShader, type, 1);
+            if (x < 0) block = new zAxisBlock(this.shader, streetShader, type, -1);
         } else if (x == 0){
-            if (z < 0) block = new xAxisBlock(this.shader, type, -1);
-            if (z > 0) block = new xAxisBlock(this.shader, type, 1);
+            if (z < 0) block = new xAxisBlock(this.shader, streetShader, type, -1);
+            if (z > 0) block = new xAxisBlock(this.shader, streetShader, type, 1);
         } else if (z > 0){
-            if (x > 0) block = new firstQuadrantBlock(this.shader, type);
-            if (x < 0) block = new fourthQuadrantBlock(this.shader, type);
+            if (x > 0) block = new firstQuadrantBlock(this.shader, streetShader, type);
+            if (x < 0) block = new fourthQuadrantBlock(this.shader, streetShader, type);
         } else{
-            if (x > 0) block = new secondQuadrantBlock(this.shader, type);
-            else block = new thirdQuadrantBlock(this.shader, type);
+            if (x > 0) block = new secondQuadrantBlock(this.shader, streetShader, type);
+            else block = new thirdQuadrantBlock(this.shader, streetShader, type);
         }
         //Estan al reves para armar la matriz mas comodo desde afuera
         block.translate(z*1.4, 0, x*1.4);

@@ -12,10 +12,10 @@ class BuildingSet extends Container3D{
     setBuildingSet(color){
         var WIDTH1 = 0.15, WIDTH2 = 0.3, WIDTH3 = 0.2, WIDTH4 = 0.1;
 
-        var building1 = this.buildingConstructor.getBuilding(1, mShaderProgram, color);
-        var building2 = this.buildingConstructor.getBuilding(2, mShaderProgram, color);
-        var building3 = this.buildingConstructor.getBuilding(3, mShaderProgram, color);
-        var building4 = this.buildingConstructor.getBuilding(4, mShaderProgram, color);
+        var building1 = this.buildingConstructor.getBuilding(1, buildingShader, mShaderProgram, color);
+        var building2 = this.buildingConstructor.getBuilding(2, buildingShader, mShaderProgram, color);
+        var building3 = this.buildingConstructor.getBuilding(3, buildingShader, mShaderProgram, color);
+        var building4 = this.buildingConstructor.getBuilding(4, buildingShader, mShaderProgram, color);
         var buildings = [[building1, WIDTH1], [building2, WIDTH2],
             [building3, WIDTH3], [building4, WIDTH4]];
 

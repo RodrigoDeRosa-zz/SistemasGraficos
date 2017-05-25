@@ -8,12 +8,12 @@ class BuildingConstructor{
       * @param {shader} ShaderProgram Shader del edificio a crear.
       * @param {color} Color Objeto de clase Color.
     */
-    getBuilding(type, shader, color){
+    getBuilding(type, towerShader, roofShader, color){
         var building = new Container3D();
-        building.setShaderProgram(shader);
+        building.setShaderProgram(roofShader);
 
-        var roof = this.getRoof(shader);
-        var body = this.getBody(type, shader, color, roof);
+        var roof = this.getRoof(roofShader);
+        var body = this.getBody(type, towerShader, color, roof);
 
         building.addChild(roof);
         building.addChild(body);
@@ -27,9 +27,28 @@ class BuildingConstructor{
       * @param {roof} BuildingRoof Techo del edificio que se debe colocar arriba de todo.
     */
     getBody(type, shader, color, roof){
-        var body = new Box(color);
+        var body = new Box(null, true);
         body.setShaderProgram(shader);
         body.build();
+        body.building = true;
+        //TODO: esto debe ser decidido en el shader
+        var k = (Math.random())*10; //Se pasa al rango 0 al 9
+        k = Math.floor(k); //Se le saca lo decimal
+        switch (k) {
+            case 0:
+            case 3:
+            case 9:
+                body.id = 0.0; break;
+            case 1:
+            case 4:
+            case 8:
+            case 6:
+                body.id = 1.0; break;
+            case 2:
+            case 5:
+            case 7:
+                body.id = 2.0; break;
+        }
 
         this.modifyBuilding(type, body, roof);
         body.rotate(Math.PI/2.0, 1, 0, 0); //Para que quede "parado"

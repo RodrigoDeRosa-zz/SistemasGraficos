@@ -92,7 +92,6 @@ class Container3D{
     */
     setShaderProgram(shaderProgram){
         this.shaderProgram = shaderProgram;
-        gl.useProgram(shaderProgram);
     }
     /**Configura la iluminacion. ALERT: Debe estar definido el Shader Program
       * @param {lightPosition} vec3 Ubicacion de la luz
@@ -101,6 +100,8 @@ class Container3D{
     */
     setupLighting(lightPosition, ambientColor, diffuseColor){
         this.setupChildrenLighting(lightPosition, ambientColor, diffuseColor);
+        /*Se indica que shader se debe usar*/
+        gl.useProgram(this.shaderProgram);
 
         gl.uniform1i(this.shaderProgram.useLightingUniform, true);
         //Define direccion

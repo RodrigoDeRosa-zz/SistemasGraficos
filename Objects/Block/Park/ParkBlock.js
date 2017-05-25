@@ -10,7 +10,7 @@ class ParkBlock extends BuildingBlock{
       * @param {shader} ShaderProgram
     */
     addGrass(shader){
-        var grass = new Sidewalk(shader, new Green(2, 56));
+        var grass = new Sidewalk(shader, new Green(2, 56), false);
         grass.setShaderProgram(shader);
 
         grass.translate(0, 0.01, 0);
