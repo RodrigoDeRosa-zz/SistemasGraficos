@@ -4,7 +4,9 @@ class Concrete extends Object3D{
         super();
 
         var SWEPT_LEVELS = 70;
-        var SHAPE_POINTS = 33;
+        var SHAPE_POINTS = 32;
+        this.rows = SWEPT_LEVELS;
+        this.cols = SHAPE_POINTS;
 
         this.shape = new ConcreteShape(SHAPE_POINTS);
         this.path = new RoadPath(curveController.controlPoints ,SWEPT_LEVELS);

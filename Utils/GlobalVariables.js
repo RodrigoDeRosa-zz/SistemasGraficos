@@ -1,5 +1,6 @@
 var gl;
 var mShaderProgram;
+var buildingShader;
 var mainCanvas = document.getElementById("mainCanvas");
 var curveCanvas = document.getElementById("curveCanvas");
 var globalDrawType = null;

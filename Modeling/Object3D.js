@@ -3,19 +3,24 @@ class Object3D extends Container3D{
     constructor(){
         super();
 
+        this.texture = null;
+
         this.posBuffer = null;
         this.indexBuffer = null;
         this.colorBuffer = null;
+        this.textureBuffer = null;
         this.normalBuffer = null;
 
         this.webglPosBuffer = null;
         this.webglNormalBuffer = null;
         this.webglColorBuffer = null;
+        this.webglTextureBuffer = null;
         this.webglIndexBuffer = null;
 
         this.posBufferCreator = null;
         this.normalBufferCreator = null;
         this.colorBufferCreator = null;
+        this.textureBufferCreator = null;
         this.indexBufferCreator = null;
     }
     /**********METODOS DE MODELADO*************/
@@ -32,10 +37,16 @@ class Object3D extends Container3D{
         this.colorBufferCreator = colorer;
     }
     /**Define al constructor de positionBuffer
-      * @param {pasitioner} Object Objeto con metodo setPosBuffer que devuelve array
+      * @param {positioner} Object Objeto con metodo setPosBuffer que devuelve array
     */
     setPosCreator(positioner){
         this.posBufferCreator = positioner;
+    }
+    /**Define al constructor del textureBuffer
+      * @param {uvC} Object Objeto con metodo setTextureBuffer que devuelve array
+    */
+    setTextureCreator(uvC){
+        this.textureBufferCreator = uvC;
     }
     /**Define al constructor de normalBuffer.
       * @param {normalC} Object Objeto con metodo setNormalBuffer que devuelve array
@@ -49,7 +60,8 @@ class Object3D extends Container3D{
     build(){
         this.posBuffer = this.posBufferCreator.setPosBuffer();
         this.normalBuffer = this.normalBufferCreator.setNormalBuffer();
-        this.colorBuffer = this.colorBufferCreator.setColorBuffer();
+        if (this.colorBufferCreator) this.colorBuffer = this.colorBufferCreator.setColorBuffer();
+        if (this.textureBufferCreator) this.textureBuffer = this.textureBufferCreator.setTextureBuffer();
         this.indexBuffer = this.indexBufferCreator.setIndexBuffer();
 
         this.setUpWebGLBuffers();
@@ -64,9 +76,17 @@ class Object3D extends Container3D{
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normalBuffer), gl.STATIC_DRAW);
 
-        this.webglColorBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.webglColorBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colorBuffer), gl.STATIC_DRAW);
+        if (this.colorBuffer){
+            this.webglColorBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webglColorBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colorBuffer), gl.STATIC_DRAW);
+        }
+
+        if (this.textureBuffer){
+            this.webgl_texture_coord_buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_texture_coord_buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.texture_coord_buffer), gl.STATIC_DRAW);
+        }
 
         this.webglIndexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webglIndexBuffer);
@@ -95,12 +115,27 @@ class Object3D extends Container3D{
         gl.uniformMatrix4fv(this.shaderProgram.ViewMatrixUniform, false, CameraMatrix);
 
         var itemSize = 3;
+        var texItemSize = 2;
         //Position
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webglPosBuffer);
         gl.vertexAttribPointer(this.shaderProgram.vertexPositionAttribute, itemSize, gl.FLOAT, false, 0, 0);
         //Color
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.webglColorBuffer);
-        gl.vertexAttribPointer(this.shaderProgram.vertexColorAttribute, itemSize, gl.FLOAT, false, 0, 0);
+        if (this.webglColorBuffer){
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webglColorBuffer);
+            gl.vertexAttribPointer(this.shaderProgram.vertexColorAttribute, itemSize, gl.FLOAT, false, 0, 0);
+        }
+        //Texture
+        if (this.webglTextureBuffer){
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_texture_coord_buffer);
+            gl.vertexAttribPointer(shaderProgramTexturedObject.textureCoordAttribute, texItemSize, gl.FLOAT, false, 0, 0);
+        }
+        //Texture loading
+        if (this.texture){
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);
+            gl.uniform1i(this.shaderProgram.samplerUniform, 0);
+        }
+
         //Normal
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer, itemSize, gl.FLOAT, false, 0, 0);
         gl.vertexAttribPointer(this.shaderProgram.vertexNormalAttribute, itemSize, gl.FLOAT, false, 0, 0);

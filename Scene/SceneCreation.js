@@ -3,7 +3,7 @@ function createScene(){
     scene = new Container3D();
     scene.setShaderProgram(mShaderProgram);
 
-    carControl = new CarControl(20, mShaderProgram);
+    carControl = new CarControl(10, mShaderProgram);
 
     var blockType = curveController.blockType;
     var grid = new Grid(mShaderProgram, 5, blockType);
