@@ -7,6 +7,8 @@ class Grid extends Container3D{
         super();
         this.setShaderProgram(shader);
 
+        this.parks = 0;
+
         this.shader = shader;
         this.n = n;
         this.blockType = blockType;
@@ -21,27 +23,30 @@ class Grid extends Container3D{
             this.cityMatrix.push([]);
             z = i + (this.n-1)/2;
             for (var j = -((this.n-1)/2); j <= (this.n-1)/2; j++){
-                this.cityMatrix[z].push(this.setBlock(i, j));
+                x = j + (this.n-1)/2;
+                var delay = (x-(this.parks*1.0))*10.0 + z*50.0;
+                this.cityMatrix[z].push(this.setBlock(i, j, delay));
             }
         }
     }
     /*Devuelve la manzana segun x y z*/
-    setBlock(x, z){
+    setBlock(x, z, number){
         var block;
         var type = this.blockType[x+(this.n-1)/2][z+(this.n-1)/2];
+        if (type == BLOCK_PARK) this.parks++;
         if (z == 0){
-            if (x == 0) block = new CentralBlock(this.shader, type);
-            if (x > 0) block = new zAxisBlock(this.shader, streetShader, type, 1);
-            if (x < 0) block = new zAxisBlock(this.shader, streetShader, type, -1);
+            if (x == 0) block = new CentralBlock(this.shader, type, number);
+            if (x > 0) block = new zAxisBlock(this.shader, streetShader, type, 1, number);
+            if (x < 0) block = new zAxisBlock(this.shader, streetShader, type, -1, number);
         } else if (x == 0){
-            if (z < 0) block = new xAxisBlock(this.shader, streetShader, type, -1);
-            if (z > 0) block = new xAxisBlock(this.shader, streetShader, type, 1);
+            if (z < 0) block = new xAxisBlock(this.shader, streetShader, type, -1, number);
+            if (z > 0) block = new xAxisBlock(this.shader, streetShader, type, 1, number);
         } else if (z > 0){
-            if (x > 0) block = new firstQuadrantBlock(this.shader, streetShader, type);
-            if (x < 0) block = new fourthQuadrantBlock(this.shader, streetShader, type);
+            if (x > 0) block = new firstQuadrantBlock(this.shader, streetShader, type, number);
+            if (x < 0) block = new fourthQuadrantBlock(this.shader, streetShader, type, number);
         } else{
-            if (x > 0) block = new secondQuadrantBlock(this.shader, streetShader, type);
-            else block = new thirdQuadrantBlock(this.shader, streetShader, type);
+            if (x > 0) block = new secondQuadrantBlock(this.shader, streetShader, type, number);
+            else block = new thirdQuadrantBlock(this.shader, streetShader, type, number);
         }
         //Estan al reves para armar la matriz mas comodo desde afuera
         block.translate(z*1.4, 0, x*1.4);

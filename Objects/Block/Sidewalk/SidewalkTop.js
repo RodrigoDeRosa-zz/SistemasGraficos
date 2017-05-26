@@ -73,4 +73,9 @@ class SidewalkTop extends Object3D{
         }
         return buffer;
     }
+    setTextureBuffer(){
+        var buffer = [];
+        
+        return buffer;
+    }
 }

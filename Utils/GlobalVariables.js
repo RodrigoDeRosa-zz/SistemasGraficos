@@ -29,6 +29,9 @@ var frame = 0.0;
 
 var idStreet;
 var idBuilding;
+var buildX;
+var buildY;
+var buildLim;
 
 var STREET_RIGHT = 0;
 var STREET_LEFT = 1;

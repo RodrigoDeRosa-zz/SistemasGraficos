@@ -2,20 +2,20 @@ class BuildingSet extends Container3D{
     /**Cada uno de los 4 grupos de 4 edificios de una manzana.
       * @param {shader} ShaderProgram
     */
-    constructor(shader, color){
+    constructor(shader, number){
         super();
         this.setShaderProgram(shader);
         this.buildingConstructor = new BuildingConstructor();
-        this.setBuildingSet(color);
+        this.setBuildingSet(number);
     }
     /*Genera un set de 4 edificios y los devuelve*/
-    setBuildingSet(color){
+    setBuildingSet(number){
         var WIDTH1 = 0.15, WIDTH2 = 0.3, WIDTH3 = 0.2, WIDTH4 = 0.1;
 
-        var building1 = this.buildingConstructor.getBuilding(1, buildingShader, mShaderProgram, color);
-        var building2 = this.buildingConstructor.getBuilding(2, buildingShader, mShaderProgram, color);
-        var building3 = this.buildingConstructor.getBuilding(3, buildingShader, mShaderProgram, color);
-        var building4 = this.buildingConstructor.getBuilding(4, buildingShader, mShaderProgram, color);
+        var building1 = this.buildingConstructor.getBuilding(1, buildingShader, number);
+        var building2 = this.buildingConstructor.getBuilding(2, buildingShader, number);
+        var building3 = this.buildingConstructor.getBuilding(3, buildingShader, number);
+        var building4 = this.buildingConstructor.getBuilding(4, buildingShader, number);
         var buildings = [[building1, WIDTH1], [building2, WIDTH2],
             [building3, WIDTH3], [building4, WIDTH4]];
 

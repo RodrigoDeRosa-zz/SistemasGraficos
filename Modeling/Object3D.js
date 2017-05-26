@@ -3,11 +3,14 @@ class Object3D extends Container3D{
     constructor(){
         super();
 
-        this.texture = null;
+        /*Animacion*/
         this.id = null;
         this.building = false;
         this.street = false;
-
+        this.x;
+        this.y;
+        this.lim;
+        //FIN ANIMACION
         this.posBuffer = null;
         this.indexBuffer = null;
         this.colorBuffer = null;
@@ -144,7 +147,12 @@ class Object3D extends Container3D{
             gl.vertexAttribPointer(this.shaderProgram.textureCoordAttribute, this.webglTextureBuffer.itemSize, gl.FLOAT, false, 0, 0);
         }
         //Se setea el id dependiendo el shader para definir la textura
-        if (this.building) gl.vertexAttrib1f(idBuilding, this.id);
+        if (this.building){
+            gl.uniform1f(buildX, this.x);
+            gl.uniform1f(buildY, this.y);
+            gl.uniform1f(buildLim, this.lim);
+            gl.vertexAttrib1f(idBuilding, this.id);
+        }
         if (this.street) gl.vertexAttrib1f(idStreet, this.id);
 
         //Normal

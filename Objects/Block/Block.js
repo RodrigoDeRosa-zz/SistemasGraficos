@@ -20,11 +20,11 @@ class CentralBlock extends Block{
     * @param {type} integer Indica si tiene parque o edificios
     * @param {side} integer Indica si esta en los z positivos o negativos
     */
-    constructor(shader, type, side){
+    constructor(shader, type, side, number){
         super(shader);
 
         if (type == BLOCK_PARK) this.block = new ParkBlock(shader);
-        else this.block = new BuildingBlock(shader);
+        else this.block = new BuildingBlock(shader, null, number);
         //No tiene calles
 
         this.addChildren();
@@ -36,11 +36,11 @@ class zAxisBlock extends Block{
       * @param {type} integer Indica si tiene parque o edificios
       * @param {side} integer Indica si esta en los z positivos o negativos
     */
-    constructor(shader, streetShader, type, side){
+    constructor(shader, streetShader, type, side, number){
         super(shader);
 
         if (type == BLOCK_PARK) this.block = new ParkBlock(shader);
-        else this.block = new BuildingBlock(shader);
+        else this.block = new BuildingBlock(shader, null, number);
         /*Solo tiene una calle, que depende si z>0 o z<0*/
         if (side > 0) this.streets.push(new Street(streetShader, STREET_TOP));
         else this.streets.push(new Street(streetShader, STREET_BOTTOM));
@@ -54,11 +54,11 @@ class xAxisBlock extends Block{
       * @param {type} integer Indica si tiene parque o edificios
       * @param {side} integer Indica si esta en los z positivos o negativos
     */
-    constructor(shader, streetShader, type, side){
+    constructor(shader, streetShader, type, side, number){
         super(shader);
 
         if (type == BLOCK_PARK) this.block = new ParkBlock(shader);
-        else this.block = new BuildingBlock(shader);
+        else this.block = new BuildingBlock(shader, null, number);
         /*Solo tiene una calle, que depende si x>0 o x<0*/
         if (side > 0) this.streets.push(new Street(streetShader, STREET_LEFT));
         else this.streets.push(new Street(streetShader, STREET_RIGHT));
@@ -71,11 +71,11 @@ class firstQuadrantBlock extends Block{
     /**Manzana en el primer cuadrante.
       * @param {type} integer Indica si tiene parque o edificios
     */
-    constructor(shader, streetShader, type){
+    constructor(shader, streetShader, type, number){
         super(shader);
 
         if (type == BLOCK_PARK) this.block = new ParkBlock(shader);
-        else this.block = new BuildingBlock(shader);
+        else this.block = new BuildingBlock(shader, null, number);
         /*Tiene dos calles y una esquina*/
         this.streets.push(new Street(streetShader, STREET_LEFT));
         this.streets.push(new Street(streetShader, STREET_TOP));
@@ -89,11 +89,11 @@ class secondQuadrantBlock extends Block{
     /**Manzana en el segundo cuadrante.
       * @param {type} integer Indica si tiene parque o edificios
     */
-    constructor(shader, streetShader, type){
+    constructor(shader, streetShader, type, number){
         super(shader);
 
         if (type == BLOCK_PARK) this.block = new ParkBlock(shader);
-        else this.block = new BuildingBlock(shader);
+        else this.block = new BuildingBlock(shader, null, number);
         /*Tiene dos calles y una esquina*/
         this.streets.push(new Street(streetShader, STREET_RIGHT));
         this.streets.push(new Street(streetShader, STREET_TOP));
@@ -107,11 +107,11 @@ class thirdQuadrantBlock extends Block{
     /**Manzana en el tercer cuadrante.
       * @param {type} integer Indica si tiene parque o edificios
     */
-    constructor(shader, streetShader, type){
+    constructor(shader, streetShader, type, number){
         super(shader);
 
         if (type == BLOCK_PARK) this.block = new ParkBlock(shader);
-        else this.block = new BuildingBlock(shader);
+        else this.block = new BuildingBlock(shader, null, number);
         /*Tiene dos calles y una esquina*/
         this.streets.push(new Street(streetShader, STREET_RIGHT));
         this.streets.push(new Street(streetShader, STREET_BOTTOM));
@@ -125,11 +125,10 @@ class fourthQuadrantBlock extends Block{
     /**Manzana en el cuarto cuadrante.
       * @param {type} integer Indica si tiene parque o edificios
     */
-    constructor(shader, streetShader, type){
+    constructor(shader, streetShader, type, number){
         super(shader);
-
         if (type == BLOCK_PARK) this.block = new ParkBlock(shader);
-        else this.block = new BuildingBlock(shader);
+        else this.block = new BuildingBlock(shader, null, number);
         /*Tiene dos calles y una esquina*/
         this.streets.push(new Street(streetShader, STREET_LEFT));
         this.streets.push(new Street(streetShader, STREET_BOTTOM));

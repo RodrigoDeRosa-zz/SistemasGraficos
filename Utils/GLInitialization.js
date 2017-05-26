@@ -53,7 +53,7 @@ function initGL(canvas){
 /**Inicializa la textura
   * @param {path} string Directorio de la imagen
 */
-function initTexture(path){
+function initTexture(path, textures){
     var texture = gl.createTexture();
     var image = new Image();
 
@@ -69,56 +69,68 @@ function initTexture(path){
     }
     image.src = path;
     texture.image = image;
-    return texture;
+    /*Agrega la textura a la lista*/
+    textures.push(texture);
 }
 /*Inicializa todas las texturas utilizadas*/
 function initTextures(){
+    var textures = [];
+    var glTextures = [gl.TEXTURE0, gl.TEXTURE1, gl.TEXTURE2, gl.TEXTURE3, gl.TEXTURE4, gl.TEXTURE5,
+        gl.TEXTURE6, gl.TEXTURE7, gl.TEXTURE8, gl.TEXTURE9, gl.TEXTURE10, gl.TEXTURE11, gl.TEXTURE12, gl.TEXTURE13, gl.TEXTURE14,
+        gl.TEXTURE15];
+    var shaderName = ["sTop1", "sTop2", "sTop3", "sTop4", "sTop5", "sTop6", "sTop7", "sTop8",
+        "sLow1", "sLow2", "sLow3", "sLow4", "sLow5", "sLow6", "sLow7", "sRoof"];
 
     /*Texturas del shader de deficios*/
     gl.useProgram(buildingShader);
     /*Carga de texturas*/
-    var buildingTexture1 = initTexture('maps/ed1_pisos.jpg');
-    var buildingTexture2 = initTexture('maps/ed2_pisos.jpg');
-    var buildingTexture3 = initTexture('maps/ed11_pisos.jpg');
+    initTexture('maps/ed1_pisos.jpg', textures);
+    initTexture('maps/ed2_pisos.jpg', textures);
+    initTexture('maps/ed3_pisos.jpg', textures);
+    initTexture('maps/ed4_pisos.jpg', textures);
+    initTexture('maps/ed5_pisos.jpg', textures);
+    initTexture('maps/ed19_pisos.jpg', textures);
+    initTexture('maps/ed7_pisos.jpg', textures);
+    initTexture('maps/ed8_pisos.jpg', textures);
+    initTexture('maps/ed1_pb.jpg', textures);
+    initTexture('maps/ed2_pb.jpg', textures);
+    initTexture('maps/ed3_pb.jpg', textures);
+    initTexture('maps/ed4_pb.jpg', textures);
+    initTexture('maps/ed5_pb.jpg', textures);
+    initTexture('maps/ed19_pb.jpg', textures);
+    initTexture('maps/ed7_pb.jpg', textures);
+    initTexture('maps/roof.jpg', textures);
     /*Obtencion del fd de cada una en el shader*/
-    var sTop1Location = gl.getUniformLocation(buildingShader, "sTop1");
-    var sTop2Location = gl.getUniformLocation(buildingShader, "sTop2");
-    var sTop3Location = gl.getUniformLocation(buildingShader, "sTop3");
-    /*Top 1*/
-    gl.uniform1i(sTop1Location, 0); //TEXTURE 0
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, buildingTexture1);
-    /*Top 2*/
-    gl.uniform1i(sTop2Location, 1); //TEXTURE 1
-    gl.activeTexture(gl.TEXTURE1);
-    gl.bindTexture(gl.TEXTURE_2D, buildingTexture2);
-    /*Top 3*/
-    gl.uniform1i(sTop3Location, 2); //TEXTURE 2
-    gl.activeTexture(gl.TEXTURE2);
-    gl.bindTexture(gl.TEXTURE_2D, buildingTexture3);
+    for (var i = 0; i < 16; i++){
+        var location = gl.getUniformLocation(buildingShader, shaderName[i]);
+        gl.uniform1i(location, i);
+        gl.activeTexture(glTextures[i]);
+        gl.bindTexture(gl.TEXTURE_2D, textures[i]);
+    }
 
     /*Texturas del shader de calle*/
     gl.useProgram(streetShader);
+    var textures = [];
     /*Carga de texturas*/
-    var streetTexture = initTexture('maps/tramo-dobleamarilla.jpg');
-    var crossroadTexture = initTexture('maps/cruce.jpg');
-    var sidewalkTexture = initTexture('maps/sidewalk.jpg');
+    initTexture('maps/tramo-dobleamarilla.jpg', textures);
+    initTexture('maps/cruce.jpg', textures);
+    initTexture('maps/vereda.jpg', textures);
     /*Obtencion del fd de cada una en el shader*/
     var sStreetLocation = gl.getUniformLocation(streetShader, "streetTex");
     var sCrossLocation = gl.getUniformLocation(streetShader, "crossTex");
     var sSideLocation = gl.getUniformLocation(streetShader, "sidewalkTex");
     /*Calle*/
-    gl.uniform1i(sStreetLocation, 3); //TEXTURE 3
-    gl.activeTexture(gl.TEXTURE3);
-    gl.bindTexture(gl.TEXTURE_2D, streetTexture);
+    gl.uniform1i(sStreetLocation, 16); //TEXTURE 16
+    gl.activeTexture(gl.TEXTURE16);
+    gl.bindTexture(gl.TEXTURE_2D, textures[0]);
     /*Esquina*/
-    gl.uniform1i(sCrossLocation, 4); //TEXTURE 4
-    gl.activeTexture(gl.TEXTURE4);
-    gl.bindTexture(gl.TEXTURE_2D, crossroadTexture);
+    gl.uniform1i(sCrossLocation, 17); //TEXTURE 17
+    gl.activeTexture(gl.TEXTURE17);
+    gl.bindTexture(gl.TEXTURE_2D, textures[1]);
     /*Vereda*/
-    gl.uniform1i(sSideLocation, 5); //TEXTURE 5
-    gl.activeTexture(gl.TEXTURE5);
-    gl.bindTexture(gl.TEXTURE_2D, sidewalkTexture);
+    gl.uniform1i(sSideLocation, 18); //TEXTURE 18
+    gl.activeTexture(gl.TEXTURE18);
+    gl.bindTexture(gl.TEXTURE_2D, textures[2]);
 }
 /**Genera y devuelve el mShaderProgram.
   * @param {rawShader} RawShader Contiene el codigo del shader.
@@ -207,6 +219,9 @@ function initBuildingShader(rawVertex, rawFragment){
     buildingShader.directionalColorUniform = gl.getUniformLocation(buildingShader, "uDirectionalColor");
 
     idBuilding = gl.getAttribLocation(buildingShader, "aID");
+    buildX = gl.getUniformLocation(buildingShader, "x");
+    buildY = gl.getUniformLocation(buildingShader, "y");
+    buildLim = gl.getUniformLocation(buildingShader, "lim");
 }
 
 /**Inicializa el buildingShader

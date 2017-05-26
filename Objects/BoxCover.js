@@ -1,13 +1,18 @@
 class BoxCover extends Object3D{
     /**Techo de un edificio.*/
-    constructor(color){
+    constructor(color, texture){
         super();
 
         this.setIndexCreator(this); //Es un cuadrado.
         this.setPosCreator(this);
         this.setNormalCreator(this);
-        if (!color) this.setColorCreator(new Gray(2, 2));
-        else this.setColorCreator(color);
+        if (texture) this.setTextureCreator(this);
+        else{
+            if (!color) this.setColorCreator(new Gray(2, 2));
+            else this.setColorCreator(color);
+        }
+        this.x = 1.0;
+        this.y = 1.0;
     }
     /*Es un cuadrado en el XY.*/
     setPosBuffer(){
@@ -31,5 +36,13 @@ class BoxCover extends Object3D{
     }
     setIndexBuffer(){
         return [0, 1, 2, 3, 0];
+    }
+    setTextureBuffer(){
+        return [
+            0.0, 0.0,
+            1.0, 0.0,
+            0.0, 1.0,
+            1.0, 1.0
+        ];
     }
 }
