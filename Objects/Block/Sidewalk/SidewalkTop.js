@@ -1,6 +1,6 @@
 class SidewalkTop extends Object3D{
     /**Parte de arriba de la vereda*/
-    constructor(color, texture){
+    constructor(color, texture, id){
         super();
 
         this.setIndexCreator(new VertexGrid(2, 28));
@@ -9,7 +9,7 @@ class SidewalkTop extends Object3D{
         if(texture){
             this.setTextureCreator(this);
             this.street = true;
-            this.id = 2.0;
+            id ? this.id = id : this.id = 2.0;
         } else {
             if (!color) this.setColorCreator(new Gray(2, 28));
             else this.setColorCreator(color);
@@ -73,9 +73,61 @@ class SidewalkTop extends Object3D{
         }
         return buffer;
     }
-    setTextureBuffer(){
+    /**Calcula los u,v para cada tramo curvo
+      * @param {xInit} float u y v iniciales
+      * @param {xSense} int 1 o -1 depende si la variable aumenta o disminuye
+    */
+    getCurvePoints(uInit, vInit, uSense, vSense){
         var buffer = [];
-        
+        var u = uInit;
+        var v = vInit;
+        var inc = 0.025;
+        for (var i = 0; i < 11; i++){
+            if (i == 0){ u = u; v = v; } //En el primer paso uso los init
+            else{
+                u += uSense*inc;
+                v += vSense*inc;
+            }
+            buffer.push(u);
+            buffer.push(v);
+        }
+        return buffer;
+    }
+    setTextureBuffer(){
+        var b0 = [
+            //RECTA INFERIOR
+            0.25, 0.0,
+            0.5, 0.0,
+            0.75, 0.0,
+        ];
+        //Se agrega la curva inferior derecha
+        var b1 = this.getCurvePoints(0.75, 0.0, 1, 1);
+        var b2 = [
+            //RECTA DERECHA
+            1.0, 0.25,
+            1.0, 0.5,
+            1.0, 0.75,
+        ];
+        //Se agrega la curva superior derecha
+        var b3 = this.getCurvePoints(1.0, 0.75, -1, 1);
+        var b4 = [
+            //RECTA SUPERIOR
+            0.75, 1.0,
+            0.5, 1.0,
+            0.25, 1.0,
+        ];
+        //Se agrega la curva superior izquierda
+        var b5 = this.getCurvePoints(0.25, 1.0, -1, -1);
+        var b6 = [
+            //RECTA IZQUIERDA
+            0.0, 0.75,
+            0.0, 0.5,
+            0.0, 0.25,
+        ];
+        //Se agrega la curva inferior izquierda
+        var b7 = this.getCurvePoints(0.0, 0.25, 1, -1);
+        var buffer = b0.concat(b1.concat(b2.concat(b3.concat(b4.concat(b5.concat(b6.concat(b7)))))));
+
         return buffer;
     }
 }

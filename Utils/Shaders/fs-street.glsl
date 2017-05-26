@@ -6,6 +6,7 @@ varying vec3 vLightWeighting;
 uniform sampler2D streetTex;
 uniform sampler2D crossTex;
 uniform sampler2D sidewalkTex;
+uniform sampler2D grassTex;
 
 varying float vID;
 
@@ -15,6 +16,7 @@ void main(void) {
     if (vID == 0.0) textureColor = texture2D(streetTex, vec2(vTextureCoord.s, vTextureCoord.t));
     else if (vID == 1.0) textureColor = texture2D(crossTex, vec2(vTextureCoord.s, vTextureCoord.t));
     else if (vID == 2.0) textureColor = texture2D(sidewalkTex, vec2(vTextureCoord.s, vTextureCoord.t));
+    else if (vID == 3.0) textureColor = texture2D(grassTex, vec2(vTextureCoord.s, vTextureCoord.t));
 
     gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
 }

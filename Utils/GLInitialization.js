@@ -115,10 +115,12 @@ function initTextures(){
     initTexture('maps/tramo-dobleamarilla.jpg', textures);
     initTexture('maps/cruce.jpg', textures);
     initTexture('maps/vereda.jpg', textures);
+    initTexture('maps/grass.jpg', textures);
     /*Obtencion del fd de cada una en el shader*/
     var sStreetLocation = gl.getUniformLocation(streetShader, "streetTex");
     var sCrossLocation = gl.getUniformLocation(streetShader, "crossTex");
     var sSideLocation = gl.getUniformLocation(streetShader, "sidewalkTex");
+    var sGrassLocation = gl.getUniformLocation(streetShader, "grassTex");
     /*Calle*/
     gl.uniform1i(sStreetLocation, 16); //TEXTURE 16
     gl.activeTexture(gl.TEXTURE16);
@@ -131,6 +133,10 @@ function initTextures(){
     gl.uniform1i(sSideLocation, 18); //TEXTURE 18
     gl.activeTexture(gl.TEXTURE18);
     gl.bindTexture(gl.TEXTURE_2D, textures[2]);
+    /*Pasto*/
+    gl.uniform1i(sGrassLocation, 19); //TEXTURE 19
+    gl.activeTexture(gl.TEXTURE19);
+    gl.bindTexture(gl.TEXTURE_2D, textures[3]);
 }
 /**Genera y devuelve el mShaderProgram.
   * @param {rawShader} RawShader Contiene el codigo del shader.
