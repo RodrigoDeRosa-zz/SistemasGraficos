@@ -31,5 +31,5 @@ function drawScene(){
     var t = gl.getUniformLocation(buildingShader, "t");
     gl.uniform1f(t, frame);
     scene.draw(mat4.create(), CameraMatrix, pMatrix, false);
-    frame += 0.1;
+    frame += 0.5;
 }
