@@ -1,6 +1,6 @@
 class Column extends Object3D{
     /*Columna para la autopista*/
-    constructor(color){
+    constructor(){
         super();
 
         var REVOLT_LEVELS = 20;
@@ -13,7 +13,24 @@ class Column extends Object3D{
         this.setIndexCreator(new VertexGrid(REVOLT_LEVELS, SHAPE_POINTS));
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
-        if (!color) this.setColorCreator(new Gray(REVOLT_LEVELS, SHAPE_POINTS));
-        else this.setColorCreator(color);
+        this.setTextureCreator(this);
+        this.street = true;
+        this.id = 4.0;
+    }
+    setTextureBuffer(){
+        var buffer = [];
+        var shapeLevels = this.shape.getLevels();
+        var u, v;
+        /*En cada nivel se calcula la componente v*/
+        for (var i = 0; i < 20; i++){
+            v = (i / (20-1))*5.0; //Entre 0 y 5
+            /*Para cada punto se calcula la componente u*/
+            for (var j = 0; j < shapeLevels; j++){
+                u = (j / (shapeLevels-1))*3; //Entre 0 y 3
+                buffer.push(u);
+                buffer.push(v);
+            }
+        }
+        return buffer;
     }
 }

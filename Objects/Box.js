@@ -23,21 +23,6 @@ class Box extends Object3D{
             else this.setColorCreator(color);
         }
     }
-    /**
-     @Override
-    */
-    build(){
-        this.posBuffer = this.posBufferCreator.setPosBuffer();
-        this.normalBuffer = this.normalBufferCreator.setNormalBuffer();
-        if (this.colorBufferCreator) this.colorBuffer = this.colorBufferCreator.setColorBuffer();
-        /*La diferencia esta aca! necesito el pos buffer ya seteado*/
-        if (this.textureBufferCreator){
-            this.textureBuffer = this.setTextureBuffer();
-        }
-        this.indexBuffer = this.indexBufferCreator.setIndexBuffer();
-
-        this.setUpWebGLBuffers();
-    }
     /*Se usa esta funcion post build para definir la textura*/
     setTextureBuffer(w, h){
         var height, width0, width1;

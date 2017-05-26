@@ -5,7 +5,7 @@ class Highway extends Container3D{
         this.setShaderProgram(shader);
 
         var road = new Road(shader);
-        road.translate(0, 0.3, -0.2);
+        road.translate(0, 0.295, -0.2);
         road.rotate(Math.PI/2, 0, 1, 0);
         road.rotate(Math.PI/2, 0, 0, 1);
         road.scale(0.25, 0.25, 0.25);

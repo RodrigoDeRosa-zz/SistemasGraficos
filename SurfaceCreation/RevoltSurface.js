@@ -57,4 +57,20 @@ class RevoltSurface{
         }
         return buffer;
     }
+    setTextureBuffer(){
+        var buffer = [];
+        var shapeLevels = this.shape.getLevels();
+        var u, v;
+        /*En cada nivel se calcula la componente v*/
+        for (var i = 0; i < this.levels; i++){
+            v = i / (this.levels-1); //Entre 0 y 1
+            /*Para cada punto se calcula la componente u*/
+            for (var j = 0; j < shapeLevels; j++){
+                u = j / (shapeLevels-1); //Entre 0 y 1
+                buffer.push(u);
+                buffer.push(v);
+            }
+        }
+        return buffer;
+    }
 }

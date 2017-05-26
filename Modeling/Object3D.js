@@ -153,7 +153,9 @@ class Object3D extends Container3D{
             gl.uniform1f(buildLim, this.lim);
             gl.vertexAttrib1f(idBuilding, this.id);
         }
-        if (this.street) gl.vertexAttrib1f(idStreet, this.id);
+        if (this.street){
+            gl.vertexAttrib1f(idStreet, this.id);
+        }
 
         //Normal
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer);

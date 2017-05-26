@@ -110,33 +110,25 @@ function initTextures(){
 
     /*Texturas del shader de calle*/
     gl.useProgram(streetShader);
-    var textures = [];
+    var textures2 = [];
+    var glTextures2 = [gl.TEXTURE16, gl.TEXTURE17, gl.TEXTURE18, gl.TEXTURE19,
+        gl.TEXTURE20, gl.TEXTURE21, gl.TEXTURE22];
+    var shaderName2 = ["lightTex", "streetTex", "crossTex", "sidewalkTex", "concreteTex", "asphaltTex", "grassTex"];
     /*Carga de texturas*/
-    initTexture('maps/tramo-dobleamarilla.jpg', textures);
-    initTexture('maps/cruce.jpg', textures);
-    initTexture('maps/vereda.jpg', textures);
-    initTexture('maps/grass.jpg', textures);
+    initTexture('maps/light.jpg', textures2); //6
+    initTexture('maps/tramo-dobleamarilla.jpg', textures2); //0
+    initTexture('maps/cruce.jpg', textures2); //1
+    initTexture('maps/vereda.jpg', textures2); //2
+    initTexture('maps/concrete.jpg', textures2); //3
+    initTexture('maps/asphalt.jpg', textures2); //5
+    initTexture('maps/grass.jpg', textures2); //4
     /*Obtencion del fd de cada una en el shader*/
-    var sStreetLocation = gl.getUniformLocation(streetShader, "streetTex");
-    var sCrossLocation = gl.getUniformLocation(streetShader, "crossTex");
-    var sSideLocation = gl.getUniformLocation(streetShader, "sidewalkTex");
-    var sGrassLocation = gl.getUniformLocation(streetShader, "grassTex");
-    /*Calle*/
-    gl.uniform1i(sStreetLocation, 16); //TEXTURE 16
-    gl.activeTexture(gl.TEXTURE16);
-    gl.bindTexture(gl.TEXTURE_2D, textures[0]);
-    /*Esquina*/
-    gl.uniform1i(sCrossLocation, 17); //TEXTURE 17
-    gl.activeTexture(gl.TEXTURE17);
-    gl.bindTexture(gl.TEXTURE_2D, textures[1]);
-    /*Vereda*/
-    gl.uniform1i(sSideLocation, 18); //TEXTURE 18
-    gl.activeTexture(gl.TEXTURE18);
-    gl.bindTexture(gl.TEXTURE_2D, textures[2]);
-    /*Pasto*/
-    gl.uniform1i(sGrassLocation, 19); //TEXTURE 19
-    gl.activeTexture(gl.TEXTURE19);
-    gl.bindTexture(gl.TEXTURE_2D, textures[3]);
+    for (var i = 0; i < 7; i++){
+        var location = gl.getUniformLocation(streetShader, shaderName2[i]);
+        gl.uniform1i(location, i+16); //agarra las texturas desde la 16
+        gl.activeTexture(glTextures2[i]);
+        gl.bindTexture(gl.TEXTURE_2D, textures2[i]);
+    }
 }
 /**Genera y devuelve el mShaderProgram.
   * @param {rawShader} RawShader Contiene el codigo del shader.

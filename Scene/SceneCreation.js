@@ -14,7 +14,7 @@ function createScene(){
     var car = new Car(mShaderProgram);
     scene.addChild(car);
     */
-    var highway = new Highway(mShaderProgram);
+    var highway = new Highway(streetShader);
     scene.addChild(highway);
 
     scene.scale(18,18,18);

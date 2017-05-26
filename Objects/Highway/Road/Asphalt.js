@@ -12,9 +12,27 @@ class Asphalt extends Object3D{
         this.surface = new SweptSurface(this.shape, this.path);
 
         this.setIndexCreator(new VertexGrid(SWEPT_LEVELS, SHAPE_POINTS));
+        this.setTextureCreator(this);
+        this.street = true;
+        this.id = 5.0;
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
-        if (!color) this.setColorCreator(new DarkGray(SWEPT_LEVELS, SHAPE_POINTS));
-        else this.setColorCreator(color);
+    }
+    setTextureBuffer(){
+        var buffer = [];
+        var pathLevels = this.path.getLevels();
+        var shapeLevels = this.shape.getLevels();
+        var u, v;
+        /*En cada nivel se calcula la componente v*/
+        for (var i = 0; i < pathLevels; i++){
+            v = (i / (pathLevels-1))*20; //Entre 0 y 10
+            /*Para cada punto se calcula la componente u*/
+            for (var j = 0; j < shapeLevels; j++){
+                u = (j / (shapeLevels-1))*2; //Entre 0 y 2
+                buffer.push(v);
+                buffer.push(u);
+            }
+        }
+        return buffer;
     }
 }

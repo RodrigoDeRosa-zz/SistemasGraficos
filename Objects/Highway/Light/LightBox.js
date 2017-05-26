@@ -3,20 +3,34 @@ class LightBox extends Container3D{
     constructor(shader){
         super();
 
-        var box = new Box(new Yellow(2, 8));
+        var box = new Box(null, true);
         box.setShaderProgram(shader);
+        /*Override*/
+        box.setTextureBuffer = function(){
+            var buffer = [ 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+                0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+                1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0
+            ];
+            return buffer;
+        }
         box.build();
+        box.id = 6.0;
+        box.street = true;
 
-        var cover1 = new BoxCover(new Yellow(2, 2));
+        var cover1 = new BoxCover(null, true);
         cover1.setShaderProgram(shader);
         cover1.build();
         cover1.translate(0, 0, 0.5);
         cover1.rotate(-Math.PI, 0, 0, 1);
+        cover1.id = 6.0;
+        cover1.street = true;
 
-        var cover2 = new BoxCover(new Yellow(2, 2));
+        var cover2 = new BoxCover(null, true);
         cover2.setShaderProgram(shader);
         cover2.build();
         cover2.translate(0, 0, -0.5);
+        cover2.id = 6.0;
+        cover2.street = true;
 
         this.addChild(box);
         this.addChild(cover1);
