@@ -20,7 +20,7 @@ class CentralBlock extends Block{
     * @param {type} integer Indica si tiene parque o edificios
     * @param {side} integer Indica si esta en los z positivos o negativos
     */
-    constructor(shader, type, side, number){
+    constructor(shader, type, number){
         super(shader);
 
         if (type == BLOCK_PARK) this.block = new ParkBlock(shader);

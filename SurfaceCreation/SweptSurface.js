@@ -50,6 +50,27 @@ class SweptSurface{
         }
         return buffer;
     }
+    setTangentBuffer(){
+        var buffer = [];
+        var pathLevels = this.path.getLevels();
+        var shapeLevels = this.shape.getLevels();
+        /*En cada nivel se calcula la tangente de cada punto de la forma*/
+        for (var i = 0; i < pathLevels; i++){
+            /*Para cada punto de la forma se aplica la transformacion*/
+            for (var j = 0; j < shapeLevels; j++){
+                /*Se define la normal*/
+                var tangent = this.shape.getTangent(j);
+                /*Se transforma el punto con la matriz del nivel*/
+                var tTangent = vec3.fromValues(tangent.x, tangent.y, tangent.z);
+                vec3.transformMat4(tTangent, tTangent, this.path.getLevelBasisMatrix(i));
+                /*Se guarda la tangente en el tangent buffer*/
+                for (var k = 0; k < 3; k++){
+                    buffer.push(tTangent[k]);
+                }
+            }
+        }
+        return buffer;
+    }
     setTextureBuffer(){
         var buffer = [];
         var pathLevels = this.path.getLevels();

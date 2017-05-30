@@ -23,10 +23,13 @@ class Column extends Object3D{
         var u, v;
         /*En cada nivel se calcula la componente v*/
         for (var i = 0; i < 20; i++){
-            v = (i / (20-1))*5.0; //Entre 0 y 5
+            v = (i / (20-1))*3.0; //Entre 0 y 5
             /*Para cada punto se calcula la componente u*/
             for (var j = 0; j < shapeLevels; j++){
-                u = (j / (shapeLevels-1))*3; //Entre 0 y 3
+                if (j == 10) u = 0;
+                else if (j == 11) u = 0.5;
+                else if (j == 12) u = 1;
+                else u = (j / (shapeLevels-1))*2; //Entre 0 y 3
                 buffer.push(u);
                 buffer.push(v);
             }
