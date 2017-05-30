@@ -22,8 +22,8 @@ function drawScene(){
     mat4.multiply(CameraMatrix, CameraMatrix, camera.getMatrix());
     //////////////////////////////////////////////////////////////
     //Dibujado
-    scene.setupLighting(vec3.fromValues(400.0, 100.0, 600.0), vec3.fromValues(0.3, 0.3, 0.3),
-        vec3.fromValues(0.001, 0.001, 0.001));
+    scene.setupLighting(vec3.fromValues(600.0, 300.0, 800.0), vec3.fromValues(0.3, 0.3, 0.3),
+        vec3.fromValues(0.0005, 0.00045, 0.00045));
     //scene.resetMatrix();
     //scene.rotate(frame, 0, 1, 0);
     carControl.tick();

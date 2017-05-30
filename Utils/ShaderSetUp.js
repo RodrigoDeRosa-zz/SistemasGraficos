@@ -109,6 +109,7 @@ function getBuildingRawVertexShader(){
 
         // Transformamos al v�rtice al espacio de la c�mara
         vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(auxPos.xyz, 1.0);
+        vec4 pos_world = uModelMatrix * vec4(auxPos.xyz, 1.0);
 
         // Transformamos al v�rtice al espacio de la proyecci�n
         gl_Position = uPMatrix * pos_camera_view;
@@ -123,17 +124,30 @@ function getBuildingRawVertexShader(){
 
         ////////////////////////////////////////////
         // Calculos de la iluminaci�n
-        vec3 light_dir =  uLightPosition - vec3( pos_camera_view );
+        vec3 light_dir =  uLightPosition - vec3( pos_world );
         normalize(light_dir);
-        if (!uUseLighting)
-        {
+        if (!uUseLighting) {
             vLightWeighting = vec3(1.0, 1.0, 1.0);
-        }
-        else
-        {
+        } else{
+            float Ka = 1.0; //Ambient reflection
+            float Kd = 0.80; //Diffuse reflection
+            float Ks = 0.02; //Specular reflection
+            //LAMBERT, diffuse
             vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
-            float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
-            vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+            float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0); //lambertian
+            //Specular
+            float shininessVal = 1.0;
+            float specular = 0.0;
+            if (directionalLightWeighting > 0.0){
+                vec3 R = reflect(-light_dir, transformedNormal);
+                vec3 V = normalize(vec3(pos_camera_view));
+
+                float specAngle = max(dot(R, V), 0.0);
+                specular = pow(specAngle, shininessVal); //SHININESS ARBITRARIO
+            }
+            vec3 specularColor = vec3(0.04, 0.04, 0.04); //ARBITRARIO
+            vLightWeighting = Ka * uAmbientColor + Kd * uDirectionalColor * directionalLightWeighting
+                + specular * specularColor * Ks;
         }
         ////////////////////////////////////////////
     }`;
@@ -254,14 +268,23 @@ function getStreetRawVertexShader(){
 
     uniform bool uUseLighting;
 
-    varying vec2 vTextureCoord;
     varying vec3 vLightWeighting;
+
+    varying vec3 vLightDir;
+    varying vec3 vDirectionalColor;
+    //Se pasan por separado los elementos para calcular en el fragment
+    varying vec3 vDiffuse;
+    varying vec3 vAmbient;
+    varying vec3 vSpecular;
+    //
+    varying vec2 vTextureCoord;
     varying float vID;
 
     void main(void) {
 
         // Transformamos al v�rtice al espacio de la c�mara
         vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+        vec4 pos_world = uModelMatrix * vec4(aVertexPosition, 1.0);
 
         // Transformamos al v�rtice al espacio de la proyecci�n
         gl_Position = uPMatrix * pos_camera_view;
@@ -272,20 +295,39 @@ function getStreetRawVertexShader(){
 
         ////////////////////////////////////////////
         // Calculos de la iluminaci�n
-        vec3 light_dir =  uLightPosition - vec3( pos_camera_view );
+        vec3 light_dir =  uLightPosition - vec3( pos_world );
         normalize(light_dir);
-        if (!uUseLighting)
-        {
+        if (!uUseLighting) {
             vLightWeighting = vec3(1.0, 1.0, 1.0);
-        }
-        else
-        {
+        } else{
+            //Se pasan estos valores en caso de tener mapa de normales
+            vLightDir = light_dir;
+            vDirectionalColor = uDirectionalColor;
+
+            float Ka = 1.0; //Ambient reflection
+            float Kd = 0.80; //Diffuse reflection
+            float Ks = 0.008; //Specular reflection
+            //LAMBERT, diffuse
             vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
-            float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
-            vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+            float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0); //lambertian
+            //Specular
+            float shininessVal = 1.0;
+            float specular = 0.0;
+            if (directionalLightWeighting > 0.0){
+                vec3 R = reflect(-light_dir, transformedNormal);
+                vec3 V = normalize(vec3(pos_camera_view));
+
+                float specAngle = max(dot(R, V), 0.0);
+                specular = pow(specAngle, shininessVal); //SHININESS ARBITRARIO
+            }
+            vec3 specularColor = vec3(0.04, 0.04, 0.04); //ARBITRARIO
+            /*Se pasan por separado*/
+            vAmbient = Ka * uAmbientColor;
+            vDiffuse = Kd * uDirectionalColor * directionalLightWeighting;
+            vSpecular = specular * specularColor * Ks;
         }
-        ////////////////////////////////////////////
-    }`;
+    }
+    `;
 
     return getRawVertexShader(vertexShaderSource);
 }
@@ -294,39 +336,82 @@ function getStreetRawFragmentShader(){
     var fragmentShaderSource = `
     precision highp float;
 
-    varying vec2 vTextureCoord;
     varying vec3 vLightWeighting;
+    //Estas variables se usan para cambiar la iluminacion en caso de mapa de normales
+    varying vec3 vLightDir;
+    varying vec3 vDirectionalColor;
+    varying vec3 vDiffuse;
+    varying vec3 vAmbient;
+    varying vec3 vSpecular;
+    //
+    varying vec2 vTextureCoord;
+    varying float vID;
 
     uniform sampler2D streetTex;
+    uniform sampler2D streetNormal;
     uniform sampler2D crossTex;
+    uniform sampler2D crossNormal;
     uniform sampler2D sidewalkTex;
+    uniform sampler2D sidewalkNorm;
     uniform sampler2D grassTex;
+    uniform sampler2D grassNormal;
     uniform sampler2D concreteTex;
+    uniform sampler2D concreteNorm;
     uniform sampler2D asphaltTex;
+    uniform sampler2D asphaltNormal;
     uniform sampler2D lightTex;
-
-    varying float vID;
+    uniform sampler2D lightNormal;
 
     void main(void) {
         vec4 textureColor;
 
-        if (vID == 0.0) textureColor = texture2D(streetTex, vec2(vTextureCoord.s, vTextureCoord.t));
-        else if (vID == 1.0) textureColor = texture2D(crossTex, vec2(vTextureCoord.s, vTextureCoord.t));
-        else if (vID == 2.0) textureColor = texture2D(sidewalkTex, vec2(vTextureCoord.s, vTextureCoord.t));
-        else if (vID == 3.0){
+        vec3 diffuse = vDiffuse;
+        vec3 specular = vSpecular;
+        vec3 ambient = vAmbient;
+        float L;
+        vec3 normalMap;
+
+        if (vID == 0.0) {
+            vec3 normalMap = texture2D(streetNormal, vTextureCoord).rgb * 2.0 - 1.0;
+            textureColor = texture2D(streetTex, vTextureCoord);
+        }else if (vID == 1.0){
+            vec3 normalMap = texture2D(crossNormal, vTextureCoord).rgb * 2.0 - 1.0;
+            textureColor = texture2D(crossTex, vTextureCoord);
+        } else if (vID == 2.0){
+            //Se repite mas veces la vereda
+            vec2 auxUV = vTextureCoord;
+            auxUV.x = auxUV.x * 4.0;
+            auxUV.y = auxUV.y * 4.0;
+
+            //sample the normal map
+            //and convert to range -1.0 to 1.0
+            normalMap = texture2D(sidewalkNorm, auxUV).rgb * 2.0 - 1.0;
+
+            textureColor = texture2D(sidewalkTex, auxUV);
+        } else if (vID == 3.0){
             //Se repite mas veces el pasto
             vec2 auxUV = vTextureCoord;
             auxUV.x = auxUV.x * 4.0;
             auxUV.y = auxUV.y * 4.0;
+            normalMap = texture2D(grassNormal, auxUV).rgb * 2.0 - 1.0;
             textureColor = texture2D(grassTex, auxUV);
         }
-        else if (vID == 4.0) textureColor = texture2D(concreteTex, vec2(vTextureCoord.s, vTextureCoord.t));
-        else if (vID == 5.0) textureColor = texture2D(asphaltTex, vec2(vTextureCoord.s, vTextureCoord.t));
-        else if (vID == 6.0){
-            textureColor = texture2D(lightTex, vec2(vTextureCoord.s, vTextureCoord.t));
+        else if (vID == 4.0){
+            normalMap = texture2D(concreteNorm, vTextureCoord).rgb * 2.0 - 1.0;;
+            textureColor = texture2D(concreteTex, vTextureCoord);
+        } else if (vID == 5.0){
+            normalMap = texture2D(asphaltNormal, vTextureCoord).rgb * 2.0 - 1.0;
+            textureColor = texture2D(asphaltTex, vTextureCoord);
+        } else if (vID == 6.0){
+            normalMap = texture2D(lightNormal, vTextureCoord).rgb * 2.0 - 1.0;
+            textureColor = texture2D(lightTex, vTextureCoord);
         }
 
-        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+        L = max(dot(normalMap, vLightDir), 0.0); //lambertian
+        diffuse = 0.80 * vDirectionalColor * L;
+
+        vec3 light = diffuse + specular + ambient;
+        gl_FragColor = vec4(textureColor.rgb * light, textureColor.a);
     }
 `;
     return getRawFragmentShader(fragmentShaderSource);

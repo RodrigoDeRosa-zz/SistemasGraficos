@@ -57,6 +57,30 @@ class RevoltSurface{
         }
         return buffer;
     }
+    setTangentBuffer(){
+        var buffer = [];
+        /*Para cada nivel se calcula la tangente de cada punto de la forma*/
+        for (var i = 0; i < this.levels; i++){
+            /*Matriz de rotacion del nivel*/
+            var rotMat = mat4.create();
+            mat4.identity(rotMat);
+            mat4.rotate(rotMat, rotMat, (Math.PI*2*i)/(this.levels-1), this.axis);
+            /*Para cada punto de la forma se aplica la transformacion*/
+            for (var j = 0; j < this.shape.getLevels(); j++){
+                var tangent = this.shape.getTangent(j);
+                var vTangent = vec3.fromValues(tangent.x, tangent.y, tangent.z);
+
+                /*Se transforma la normal con la matriz del nivel*/
+                vec3.transformMat4(vTangent, vTangent, rotMat);
+
+                /*Se guarda el punto transformado en el buffer*/
+                for (var k = 0; k < 3; k++){
+                    buffer.push(vTangent[k]);
+                }
+            }
+        }
+        return buffer;
+    }
     setTextureBuffer(){
         var buffer = [];
         var shapeLevels = this.shape.getLevels();

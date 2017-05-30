@@ -112,18 +112,28 @@ function initTextures(){
     gl.useProgram(streetShader);
     var textures2 = [];
     var glTextures2 = [gl.TEXTURE16, gl.TEXTURE17, gl.TEXTURE18, gl.TEXTURE19,
-        gl.TEXTURE20, gl.TEXTURE21, gl.TEXTURE22];
-    var shaderName2 = ["lightTex", "streetTex", "crossTex", "sidewalkTex", "concreteTex", "asphaltTex", "grassTex"];
+        gl.TEXTURE20, gl.TEXTURE21, gl.TEXTURE22, gl.TEXTURE23, gl.TEXTURE24, gl.TEXTURE25,
+        gl.TEXTURE26, gl.TEXTURE27, gl.TEXTURE28, gl.TEXTURE29];
+    var shaderName2 = ["lightTex", "lightNormal", "streetTex", "streetNormal", "crossTex", "crossNormal",
+        "sidewalkTex", "sidewalkNorm", "concreteTex", "concreteNorm", "asphaltTex", "asphaltNormal",
+        "grassTex", "grassNormal"];
     /*Carga de texturas*/
     initTexture('maps/light.jpg', textures2); //6
+    initTexture('maps/light_n.png', textures2); //6
     initTexture('maps/tramo-dobleamarilla.jpg', textures2); //0
+    initTexture('maps/tramo-dobleamarilla_n.png', textures2); //0
     initTexture('maps/cruce.jpg', textures2); //1
+    initTexture('maps/cruce_n.png', textures2); //1
     initTexture('maps/vereda.jpg', textures2); //2
+    initTexture('maps/vereda_normal.jpg', textures2); //2
     initTexture('maps/concrete.jpg', textures2); //3
+    initTexture('maps/concrete_n.png', textures2); //3
     initTexture('maps/asphalt.jpg', textures2); //5
+    initTexture('maps/asphalt_n.png', textures2); //5
     initTexture('maps/grass.jpg', textures2); //4
+    initTexture('maps/grass_n.png', textures2); //4
     /*Obtencion del fd de cada una en el shader*/
-    for (var i = 0; i < 7; i++){
+    for (var i = 0; i < 14; i++){
         var location = gl.getUniformLocation(streetShader, shaderName2[i]);
         gl.uniform1i(location, i+16); //agarra las texturas desde la 16
         gl.activeTexture(glTextures2[i]);
