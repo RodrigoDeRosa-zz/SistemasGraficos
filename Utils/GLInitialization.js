@@ -27,8 +27,13 @@ function webGLStart(){
     cameraController = new CameraController();
     /*Se crea la camara orbital*/
     var orbit = new OrbitCamera();
+    var floorCamera = new FreeCamera();
+    var highwayCamera = new FreeCamera();
+    highwayCamera.setHeight(6.05);
     /*Se agrega la camara orbital al controlador de camaras*/
     cameraController.addCamera(orbit);
+    cameraController.addCamera(floorCamera);
+    cameraController.addCamera(highwayCamera);
     cameraController.init();
 
     globalDrawType = gl.TRIANGLE_STRIP;

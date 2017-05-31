@@ -21,7 +21,7 @@ class CameraController{
     }
     /**Selecciona la proxima camara en la lista*/
     changeCamera(){
-        var index = (cameraIndex++)%this.cameras.length;
+        var index = (this.cameraIndex++)%this.cameras.length;
         this.camera = this.cameras[index];
     }
     /**Refresca la camara actual*/
