@@ -52,7 +52,7 @@ void main(void) {
 
         float Ka = 1.0; //Ambient reflection
         float Kd = 0.80; //Diffuse reflection
-        float Ks = 0.02; //Specular reflection
+        float Ks = 0.008; //Specular reflection
         //LAMBERT, diffuse
         vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
         float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0); //lambertian
