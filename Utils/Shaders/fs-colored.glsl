@@ -1,5 +1,4 @@
 precision mediump float;
-
 varying vec3 vVertexColor;
 varying vec3 vLightWeighting;
 

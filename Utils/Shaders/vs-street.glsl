@@ -61,7 +61,7 @@ void main(void) {
         float specular = 0.0;
         if (directionalLightWeighting > 0.0){
             vec3 R = reflect(-light_dir, transformedNormal);
-            vec3 V = normalize(vec3(pos_camera_view));
+            vec3 V = normalize(vec3(uPMatrix * pos_camera_view));
 
             float specAngle = max(dot(R, V), 0.0);
             specular = pow(specAngle, shininessVal); //SHININESS ARBITRARIO
