@@ -89,7 +89,7 @@ class CarControl{
             var matrices = carInfo[4];
             /*Se reseta la matriz y se aplican las transformaciones necesarias*/
             car.resetMatrix();
-            car.translate(0, 0.315, 0);
+            car.translate(0, 0.3123, 0);
             car.scale(0.05, 0.05, 0.05);
             /*Se aplica la matriz de transformacion del u actual*/
             car.applyMatrix(matrices.get(u));

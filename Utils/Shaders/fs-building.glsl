@@ -36,8 +36,8 @@ void main(void) {
     auxUV.y = vTextureCoord.y * y * 1.5;
     auxUV.x = vTextureCoord.x * x * 1.5;
 
-    if (auxUV.y > 0.25){
-        auxUV.y = auxUV.y - 0.25;
+    if (auxUV.y > 0.4){
+        auxUV.y = auxUV.y - 0.4;
         if (vID == 0.0) textureColor = texture2D(sTop1, auxUV);
         else if (vID == 1.0) textureColor = texture2D(sTop2,  auxUV);
         else if (vID == 2.0){
@@ -57,26 +57,25 @@ void main(void) {
             textureColor = texture2D(sTop8,  auxUV);
         }
     } else {
-        auxUV.x = auxUV.x * 2.0;
-        auxUV.y = auxUV.y * 2.0;
+        auxUV.x = auxUV.x * 2.5;
+        auxUV.y = auxUV.y * 2.5;
         if (vID == 0.0){
-            auxUV.y = auxUV.y * 2.0;
+            auxUV.x = auxUV.x * 0.5;
             textureColor = texture2D(sLow1, auxUV);
         } else if (vID == 1.0){
-            auxUV.y = auxUV.y * 2.0;
+            auxUV.x = auxUV.x * 0.5;
             textureColor = texture2D(sLow2,  auxUV);
         } else if (vID == 2.0){
             textureColor = texture2D(sLow3,  auxUV);
         } else if (vID == 3.0){
-            auxUV.y = auxUV.y * 2.0;
-            auxUV.x = auxUV.x * 0.5;
+            auxUV.x = auxUV.x * 0.25;
             textureColor = texture2D(sLow4,  auxUV);
         } else if (vID == 4.0){
             textureColor = texture2D(sLow5,  auxUV);
         } else if (vID == 5.0){
+            auxUV.x = auxUV.x * 0.5;
             textureColor = texture2D(sLow6,  auxUV);
         } else if (vID == 6.0 || vID == 7.0){
-            auxUV.y = auxUV.y * 2.0;
             auxUV.x = auxUV.x * 0.5;
             textureColor = texture2D(sLow7,  auxUV);
         }

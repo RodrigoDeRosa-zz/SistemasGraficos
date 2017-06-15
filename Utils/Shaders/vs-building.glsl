@@ -36,6 +36,7 @@ void main(void) {
 
     // Transformamos al v�rtice al espacio de la c�mara
     vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(auxPos.xyz, 1.0);
+    vec4 pos_world = uModelMatrix * vec4(auxPos.xyz, 1.0);
 
     // Transformamos al v�rtice al espacio de la proyecci�n
     gl_Position = uPMatrix * pos_camera_view;
@@ -50,17 +51,30 @@ void main(void) {
 
     ////////////////////////////////////////////
     // Calculos de la iluminaci�n
-    vec3 light_dir =  uLightPosition - vec3( pos_camera_view );
+    vec3 light_dir =  uLightPosition - vec3( pos_world );
     normalize(light_dir);
-    if (!uUseLighting)
-    {
+    if (!uUseLighting) {
         vLightWeighting = vec3(1.0, 1.0, 1.0);
-    }
-    else
-    {
+    } else{
+        float Ka = 1.0; //Ambient reflection
+        float Kd = 0.80; //Diffuse reflection
+        float Ks = 0.02; //Specular reflection
+        //LAMBERT, diffuse
         vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
-        float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
-        vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+        float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0); //lambertian
+        //Specular
+        float shininessVal = 1.0;
+        float specular = 0.0;
+        if (directionalLightWeighting > 0.0){
+            vec3 R = reflect(-light_dir, transformedNormal);
+            vec3 V = normalize(vec3(uPMatrix * pos_camera_view));
+
+            float specAngle = max(dot(R, V), 0.0);
+            specular = pow(specAngle, shininessVal); //SHININESS ARBITRARIO
+        }
+        vec3 specularColor = vec3(0.04, 0.04, 0.04); //ARBITRARIO
+        vLightWeighting = Ka * uAmbientColor + Kd * uDirectionalColor * directionalLightWeighting
+            + specular * specularColor * Ks;
     }
     ////////////////////////////////////////////
 }
