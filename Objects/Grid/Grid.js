@@ -24,7 +24,7 @@ class Grid extends Container3D{
             z = i + (this.n-1)/2;
             for (var j = -((this.n-1)/2); j <= (this.n-1)/2; j++){
                 x = j + (this.n-1)/2;
-                var delay = (x-(this.parks*1.0))*10.0 + z*50.0;
+                var delay = (x-(this.parks*1.0))*64.0 + z*320.0;
                 this.cityMatrix[z].push(this.setBlock(i, j, delay));
             }
         }

@@ -13,9 +13,10 @@ class Column extends Object3D{
         this.setIndexCreator(new VertexGrid(REVOLT_LEVELS, SHAPE_POINTS));
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
+        this.setTangentCreator(this.surface);
         this.setTextureCreator(this);
         this.street = true;
-        this.id = 4.0;
+        this.id = 1;
     }
     setTextureBuffer(){
         var buffer = [];

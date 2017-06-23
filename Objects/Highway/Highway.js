@@ -41,7 +41,6 @@ class Highway extends Container3D{
             light.translate(pos.x, pos.y + 1.2, pos.z);
             /*Una luz mira para cada lado*/
             if (k%2 == 0) light.rotate(Math.PI, 0, 1, 0);
-            k++;
             /*Se rota en la direccion de la curva*/
             var tan = this.curve.getTangent(i);
             var norm = this.curve.getNormal(i);
@@ -60,6 +59,24 @@ class Highway extends Container3D{
             light.applyMatrix(matrix);
             light.rotate(-Math.PI/2, 0, 0, 1);
             this.addChild(light);
+            /*if (k < 2){
+                //Posicion de cada spot
+                var spotMatrix = mat4.create();
+                var spotPos = [0, 0, 0];
+                mat4.translate(spotMatrix, spotMatrix, vec3.fromValues(pos.x, pos.y+1.2, pos.z));
+                if (k%2 == 0) mat4.rotate(spotMatrix, spotMatrix, Math.PI, 0, 1, 0);
+                mat4.multiply(spotMatrix, spotMatrix, matrix);
+                mat4.rotate(spotMatrix, spotMatrix, -Math.PI/2, 0, 0, 1);
+                vec3.transformMat4(spotPos, spotPos, spotMatrix);
+                spotLightPos.push(spotPos);
+                //Direccion de cada spot
+                var spotDir = [0, -1, 0];
+                spotLightDir.push(spotDir);
+                //Color de cada spot
+                var spotColor = [1.0, 1.0, 1.0];
+                spotLightColor.push(spotColor);
+            }*/
+            k++;
         }
     }
     /*Adapta los puntos de control del canvas al mundo*/

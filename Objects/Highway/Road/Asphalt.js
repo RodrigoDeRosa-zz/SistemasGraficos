@@ -4,7 +4,7 @@ class Asphalt extends Object3D{
         super();
 
         var SWEPT_LEVELS = 70;
-        var SHAPE_POINTS = 8;
+        var SHAPE_POINTS = 6;
 
         this.shape = new AsphaltShape(SHAPE_POINTS);
         this.path = new RoadPath(curveController.controlPoints ,SWEPT_LEVELS);
@@ -14,9 +14,10 @@ class Asphalt extends Object3D{
         this.setIndexCreator(new VertexGrid(SWEPT_LEVELS, SHAPE_POINTS));
         this.setTextureCreator(this);
         this.street = true;
-        this.id = 5.0;
+        this.id = 0;
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
+        this.setTangentCreator(this.surface);
     }
     setTextureBuffer(){
         var buffer = [];
@@ -28,7 +29,7 @@ class Asphalt extends Object3D{
             v = (i / (pathLevels-1))*30; //Entre 0 y 10
             /*Para cada punto se calcula la componente u*/
             for (var j = 0; j < shapeLevels; j++){
-                u = (j / (shapeLevels-1))*2; //Entre 0 y 2
+                u = (j / (shapeLevels-1))*4; //Entre 0 y 2
                 buffer.push(v);
                 buffer.push(u);
             }

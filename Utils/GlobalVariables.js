@@ -1,5 +1,5 @@
 var gl;
-var mShaderProgram;
+var skyShader;
 var buildingShader;
 var streetShader;
 var mainCanvas = document.getElementById("mainCanvas");
@@ -26,13 +26,22 @@ var cameraController;
 var carControl;
 var curveController;
 var frame = 0.0;
+var stopCars = false;
 
-var idStreet;
-var idBuilding;
-var buildX;
-var buildY;
-var buildLim;
+/*Spots*/
+var spotLightPos = [];
+var spotLightDir = [];
+var spotLightColor = [];
 
+/*Texture lists*/
+var lowerTextures = [];
+var upperTextures = [];
+var streetTextures = [];
+var streetNormalMaps = [];
+var upperNormals = [];
+var lowerNormals = [];
+
+/*Constants*/
 var STREET_RIGHT = 0;
 var STREET_LEFT = 1;
 var STREET_TOP = 2;

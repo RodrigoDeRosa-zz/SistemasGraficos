@@ -19,14 +19,14 @@ class BuildingBlock extends Container3D{
         set1.translate(0.375, 0, 0.25);
         set1.rotate(Math.PI/2, 0, 1, 0);
 
-        var set2 = new BuildingSet(shader, number);
+        var set2 = new BuildingSet(shader, number+4);
         set2.translate(-0.375, 0, 0.5);
         set2.rotate(Math.PI/2, 0, 1, 0);
 
-        var set3 = new BuildingSet(shader, number);
+        var set3 = new BuildingSet(shader, number+8);
         set3.translate(-0.25, 0, 0.375);
 
-        var set4 = new BuildingSet(shader, number);
+        var set4 = new BuildingSet(shader, number+12);
         set4.translate(-0.5, 0, -0.375);
 
         this.addChild(set1);

@@ -51,7 +51,7 @@ class ColumnShape extends Shape{
         deltaU = 0.25;
         for (var u = 0.0; u < 1.0; u += deltaU){
             var normal = this.curve2.getNormal(u);
-            this.normals.push(new Point(normal.x, -normal.y, normal.z));
+            this.normals.push(new Point(-normal.x, normal.y, -normal.z));
         }
         /*Y ahora el ultimo segmento recto*/
         this.normals.push(zPos);

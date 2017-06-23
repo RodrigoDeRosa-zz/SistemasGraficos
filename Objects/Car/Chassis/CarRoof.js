@@ -14,8 +14,7 @@ class CarRoof extends Object3D{
         this.setIndexCreator(new VertexGrid(SWEPT_LEVELS, SHAPE_POINTS));
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
-        if (!color) this.setColorCreator(new Gray(SWEPT_LEVELS, SHAPE_POINTS));
-        else this.setColorCreator(color);
+        this.setTextureCreator(this);
 
         var coverC = new Blue(2, 2);
         var cover1 = new CarRoofCover(coverC, -1);
@@ -33,5 +32,29 @@ class CarRoof extends Object3D{
         cover2.rotate(-Math.PI/2, 0, 0, 1);
         cover2.rotate(Math.PI, 0, 1, 0);
         this.addChild(cover2);
+
+        this.id = 7;
+        this.street = true;
+    }
+    setTextureBuffer(){
+        return [
+            0.3, 0.64,
+            0.74, 0.63,
+            0.74, 0.63,
+            0.65, 0.63,
+            0.65, 0.63,
+            0.39, 0.63,
+            0.39, 0.63,
+            0.3, 0.64,
+            ////////////
+            0.3, 0.97,
+            0.74, 0.97,
+            0.74, 0.97,
+            0.65, 0.97,
+            0.65, 0.97,
+            0.39, 0.94,
+            0.39, 0.94,
+            0.3, 0.97
+        ]
     }
 }

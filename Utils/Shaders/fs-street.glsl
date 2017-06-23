@@ -1,79 +1,83 @@
 precision highp float;
 
-varying vec3 vLightWeighting;
-//Estas variables se usan para cambiar la iluminacion en caso de mapa de normales
-varying vec3 vLightDir;
-varying vec3 vDirectionalColor;
-varying vec3 vDiffuse;
-varying vec3 vAmbient;
-varying vec3 vSpecular;
-//
-varying vec2 vTextureCoord;
-varying float vID;
+// Variables utilizadas para la iluminación
+uniform vec3 uAmbientColor;
+uniform vec3 uSpecularColor;
+uniform vec3 uDirectionalColor;
+uniform vec3 uSpotLightColor[2];
 
-uniform sampler2D streetTex;
-uniform sampler2D streetNormal;
-uniform sampler2D crossTex;
-uniform sampler2D crossNormal;
-uniform sampler2D sidewalkTex;
-uniform sampler2D sidewalkNorm;
-uniform sampler2D grassTex;
-uniform sampler2D grassNormal;
-uniform sampler2D concreteTex;
-uniform sampler2D concreteNorm;
-uniform sampler2D asphaltTex;
-uniform sampler2D asphaltNormal;
-uniform sampler2D lightTex;
-uniform sampler2D lightNormal;
+uniform float uShininess; //Brillo de un objeto
+
+varying vec2 vTextureCoord;
+varying vec3 vVertexNormal;
+varying vec3 vLightDir;
+varying vec3 vViewDir;
+varying vec3 vSpotLightPos[2];
+varying vec3 vSpotLightDir[2];
+
+uniform float scaleY; //Escala de la textura
+uniform float scaleX; //Escala de la textura
+uniform sampler2D uSampler;
+uniform sampler2D uNormalSampler;
 
 void main(void) {
-    vec4 textureColor;
+    float shininess = uShininess;
 
-    vec3 diffuse = vDiffuse;
-    vec3 specular = vSpecular;
-    vec3 ambient = vAmbient;
-    float L;
-    vec3 normalMap;
+    vec2 auxUV = vTextureCoord;
+    auxUV.x = auxUV.x * scaleX;
+    auxUV.y = auxUV.y * scaleY;
 
-    if (vID == 0.0) {
-        vec3 normalMap = texture2D(streetNormal, vTextureCoord).rgb * 2.0 - 1.0;
-        textureColor = texture2D(streetTex, vTextureCoord);
-    }else if (vID == 1.0){
-        vec3 normalMap = texture2D(crossNormal, vTextureCoord).rgb * 2.0 - 1.0;
-        textureColor = texture2D(crossTex, vTextureCoord);
-    } else if (vID == 2.0){
-        //Se repite mas veces la vereda
-        vec2 auxUV = vTextureCoord;
-        auxUV.x = auxUV.x * 4.0;
-        auxUV.y = auxUV.y * 4.0;
+    //Se obtiene la normal del mapa de normales
+    vec3 normal = vVertexNormal;
+    normal = vec3(2.0 * texture2D(uNormalSampler, auxUV) - 1.0);
 
-        //sample the normal map
-        //and convert to range -1.0 to 1.0
-        normalMap = texture2D(sidewalkNorm, auxUV).rgb * 2.0 - 1.0;
-
-        textureColor = texture2D(sidewalkTex, auxUV);
-    } else if (vID == 3.0){
-        //Se repite mas veces el pasto
-        vec2 auxUV = vTextureCoord;
-        auxUV.x = auxUV.x * 4.0;
-        auxUV.y = auxUV.y * 4.0;
-        normalMap = texture2D(grassNormal, auxUV).rgb * 2.0 - 1.0;
-        textureColor = texture2D(grassTex, auxUV);
-    }
-    else if (vID == 4.0){
-        normalMap = texture2D(concreteNorm, vTextureCoord).rgb * 2.0 - 1.0;;
-        textureColor = texture2D(concreteTex, vTextureCoord);
-    } else if (vID == 5.0){
-        normalMap = texture2D(asphaltNormal, vTextureCoord).rgb * 2.0 - 1.0;
-        textureColor = texture2D(asphaltTex, vTextureCoord);
-    } else if (vID == 6.0){
-        normalMap = texture2D(lightNormal, vTextureCoord).rgb * 2.0 - 1.0;
-        textureColor = texture2D(lightTex, vTextureCoord);
+    //Se normaliza la direccion de la luz
+    vec3 lightDir = normalize(vLightDir);
+    vec3 viewDir = vViewDir;
+    //Calculos de phong
+    float specular = 0.0;
+    float lambertian = max(dot(lightDir, normal), 0.0);
+    if(lambertian > 0.0) {
+        vec3 reflectDir = reflect(-lightDir, normal);
+        float specAngle = max(dot(reflectDir, viewDir), 0.0);
+        specular = pow(specAngle, shininess);
     }
 
-    L = max(dot(normalMap, vLightDir), 0.0); //lambertian
-    diffuse = 0.80 * vDirectionalColor * L;
+    const float spotlightCutOff = 0.7; // en radianes
+    const float spotLightExponent = 2.0;
 
-    vec3 light = diffuse + specular + ambient;
-    gl_FragColor = vec4(textureColor.rgb * light, textureColor.a);
+    // Attenuation constants
+    const float constantAtt = 1.0;
+    const float linearAtt = 0.0001;
+    const float quadraticAtt = 0.01;
+
+    // Calculos spotlights
+    vec3 spotLightIntensity = vec3(0.0,0.0,0.0);
+    //Para cada spot se hace el calculo
+    for (int i = 0; i < 2; i++){
+        vec3 spotPos = vSpotLightPos[i];
+        float diffuseLightWeighting = max(dot(normal, spotPos), 0.0);
+
+        if (diffuseLightWeighting > 0.0) {
+            // Calculate attenuation
+            float dist = length(spotPos);
+            float att = 1.0/(constantAtt + linearAtt * dist + quadraticAtt * dist * dist);
+            float spotEffect = dot(normalize(vSpotLightDir[i]), normalize(-spotPos));
+
+            if (spotEffect > spotlightCutOff) {
+                spotEffect = pow(spotEffect, spotLightExponent);
+                vec3 reflectionVector =	normalize(reflect(-spotPos,	normal));
+                float rdotv = max(dot(reflectionVector, vViewDir), 0.0);
+                float specularLightWeighting = pow(rdotv, shininess);
+                spotLightIntensity += spotEffect * att * (uSpotLightColor[i] * diffuseLightWeighting + uSpotLightColor[i] * specularLightWeighting);
+            }
+        }
+    }
+
+    //Calculo total de la luz
+    vec3 lightIntensity = uAmbientColor + spotLightIntensity + lambertian*uDirectionalColor + specular*uSpecularColor;
+    //Se obtiene el color del mapa difuso
+    vec4 textureColor = texture2D(uSampler, auxUV);
+
+    gl_FragColor = vec4(textureColor.rgb * lightIntensity, 1.0);
 }

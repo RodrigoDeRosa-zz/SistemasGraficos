@@ -8,15 +8,18 @@ class CarTyreCover extends Object3D{
         this.setIndexCreator(this);
         this.setPosCreator(this);
         this.setNormalCreator(this);
-        if (!color) this.setColorCreator(new DarkGray(3, 3));
-        else this.setColorCreator(color);
+        this.setTangentCreator(this);
+        this.setTextureCreator(this);
+
+        this.id = 7;
+        this.street = true;
     }
     setPosBuffer(){
         var buffer = [];
         var theta = 2*Math.PI/(this.levels-1);
         for (var i = 0.0; i < this.levels; i++){
-            var x = 0.1*Math.cos(theta*i);
-            var y = 0.1*Math.sin(theta*i);
+            var x = 0.073*Math.cos(theta*i);
+            var y = 0.073*Math.sin(theta*i);
             var z = 0;
             buffer.push(x);
             buffer.push(y);
@@ -25,7 +28,6 @@ class CarTyreCover extends Object3D{
         return buffer;
     }
     setNormalBuffer(){
-        /*Se repiten por el facetado*/
         var buffer = [];
         for (var i = 0; i < this.levels; i++){
             buffer.push(0);
@@ -34,7 +36,39 @@ class CarTyreCover extends Object3D{
         }
         return buffer;
     }
+    setTangentBuffer(){
+        var buffer = [];
+        var theta = 2*Math.PI/(this.levels-1);
+        for (var i = 0.0; i < this.levels; i++){
+            var x = -0.073*Math.sin(theta*i);
+            var y = 0.073*Math.cos(theta*i);
+            var z = 0;
+            buffer.push(x);
+            buffer.push(y);
+            buffer.push(z);
+        }
+        return buffer;
+    }
     setIndexBuffer(){
-        return [0, 5, 1, 1, 5, 2, 2, 5, 3, 3, 5, 4, 1, 5, 6, 6, 5, 7, 7, 5, 8, 8, 5, 0];
+        var buffer = [];
+        buffer.push(0);
+        for (var i = 1; i < this.levels; i++){
+            buffer.push(7);
+            buffer.push(i);
+            buffer.push(i);
+        }
+        buffer.push(0);
+        return buffer;
+    }
+    setTextureBuffer(){
+        var buffer = [];
+        var theta = 2*Math.PI/(this.levels-1);
+        for (var i = 0.0; i < this.levels; i++){
+            var u = 0.0865*Math.cos(theta*i) + 0.1765;
+            var v = 0.0865*Math.sin(theta*i) + 0.155;
+            buffer.push(u);
+            buffer.push(v);
+        }
+        return buffer;
     }
 }

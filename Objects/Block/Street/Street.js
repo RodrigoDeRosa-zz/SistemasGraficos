@@ -5,10 +5,11 @@ class Street extends Box{
     constructor(shader, position){
         super(null, true);
         this.street = true;
-        this.id = 0.0;
+        this.id = 5;
 
         this.translateStreet(position);
         this.scale(0.2, 0.01, 1.2);
+        this.scaleYTop = 2.0;
 
         this.setShaderProgram(shader);
         this.build();
@@ -38,6 +39,7 @@ class Street extends Box{
     build(){
         this.posBuffer = this.posBufferCreator.setPosBuffer();
         this.normalBuffer = this.normalBufferCreator.setNormalBuffer();
+        this.tangentBuffer = this.tangentBufferCreator.setTangentBuffer();
         if (this.colorBufferCreator) this.colorBuffer = this.colorBufferCreator.setColorBuffer();
         /*La diferencia esta aca! necesito el pos buffer ya seteado y que ancho y alto sean 1*/
         if (this.textureBufferCreator){

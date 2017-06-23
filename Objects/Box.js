@@ -17,6 +17,7 @@ class Box extends Object3D{
         this.setIndexCreator(new VertexGrid(SWEPT_STEPS, SHAPE_POINTS));
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
+        this.setTangentCreator(this.surface);
         if (texture) this.setTextureCreator(this);
         else {
             if (!color) this.setColorCreator(new Gray(SWEPT_STEPS, SHAPE_POINTS));

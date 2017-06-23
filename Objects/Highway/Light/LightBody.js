@@ -14,9 +14,10 @@ class LightBody extends Object3D{
         this.setIndexCreator(new VertexGrid(SWEPT_STEPS, SHAPE_POINTS));
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
+        this.setTangentCreator(this.surface);
         this.setTextureCreator(this);
         this.street = true;
-        this.id = 6.0;
+        this.id = 4;
     }
     setTextureBuffer(){
         var buffer = [];

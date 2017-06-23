@@ -34,12 +34,12 @@ class CarControl{
             /*Se calcula la distancia al proximo auto de cada uno*/
             var verticalOffset = Math.random();
             /*Se obliga al numero a ser entero*/
-            verticalOffset = Math.floor(verticalOffset*10) + 10;
+            verticalOffset = Math.floor(verticalOffset*100) + 100;
             /*Se definen las variables del auto segun el sentido de circulacion*/
             /*IMPORTANTE: No guarda u, sino un numero entre 0 y 401 que representa el numero de matriz
             del nivel*/
             if (sense == -1) this.cars.push([car, curve, 0 + verticalOffset*i, sense, matrices]);
-            else this.cars.push([car, curve, 400 - verticalOffset*i, sense, matrices]);
+            else this.cars.push([car, curve, 4500 - verticalOffset*i, sense, matrices]);
         }
     }
     /**Calcula las matrices de transformacion de cada nivel para la curva dada
@@ -48,7 +48,7 @@ class CarControl{
     getCurveMatrices(curve){
         var map = new Map();
         var i = 0;
-        for (var u = 0.5; u <= 4.5; u += 0.01){
+        for (var u = 0.5; u <= 4.5; u += 0.000875){
             var matrix = mat4.create();
             mat4.identity(matrix);
             /*Se traslada a la posicion de la curva*/
@@ -89,21 +89,22 @@ class CarControl{
             var matrices = carInfo[4];
             /*Se reseta la matriz y se aplican las transformaciones necesarias*/
             car.resetMatrix();
-            car.translate(0, 0.3123, 0);
+            car.translate(0, 0.309, 0);
             car.scale(0.05, 0.05, 0.05);
             /*Se aplica la matriz de transformacion del u actual*/
             car.applyMatrix(matrices.get(u));
             /*Si el auto va en sentido inverso, se rota*/
-            if (sense == -1) car.rotate(Math.PI, 1, 0, 0);
+            if (sense == 1) car.rotate(Math.PI, 1, 0, 0);
             /*Rotacion necesaria*/
             car.rotate(Math.PI/2, 1, 0, 0);
+            car.rotateWheels();
             /*Se aumenta o disminuye el u segun el sentido del recorrido*/
             if (sense == 1){
                 carInfo[2]++;
-                if (carInfo[2] > 400) carInfo[2] = 0;
+                if (carInfo[2] > 4500) carInfo[2] = 0;
             }
             else{
-                if (carInfo[2] - 1 < 0) carInfo[2] = 400;
+                if (carInfo[2] - 1 < 0) carInfo[2] = 4500;
                 else carInfo[2] -= 1;
             }
         }

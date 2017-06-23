@@ -57,9 +57,9 @@ class DarkGray extends Color{
         super(rows, cols);
     }
     _setColorFunctions(){
-        this.red = function(i, j){return 0.25;};
-        this.green = function(i, j){return 0.25;};
-        this.blue = function(i, j){return 0.25;};
+        this.red = function(i, j){return 0.1;};
+        this.green = function(i, j){return 0.1;};
+        this.blue = function(i, j){return 0.1;};
     }
 }
 

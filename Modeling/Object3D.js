@@ -7,24 +7,28 @@ class Object3D extends Container3D{
         this.id = null;
         this.building = false;
         this.street = false;
-        this.x;
-        this.y;
+        this.x; this.y;
+        this.shininess = 0.5;
+        this.scaleXTop = 1.0; this.scaleXLow = 1.0; this.scaleYTop = 1.0; this.scaleYLow = 1.0;
         this.lim;
         //FIN ANIMACION
         this.posBuffer = null;
         this.indexBuffer = null;
         this.colorBuffer = null;
         this.textureBuffer = null;
+        this.tangentBuffer = null;
         this.normalBuffer = null;
 
         this.webglPosBuffer = null;
         this.webglNormalBuffer = null;
+        this.webglTangentBuffer = null;
         this.webglColorBuffer = null;
         this.webglTextureBuffer = null;
         this.webglIndexBuffer = null;
 
         this.posBufferCreator = null;
         this.normalBufferCreator = null;
+        this.tangentBufferCreator = null;
         this.colorBufferCreator = null;
         this.textureBufferCreator = null;
         this.indexBufferCreator = null;
@@ -60,15 +64,20 @@ class Object3D extends Container3D{
     setNormalCreator(normalC){
         this.normalBufferCreator = normalC;
     }
+    /**Define al constructor de tangentBuffer.
+      * @param {tangentC} Object Objeto con metodo setTangentBuffer que devuelve array
+    */
+    setTangentCreator(tangentC){
+        this.tangentBufferCreator = tangentC;
+    }
     /**********METODOS DE DIBUJADO**********/
     /*Construye los buffers con las funciones constructoras*/
     build(){
         this.posBuffer = this.posBufferCreator.setPosBuffer();
-        this.normalBuffer = this.normalBufferCreator.setNormalBuffer();
+        if (this.normalBufferCreator) this.normalBuffer = this.normalBufferCreator.setNormalBuffer();
+        if (this.tangentBufferCreator) this.tangentBuffer = this.tangentBufferCreator.setTangentBuffer();
         if (this.colorBufferCreator) this.colorBuffer = this.colorBufferCreator.setColorBuffer();
-        if (this.textureBufferCreator){
-            this.textureBuffer = this.textureBufferCreator.setTextureBuffer();
-        }
+        if (this.textureBufferCreator) this.textureBuffer = this.textureBufferCreator.setTextureBuffer();
         this.indexBuffer = this.indexBufferCreator.setIndexBuffer();
 
         this.setUpWebGLBuffers();
@@ -81,11 +90,21 @@ class Object3D extends Container3D{
         this.webglPosBuffer.itemSize = 3;
         this.webglPosBuffer.numItems = this.posBuffer.length / 3;
 
-        this.webglNormalBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normalBuffer), gl.STATIC_DRAW);
-        this.webglNormalBuffer.itemSize = 3;
-        this.webglNormalBuffer.numItems = this.normalBuffer.length / 3;
+        if (this.normalBuffer){
+            this.webglNormalBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normalBuffer), gl.STATIC_DRAW);
+            this.webglNormalBuffer.itemSize = 3;
+            this.webglNormalBuffer.numItems = this.normalBuffer.length / 3;
+        }
+
+        if (this.tangentBuffer){
+            this.webglTangentBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webglTangentBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangentBuffer), gl.STATIC_DRAW);
+            this.webglTangentBuffer.itemSize = 3;
+            this.webglTangentBuffer.numItems = this.tangentBuffer.length / 3;
+        }
 
         if (this.colorBuffer){
             this.webglColorBuffer = gl.createBuffer();
@@ -129,7 +148,8 @@ class Object3D extends Container3D{
         this.modified = false;
         /*Se indica que shader se debe usar*/
         gl.useProgram(this.shaderProgram);
-        //Matriz de proyeccion y vista
+        //Matriz de proyeccion, vista y modelado
+        gl.uniformMatrix4fv(this.shaderProgram.ModelMatrixUniform, false, modelMatrix);
         gl.uniformMatrix4fv(this.shaderProgram.pMatrixUniform, false, pMatrix);
         gl.uniformMatrix4fv(this.shaderProgram.ViewMatrixUniform, false, CameraMatrix);
 
@@ -148,26 +168,84 @@ class Object3D extends Container3D{
         }
         //Se setea el id dependiendo el shader para definir la textura
         if (this.building){
-            gl.uniform1f(buildX, this.x);
-            gl.uniform1f(buildY, this.y);
-            gl.uniform1f(buildLim, this.lim);
-            gl.vertexAttrib1f(idBuilding, this.id);
-        }
-        if (this.street){
-            gl.vertexAttrib1f(idStreet, this.id);
+            this.shininess = 1.0;
+            //Se setean todas las variables construccion
+            gl.uniform1f(buildingShader.x, this.x);
+            gl.uniform1f(buildingShader.y, this.y);
+            gl.uniform1f(buildingShader.lim, this.lim);
+            gl.uniform1f(buildingShader.topX, this.scaleXTop);
+            gl.uniform1f(buildingShader.topY, this.scaleYTop);
+            gl.uniform1f(buildingShader.lowX, this.scaleXLow);
+            gl.uniform1f(buildingShader.lowY, this.scaleYLow);
+            //Se setean las texturas
+            if (this.scaleYTop < 0){ //techo
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, upperTextures[upperTextures.length-1]);
+                gl.uniform1i(buildingShader.roofSampler, 0);
+                //Normal map
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, upperNormals[upperNormals.length-1]);
+                gl.uniform1i(streetShader.topNormalSampler, 1);
+            } else {
+                //Parte de arriba
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, upperTextures[this.id]);
+                gl.uniform1i(buildingShader.topSampler, 0);
+                //Parte de abajo
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, lowerTextures[this.id]);
+                gl.uniform1i(buildingShader.lowSampler, 1);
+                //Normal superior
+                gl.activeTexture(gl.TEXTURE2);
+                gl.bindTexture(gl.TEXTURE_2D, upperNormals[this.id]);
+                gl.uniform1i(buildingShader.topNormalSampler, 2);
+                //Normal inferior
+                gl.activeTexture(gl.TEXTURE3);
+                gl.bindTexture(gl.TEXTURE_2D, lowerNormals[this.id]);
+                gl.uniform1i(buildingShader.lowNormalSampler, 3);
+            }
+        } else if (this.street){
+            gl.uniform1f(streetShader.shininess, this.shininess);
+            gl.uniform1f(streetShader.x, this.scaleXTop);
+            gl.uniform1f(streetShader.y, this.scaleYTop);
+            //Texture
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, streetTextures[this.id]);
+            gl.uniform1i(streetShader.uSampler, 0);
+            //Normal map
+            gl.activeTexture(gl.TEXTURE1);
+            gl.bindTexture(gl.TEXTURE_2D, streetNormalMaps[this.id]);
+            gl.uniform1i(streetShader.normalSampler, 1);
+            //Specular
+            if (this.shininess > 1.0) gl.uniform3fv(this.shaderProgram.specularColorUniform, [0.75, 0.55, 0.45]);
+            else gl.uniform3fv(this.shaderProgram.specularColorUniform, [0.05, 0.035, 0.025]);
+            //Spotlights
+            /*gl.uniform3fv(this.shaderProgram.spotlightsPosArray, 2, spotLightPos);
+            gl.uniform3fv(this.shaderProgram.spotlightsDirArray, 2, spotLightDir);
+            gl.uniform3fv(this.shaderProgram.spotlightsColorArray, 2, spotLightColor);*/
+        } else if (this.sky){
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, streetTextures[streetTextures.length-1]);
+            gl.uniform1i(skyShader.texSampler, 0);
         }
 
-        //Normal
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer);
-        gl.vertexAttribPointer(this.shaderProgram.vertexNormalAttribute, this.webglNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        if (this.useLight){
+            //Normal
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webglNormalBuffer);
+            gl.vertexAttribPointer(this.shaderProgram.vertexNormalAttribute, this.webglNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+            //Tangente
+            if (this.tangentBuffer){
+                gl.bindBuffer(gl.ARRAY_BUFFER, this.webglTangentBuffer);
+                gl.vertexAttribPointer(this.shaderProgram.vertexTangentAttribute, this.webglTangentBuffer.itemSize, gl.FLOAT, false, 0, 0);
+            }
 
-        //Matriz de normales. Se define como la traspuesta de la inversa de la matriz de modelado
-        gl.uniformMatrix4fv(this.shaderProgram.ModelMatrixUniform, false, modelMatrix);
-        var normalMatrix = mat3.create();
-        mat3.fromMat4(normalMatrix, modelMatrix);
-        mat3.invert(normalMatrix, normalMatrix);
-        mat3.transpose(normalMatrix, normalMatrix);
-        gl.uniformMatrix3fv(this.shaderProgram.nMatrixUniform, false, normalMatrix);
+            //Matriz de normales. Se define como la traspuesta de la inversa de la matriz de modelado
+            var normalMatrix = mat3.create();
+            mat3.fromMat4(normalMatrix, modelMatrix);
+            mat3.invert(normalMatrix, normalMatrix);
+            mat3.transpose(normalMatrix, normalMatrix);
+            gl.uniformMatrix3fv(this.shaderProgram.nMatrixUniform, false, normalMatrix);
+        }
 
         //Index
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webglIndexBuffer);

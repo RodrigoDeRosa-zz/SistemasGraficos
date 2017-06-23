@@ -17,8 +17,9 @@ class Concrete extends Object3D{
         this.setTextureCreator(this);
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
+        this.setTangentCreator(this.surface);
         this.street = true;
-        this.id = 4.0;
+        this.id = 1;
     }
     setTextureBuffer(){
         var buffer = [];
@@ -27,7 +28,7 @@ class Concrete extends Object3D{
         var u, v;
         /*En cada nivel se calcula la componente v*/
         for (var i = 0; i < pathLevels; i++){
-            v = (i / (pathLevels-1))*10; //Entre 0 y 5
+            v = (i / (pathLevels-1))*30; //Entre 0 y 5
             /*Para cada punto se calcula la componente u*/
             for (var j = 0; j < shapeLevels; j++){
                 u = (j / (shapeLevels-1))*6; //Entre 0 y 2

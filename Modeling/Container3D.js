@@ -5,6 +5,7 @@ class Container3D{
         this._setMatrix();
 
         this.modified = false;
+        this.useLight = true;
 
         this.children = [];
         this.shaderProgram = null;
@@ -100,6 +101,7 @@ class Container3D{
     */
     setupLighting(lightPosition, ambientColor, diffuseColor){
         this.setupChildrenLighting(lightPosition, ambientColor, diffuseColor);
+        if (!this.useLight) return;
         /*Se indica que shader se debe usar*/
         gl.useProgram(this.shaderProgram);
 

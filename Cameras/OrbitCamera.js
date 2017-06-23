@@ -22,8 +22,8 @@ class OrbitCamera extends Camera{
     }
     /****Override***/
     initialise(){
-        this.radius = 300;
-        this.zoomSensibility = 0.05;
+        this.radius = 900;
+        this.zoomSensibility = 0.5;
         this.sensibility = 0.009;
         this.theta = 0;
         /*La camara arranca mirando al origen*/
@@ -31,7 +31,7 @@ class OrbitCamera extends Camera{
         /*El up siempre es arriba (eje Y positivo)*/
         vec3.set(this.upVec, 0, 1, 0);
         /*La posicion inicial es en diagonal arriba*/
-        this.phi = Math.PI/4;
+        this.phi = Math.PI/10;
         var eyeY = this.radius*Math.sin(this.phi);
         var eyeZ = this.radius*Math.cos(this.phi);
         vec3.set(this.eyePoint, 0, eyeY, eyeZ);

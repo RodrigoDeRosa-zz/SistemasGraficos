@@ -6,6 +6,7 @@ class BoxCover extends Object3D{
         this.setIndexCreator(this); //Es un cuadrado.
         this.setPosCreator(this);
         this.setNormalCreator(this);
+        this.setTangentCreator(this);
         if (texture) this.setTextureCreator(this);
         else{
             if (!color) this.setColorCreator(new Gray(2, 2));
@@ -31,6 +32,15 @@ class BoxCover extends Object3D{
             0, 1, 0,
             0, 1, 0,
             0, 1, 0
+        ];
+        return buffer;
+    }
+    setTangentBuffer(){
+        var buffer = [
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0,
+            -1, 0, 0
         ];
         return buffer;
     }

@@ -4,9 +4,9 @@ class CarTyre extends Object3D{
         super();
 
         var SWEPT_LEVELS = 2;
-        var SHAPE_POINTS = 9;
+        var SHAPE_POINTS = 15;
 
-        this.shape = new Circle(SHAPE_POINTS, 0.1);
+        this.shape = new Circle(SHAPE_POINTS, 0.073);
         this.path = new StraightLine(SWEPT_LEVELS);
 
         this.surface = new SweptSurface(this.shape, this.path);
@@ -14,8 +14,8 @@ class CarTyre extends Object3D{
         this.setIndexCreator(new VertexGrid(SWEPT_LEVELS, SHAPE_POINTS));
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
-        if (!color) this.setColorCreator(new DarkGray(SWEPT_LEVELS, SHAPE_POINTS));
-        else this.setColorCreator(color);
+        this.setTangentCreator(this.surface);
+        this.setTextureCreator(this);
 
         this.scale(1, 1, 0.125);
         this.translate(0.075, 0, 0);
@@ -35,5 +35,21 @@ class CarTyre extends Object3D{
         cover2.rotate(-Math.PI/2, 0, 0, 1);
         cover2.rotate(Math.PI, 0, 1, 0);
         this.addChild(cover2);
+
+        this.id = 7;
+        this.street = false;
+    }
+    setTextureBuffer(){
+        var buffer = [];
+        var theta = 2*Math.PI/(14);
+        for (var j = 0; j < 2; j++){
+            for (var i = 0.0; i < 15; i++){
+                var u = 0.0865*Math.cos(theta*i) + 0.5;
+                var v = 0.0865*Math.sin(theta*i) + 0.155;
+                buffer.push(u);
+                buffer.push(v);
+            }
+        }
+        return buffer;
     }
 }

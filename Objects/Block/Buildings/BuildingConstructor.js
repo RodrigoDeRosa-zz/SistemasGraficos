@@ -34,28 +34,21 @@ class BuildingConstructor{
         body.build();
 
         /*Seleccion de textura*/
-        var k = (Math.random())*10; //Se pasa al rango 0 al 9
+        var k = (Math.random())*20; //Se pasa al rango 0 al 19
         k = Math.floor(k); //Se le saca lo decimal
-        switch (k) {
-            case 0:
-                body.id = 0.0; break;
-            case 1:
-                body.id = 1.0; break;
-            case 8:
-            case 2:
-                body.id = 2.0; break;
-            case 7:
-            case 3:
-                body.id = 3.0; break;
-            case 4:
-            case 9:
-                body.id = 4.0; break;
-            case 5:
-            case 6:
-                body.id = 5.0; break;
+        body.id = k; //Se define el tipo de edificio
+        switch (k){ //Se definen las escalas de las texturas segun el tipo
+            case 0: case 7: case 1: case 13: this.scaleXLow = 0.5; break;
+            case 2: case 4: this.scaleYTop = 0.5; break;
+            case 3: case 6: case 10: case 16: case 15: this.scaleXLow = 0.25; break;
+            case 5: case 11: this.scaleYTop = 0.5; this.scaleXLow = 0.25; break;
+            case 8: case 14: this.scaleXLow = 0.25; break;
+            case 9: case 12: case 19: this.scaleYTop = 0.5; this.scaleXLow = 0.5; break;
+            case 17: this.scaleXTop = 0.5; this.scaleXLow = 0.5; break;
+            case 18: break; //Es 1x1 en ambos
         }
         body.rotate(Math.PI/2.0, 1, 0, 0); //Para que quede "parado"
-        
+
         body.lim = number;
         body.building = true;
 
@@ -71,7 +64,7 @@ class BuildingConstructor{
         roof.build();
         roof.lim = number;
         roof.building = true;
-        roof.id = 20.0;
+        roof.scaleYTop = -1.0;
 
         return roof;
     }

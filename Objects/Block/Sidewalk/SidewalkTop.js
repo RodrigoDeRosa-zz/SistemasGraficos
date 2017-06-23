@@ -6,10 +6,12 @@ class SidewalkTop extends Object3D{
         this.setIndexCreator(new VertexGrid(2, 28));
         this.setPosCreator(this);
         this.setNormalCreator(this);
+        this.setTangentCreator(this);
         if(texture){
             this.setTextureCreator(this);
             this.street = true;
-            id ? this.id = id : this.id = 2.0;
+            this.scaleXTop = 8.0; this.scaleYTop = 8.0;
+            id ? this.id = id : this.id = 6;
         } else {
             if (!color) this.setColorCreator(new Gray(2, 28));
             else this.setColorCreator(color);
@@ -68,8 +70,17 @@ class SidewalkTop extends Object3D{
         var buffer = [];
         for (var i = 0; i < 56; i++){
             buffer.push(0.0);
+            buffer.push(1.0);
             buffer.push(0.0);
-            buffer.push(-1.0);
+        }
+        return buffer;
+    }
+    setTangentBuffer(){
+        var buffer = [];
+        for (var i = 0; i < 56; i++){
+            buffer.push(1.0);
+            buffer.push(0.0);
+            buffer.push(0.0);
         }
         return buffer;
     }

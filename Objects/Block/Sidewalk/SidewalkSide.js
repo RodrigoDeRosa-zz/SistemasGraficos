@@ -14,10 +14,11 @@ class SidewalkSide extends Object3D{
         this.setIndexCreator(new VertexGrid(SWEPT_STEPS, SHAPE_POINTS));
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);
+        this.setTangentCreator(this.surface);
         if (texture) {
             this.setTextureCreator(this);
             this.street = true;
-            id ? this.id = id : this.id = 2.0;
+            id ? this.id = id : this.id = 6;
         }else{
             if (!color) this.setColorCreator(new Gray(SWEPT_STEPS, SHAPE_POINTS));
             else this.setColorCreator(color);

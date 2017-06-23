@@ -1,75 +1,61 @@
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
+attribute vec3 aVertexTangent;
 attribute vec2 aTextureCoord;
-attribute float aID;
 
 uniform mat4 uViewMatrix;
 uniform mat4 uModelMatrix;
 uniform mat4 uPMatrix;
 uniform mat3 uNMatrix;
 
-uniform vec3 uAmbientColor;
 uniform vec3 uLightPosition;
-uniform vec3 uDirectionalColor;
+uniform vec3 uSpotLightPos[2];
+uniform vec3 uSpotLightDir[2];
 
-uniform bool uUseLighting;
-
-varying vec3 vLightWeighting;
-
-varying vec3 vLightDir;
-varying vec3 vDirectionalColor;
-//Se pasan por separado los elementos para calcular en el fragment
-varying vec3 vDiffuse;
-varying vec3 vAmbient;
-varying vec3 vSpecular;
-//
 varying vec2 vTextureCoord;
-varying float vID;
+varying vec3 vVertexNormal;
+varying vec3 vLightDir;
+varying vec3 vViewDir;
+varying vec3 vSpotLightPos[2];
+varying vec3 vSpotLightDir[2];
 
 void main(void) {
-
     // Transformamos al v�rtice al espacio de la c�mara
     vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
-    vec4 pos_world = uModelMatrix * vec4(aVertexPosition, 1.0);
+    vec3 pos = vec3(uModelMatrix * vec4(aVertexPosition, 1.0));
 
     // Transformamos al v�rtice al espacio de la proyecci�n
     gl_Position = uPMatrix * pos_camera_view;
-    //Se pasa el id del objeto
-    vID = aID;
     // Coordenada de textura sin modifiaciones
     vTextureCoord = aTextureCoord;
+    //Variables que se pasan al fragment para la iluminacion
+    vVertexNormal = normalize(uNMatrix * aVertexNormal);
+    vLightDir = normalize(uLightPosition - pos); //Direccion de la luz
+    vViewDir = normalize(pos_camera_view.xyz); //Direccion de la vista
+    //Para cada spotlight se calcula la posicion relativa y la direccion
+    for (int i = 0; i < 2; i++){
+        vSpotLightPos[i] = uSpotLightPos[i] - pos;
+        vSpotLightDir[i] = uSpotLightDir[i];
+    }
 
-    ////////////////////////////////////////////
-    // Calculos de la iluminaci�n
-    vec3 light_dir =  uLightPosition - vec3( pos_world );
-    normalize(light_dir);
-    if (!uUseLighting) {
-        vLightWeighting = vec3(1.0, 1.0, 1.0);
-    } else{
-        //Se pasan estos valores en caso de tener mapa de normales
-        vLightDir = light_dir;
-        vDirectionalColor = uDirectionalColor;
+    // Transform normal and tangent to eye space
+    vec3 norm = vVertexNormal;
+    vec3 tang = normalize(uNMatrix * aVertexTangent);
+    vec3 binormal = normalize(cross(norm, tang));
 
-        float Ka = 1.0; //Ambient reflection
-        float Kd = 0.80; //Diffuse reflection
-        float Ks = 0.008; //Specular reflection
-        //LAMBERT, diffuse
-        vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
-        float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0); //lambertian
-        //Specular
-        float shininessVal = 1.0;
-        float specular = 0.0;
-        if (directionalLightWeighting > 0.0){
-            vec3 R = reflect(-light_dir, transformedNormal);
-            vec3 V = normalize(vec3(uPMatrix * pos_camera_view));
+    //Matriz de transformacion al espacio tangencial
+    mat3 tangMat = mat3(
+        tang.x, binormal.x, norm.x,
+        tang.y, binormal.y, norm.y,
+        tang.z, binormal.z, norm.z
+    );
 
-            float specAngle = max(dot(R, V), 0.0);
-            specular = pow(specAngle, shininessVal); //SHININESS ARBITRARIO
-        }
-        vec3 specularColor = vec3(0.04, 0.04, 0.04); //ARBITRARIO
-        /*Se pasan por separado*/
-        vAmbient = Ka * uAmbientColor;
-        vDiffuse = Kd * uDirectionalColor * directionalLightWeighting;
-        vSpecular = specular * specularColor * Ks;
+    //Se transforman todos los vectores al espacio tangencial
+    vLightDir = tangMat * vLightDir;
+    vViewDir = tangMat * vViewDir;
+    //Spotlights
+    for (int i = 0; i < 2; i++){
+        vSpotLightPos[i] = tangMat * vSpotLightPos[i];
+        vSpotLightDir[i] = tangMat * vSpotLightDir[i];
     }
 }

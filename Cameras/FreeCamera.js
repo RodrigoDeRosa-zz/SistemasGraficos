@@ -5,21 +5,27 @@ class FreeCamera extends Camera{
 	}
 	initialise(){
         if(!this.height){
-			vec3.set(this.eyePoint, 0, 0.5, 0);//Se ubica en el piso a una altura fija
- 			vec3.set(this.lookAtVec, 1000, 0.5, 0);
+			vec3.set(this.eyePoint, 0, 3, 0);//Se ubica en el piso a una altura fija
+			this.height = 0.5;
 		}
 	    vec3.set(this.upVec, 0, 1, 0);
 		this.sensibility = 0.001;
 		this.moveScale = 0.5;
 		this.rollSensitivity = 0.01;
-		this.theta = 0;
-		this.phi = 0;
+		this.theta = 3*Math.PI/4;
+		this.phi = Math.PI/2;
+
+		var lookX = 1000*Math.sin(this.theta)*Math.sin(this.phi);
+        var lookY = 1000*Math.cos(this.phi);
+        var lookZ = 1000*Math.cos(this.theta)*Math.sin(this.phi);
+
+		vec3.set(this.lookAtVec, lookX, lookY, lookZ);
+
         this.setRight();
 	}
 	setHeight(height){
 		this.height = height;
 		vec3.set(this.eyePoint, this.eyePoint[0], height, this.eyePoint[2]);
-		vec3.set(this.lookAtVec, this.lookAtVec[0], height, this.lookAtVec[2]);
 		this.setRight();
 	}
 

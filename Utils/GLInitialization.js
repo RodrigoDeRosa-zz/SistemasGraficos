@@ -2,10 +2,10 @@
 function webGLStart(){
     var mainCanvas = document.getElementById("mainCanvas");
     initGL(mainCanvas);
-    /*Se setea el shader de objetos coloreados*/
-    var rawVertex = getMainRawVertexShader();
-    var rawFragment = getMainRawFragmentShader();
-    initMainShader(rawVertex, rawFragment);
+    /*Se setea el shader del cielo*/
+    var rawSkyVertex = getSkyRawVertexShader();
+    var rawSkyFragment = getSkyRawFragmentShader();
+    initSkyShader(rawSkyVertex, rawSkyFragment);
     /*Se setea el shader de edificios*/
     var rawBuildingVertex = getBuildingRawVertexShader();
     var rawBuildingFragment = getBuildingRawFragmentShader();
@@ -29,7 +29,7 @@ function webGLStart(){
     var orbit = new OrbitCamera();
     var floorCamera = new FreeCamera();
     var highwayCamera = new FreeCamera();
-    highwayCamera.setHeight(6.05);
+    highwayCamera.setHeight(20.05);
     /*Se agrega la camara orbital al controlador de camaras*/
     cameraController.addCamera(orbit);
     cameraController.addCamera(floorCamera);
@@ -79,70 +79,54 @@ function initTexture(path, textures){
 }
 /*Inicializa todas las texturas utilizadas*/
 function initTextures(){
-    var textures = [];
-    var glTextures = [gl.TEXTURE0, gl.TEXTURE1, gl.TEXTURE2, gl.TEXTURE3, gl.TEXTURE4, gl.TEXTURE5,
-        gl.TEXTURE6, gl.TEXTURE7, gl.TEXTURE8, gl.TEXTURE9, gl.TEXTURE10, gl.TEXTURE11, gl.TEXTURE12, gl.TEXTURE13, gl.TEXTURE14,
-        gl.TEXTURE15];
-    var shaderName = ["sTop1", "sTop2", "sTop3", "sTop4", "sTop5", "sTop6", "sTop7", "sTop8",
-        "sLow1", "sLow2", "sLow3", "sLow4", "sLow5", "sLow6", "sLow7", "sRoof"];
-
-    /*Texturas del shader de deficios*/
-    gl.useProgram(buildingShader);
+    /*Texturas del shader de edificios*/
+    /*Partes de arriba*/
+    var mainPath = 'Utils/Images/tops/';
     /*Carga de texturas*/
-    initTexture('maps/ed1_pisos.jpg', textures);
-    initTexture('maps/ed2_pisos.jpg', textures);
-    initTexture('maps/ed3_pisos.jpg', textures);
-    initTexture('maps/ed4_pisos.jpg', textures);
-    initTexture('maps/ed5_pisos.jpg', textures);
-    initTexture('maps/ed19_pisos.jpg', textures);
-    initTexture('maps/ed7_pisos.jpg', textures);
-    initTexture('maps/ed8_pisos.jpg', textures);
-    initTexture('maps/ed1_pb.jpg', textures);
-    initTexture('maps/ed2_pb.jpg', textures);
-    initTexture('maps/ed3_pb.jpg', textures);
-    initTexture('maps/ed4_pb.jpg', textures);
-    initTexture('maps/ed5_pb.jpg', textures);
-    initTexture('maps/ed19_pb.jpg', textures);
-    initTexture('maps/ed7_pb.jpg', textures);
-    initTexture('maps/roof.jpg', textures);
-    /*Obtencion del fd de cada una en el shader*/
-    for (var i = 0; i < 16; i++){
-        var location = gl.getUniformLocation(buildingShader, shaderName[i]);
-        gl.uniform1i(location, i);
-        gl.activeTexture(glTextures[i]);
-        gl.bindTexture(gl.TEXTURE_2D, textures[i]);
+    for (var i = 1; i <= 20; i++){
+        initTexture(mainPath + 'ed' + i + '_pisos.jpg', upperTextures);
+    }
+    initTexture(mainPath + 'roof.jpg', upperTextures);
+
+    /*Normales de edificios*/
+    mainPath = 'Utils/Images/topNormals/';
+    /*Carga de texturas*/
+    for (var i = 1; i <= 20; i++){
+        initTexture(mainPath + 'ed' + i + '_pisos_n.jpg', upperNormals);
+    }
+    initTexture(mainPath + 'roof_n.jpg', upperNormals);
+
+    /*Partes de abajo*/
+    mainPath = 'Utils/Images/lows/';
+    /*Carga de texturas*/
+    for (var i = 1; i <= 20; i++){
+        initTexture(mainPath + 'ed' + i + '_pb.jpg', lowerTextures);
+    }
+
+    /*Normales de locales*/
+    mainPath = 'Utils/Images/lowNormals/';
+    /*Carga de texturas*/
+    for (var i = 1; i <= 20; i++){
+        initTexture(mainPath + 'ed' + i + '_pb_n.jpg', lowerNormals);
     }
 
     /*Texturas del shader de calle*/
-    gl.useProgram(streetShader);
-    var textures2 = [];
-    var glTextures2 = [gl.TEXTURE16, gl.TEXTURE17, gl.TEXTURE18, gl.TEXTURE19,
-        gl.TEXTURE20, gl.TEXTURE21, gl.TEXTURE22, gl.TEXTURE23, gl.TEXTURE24, gl.TEXTURE25,
-        gl.TEXTURE26, gl.TEXTURE27, gl.TEXTURE28, gl.TEXTURE29];
-    var shaderName2 = ["lightTex", "lightNormal", "streetTex", "streetNormal", "crossTex", "crossNormal",
-        "sidewalkTex", "sidewalkNorm", "concreteTex", "concreteNorm", "asphaltTex", "asphaltNormal",
-        "grassTex", "grassNormal"];
+    mainPath = 'Utils/Images/street/';
+    var paths = ['asphalt.jpg', 'concrete.jpg', 'grass.jpg', 'cruce.jpg',
+        'light.jpg', 'tramo-dobleamarilla.jpg', 'vereda.jpg', 'auto.jpg'];
     /*Carga de texturas*/
-    initTexture('maps/light.jpg', textures2); //6
-    initTexture('maps/light_n.png', textures2); //6
-    initTexture('maps/tramo-dobleamarilla.jpg', textures2); //0
-    initTexture('maps/tramo-dobleamarilla_n.png', textures2); //0
-    initTexture('maps/cruce.jpg', textures2); //1
-    initTexture('maps/cruce_n.png', textures2); //1
-    initTexture('maps/vereda.jpg', textures2); //2
-    initTexture('maps/vereda_normal.jpg', textures2); //2
-    initTexture('maps/concrete.jpg', textures2); //3
-    initTexture('maps/concrete_n.png', textures2); //3
-    initTexture('maps/asphalt.jpg', textures2); //5
-    initTexture('maps/asphalt_n.png', textures2); //5
-    initTexture('maps/grass.jpg', textures2); //4
-    initTexture('maps/grass_n.png', textures2); //4
-    /*Obtencion del fd de cada una en el shader*/
-    for (var i = 0; i < 14; i++){
-        var location = gl.getUniformLocation(streetShader, shaderName2[i]);
-        gl.uniform1i(location, i+16); //agarra las texturas desde la 16
-        gl.activeTexture(glTextures2[i]);
-        gl.bindTexture(gl.TEXTURE_2D, textures2[i]);
+    for (var i = 0; i <= paths.length; i++){
+        initTexture(mainPath + paths[i], streetTextures);
+    }
+    initTexture(mainPath + 'refmap.jpg', streetTextures);
+
+    /*Texturas de normales*/
+    mainPath = 'Utils/Images/streetNormals/';
+    paths = ['asphalt_n.jpg', 'concrete_n.jpg', 'grass_n.jpg', 'cruce_n.jpg',
+        'light_n.jpg', 'tramo-dobleamarilla_n.jpg', 'vereda_n.jpg', 'auto_n.jpg'];
+    /*Carga de texturas*/
+    for (var i = 0; i <= paths.length; i++){
+        initTexture(mainPath + paths[i], streetNormalMaps);
     }
 }
 /**Genera y devuelve el mShaderProgram.
@@ -165,35 +149,28 @@ function getShader(rawShader){
   * @param {rawVertex} RawVertexShader Objeto que contiene el string del vs-colored
   * @param {rawFragment} RawFragmentShader Objeto que contiene el string del fs-colored
 */
-function initMainShader(rawVertex, rawFragment){
+function initSkyShader(rawVertex, rawFragment){
     //Se crean los shaders de fragment y vertex
     var fragmentShader = getShader(rawFragment);
     var vertexShader = getShader(rawVertex);
     //Se crea el mShaderProgram linkeandole los fragment y vertex shaders
-    mShaderProgram = gl.createProgram();
-    gl.attachShader(mShaderProgram, vertexShader);
-    gl.attachShader(mShaderProgram, fragmentShader);
-    gl.linkProgram(mShaderProgram);
-    if(!gl.getProgramParameter(mShaderProgram, gl.LINK_STATUS)) alert("Could not initialise shaders");
+    skyShader = gl.createProgram();
+    gl.attachShader(skyShader, vertexShader);
+    gl.attachShader(skyShader, fragmentShader);
+    gl.linkProgram(skyShader);
+    if(!gl.getProgramParameter(skyShader, gl.LINK_STATUS)) alert("Could not initialise shaders");
     //Se linkean los atributos de los vertices
     //Posicion
-    mShaderProgram.vertexPositionAttribute = gl.getAttribLocation(mShaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(mShaderProgram.vertexPositionAttribute);
-    //Normal
-    mShaderProgram.vertexNormalAttribute = gl.getAttribLocation(mShaderProgram, "aVertexNormal");
-    gl.enableVertexAttribArray(mShaderProgram.vertexNormalAttribute);
+    skyShader.vertexPositionAttribute = gl.getAttribLocation(skyShader, "aVertexPosition");
+    gl.enableVertexAttribArray(skyShader.vertexPositionAttribute);
     //Color
-    mShaderProgram.vertexColorAttribute = gl.getAttribLocation(mShaderProgram, "aVertexColor");
-    gl.enableVertexAttribArray(mShaderProgram.vertexColorAttribute);
+    skyShader.textureCoordAttribute = gl.getAttribLocation(skyShader, "aTextureCoord");
+    gl.enableVertexAttribArray(skyShader.textureCoordAttribute);
     //Se linkea el resto de las variables
-    mShaderProgram.pMatrixUniform = gl.getUniformLocation(mShaderProgram, "uPMatrix");
-    mShaderProgram.ViewMatrixUniform = gl.getUniformLocation(mShaderProgram, "uViewMatrix");
-    mShaderProgram.ModelMatrixUniform = gl.getUniformLocation(mShaderProgram, "uModelMatrix");
-    mShaderProgram.nMatrixUniform = gl.getUniformLocation(mShaderProgram, "uNMatrix");
-    mShaderProgram.useLightingUniform = gl.getUniformLocation(mShaderProgram, "uUseLighting");
-    mShaderProgram.ambientColorUniform = gl.getUniformLocation(mShaderProgram, "uAmbientColor");
-    mShaderProgram.lightingDirectionUniform = gl.getUniformLocation(mShaderProgram, "uLightPosition");
-    mShaderProgram.directionalColorUniform = gl.getUniformLocation(mShaderProgram, "uDirectionalColor");
+    skyShader.pMatrixUniform = gl.getUniformLocation(skyShader, "uPMatrix");
+    skyShader.ViewMatrixUniform = gl.getUniformLocation(skyShader, "uViewMatrix");
+    skyShader.ModelMatrixUniform = gl.getUniformLocation(skyShader, "uModelMatrix");
+    skyShader.texSampler = gl.getUniformLocation(skyShader, "uSampler");
 }
 
 /**Inicializa el buildingShader
@@ -222,6 +199,9 @@ function initBuildingShader(rawVertex, rawFragment){
     buildingShader.vertexNormalAttribute = gl.getAttribLocation(buildingShader, "aVertexNormal");
     gl.enableVertexAttribArray(buildingShader.vertexNormalAttribute);
 
+    buildingShader.vertexTangentAttribute = gl.getAttribLocation(buildingShader, "aVertexTangent");
+    gl.enableVertexAttribArray(buildingShader.vertexTangentAttribute);
+
     buildingShader.pMatrixUniform = gl.getUniformLocation(buildingShader, "uPMatrix");
     buildingShader.ViewMatrixUniform = gl.getUniformLocation(buildingShader, "uViewMatrix");
     buildingShader.ModelMatrixUniform = gl.getUniformLocation(buildingShader, "uModelMatrix");
@@ -231,10 +211,20 @@ function initBuildingShader(rawVertex, rawFragment){
     buildingShader.lightingDirectionUniform = gl.getUniformLocation(buildingShader, "uLightPosition");
     buildingShader.directionalColorUniform = gl.getUniformLocation(buildingShader, "uDirectionalColor");
 
-    idBuilding = gl.getAttribLocation(buildingShader, "aID");
-    buildX = gl.getUniformLocation(buildingShader, "x");
-    buildY = gl.getUniformLocation(buildingShader, "y");
-    buildLim = gl.getUniformLocation(buildingShader, "lim");
+    buildingShader.topSampler = gl.getUniformLocation(buildingShader, "uTopSampler");
+    buildingShader.lowSampler = gl.getUniformLocation(buildingShader, "uLowSampler");
+    buildingShader.roofSampler = gl.getUniformLocation(buildingShader, "uRoofSampler");
+    buildingShader.topNormalSampler = gl.getUniformLocation(buildingShader, "uTopNormalSampler");
+    buildingShader.lowNormalSampler = gl.getUniformLocation(buildingShader, "uLowNormalSampler");
+
+    buildingShader.topX = gl.getUniformLocation(buildingShader, "scaleXTop");
+    buildingShader.topY = gl.getUniformLocation(buildingShader, "scaleYTop");
+    buildingShader.lowX = gl.getUniformLocation(buildingShader, "scaleXLow");
+    buildingShader.lowY = gl.getUniformLocation(buildingShader, "scaleYLow");
+
+    buildingShader.x = gl.getUniformLocation(buildingShader, "x");
+    buildingShader.y = gl.getUniformLocation(buildingShader, "y");
+    buildingShader.lim = gl.getUniformLocation(buildingShader, "lim");
 }
 
 /**Inicializa el buildingShader
@@ -263,6 +253,9 @@ function initStreetShader(rawVertex, rawFragment){
     streetShader.vertexNormalAttribute = gl.getAttribLocation(streetShader, "aVertexNormal");
     gl.enableVertexAttribArray(streetShader.vertexNormalAttribute);
 
+    streetShader.vertexTangentAttribute = gl.getAttribLocation(streetShader, "aVertexTangent");
+    gl.enableVertexAttribArray(streetShader.vertexTangentAttribute);
+
     streetShader.pMatrixUniform = gl.getUniformLocation(streetShader, "uPMatrix");
     streetShader.ViewMatrixUniform = gl.getUniformLocation(streetShader, "uViewMatrix");
     streetShader.ModelMatrixUniform = gl.getUniformLocation(streetShader, "uModelMatrix");
@@ -271,6 +264,16 @@ function initStreetShader(rawVertex, rawFragment){
     streetShader.ambientColorUniform = gl.getUniformLocation(streetShader, "uAmbientColor");
     streetShader.lightingDirectionUniform = gl.getUniformLocation(streetShader, "uLightPosition");
     streetShader.directionalColorUniform = gl.getUniformLocation(streetShader, "uDirectionalColor");
+    streetShader.specularColorUniform = gl.getUniformLocation(streetShader, "uSpecularColor");
 
-    idStreet = gl.getAttribLocation(streetShader, "aID");
+    /*streetShader.spotlightsPosArray = gl.getUniformLocation(streetShader, "uSpotLightPos");
+    streetShader.spotlightsDirArray = gl.getUniformLocation(streetShader, "uSpotLightDir");
+    streetShader.spotlightsColorArray = gl.getUniformLocation(streetShader, "uSpotLightColor");*/
+
+    streetShader.shininess = gl.getUniformLocation(streetShader, "uShininess");
+
+    streetShader.x = gl.getUniformLocation(streetShader, "scaleX");
+    streetShader.y = gl.getUniformLocation(streetShader, "scaleY");
+    streetShader.uSampler = gl.getUniformLocation(streetShader, "uSampler");
+    streetShader.normalSampler = gl.getUniformLocation(streetShader, "uNormalSampler");
 }

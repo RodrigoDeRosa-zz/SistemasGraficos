@@ -5,7 +5,7 @@ class CarRoofShape extends Shape{
     }
     setPositions(){
         var bottomLeft = new Point(-0.35, 0.2, 0);
-        var bottomRight = new Point(0.15, 0.2, 0);
+        var bottomRight = new Point(0.35, 0.2, 0);
         var topRight = new Point(0.1, 0.35, 0);
         var topLeft = new Point(-0.3, 0.35, 0);
         /*Se repiten por el facetado*/
