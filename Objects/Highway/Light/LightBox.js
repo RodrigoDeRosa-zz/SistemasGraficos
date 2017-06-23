@@ -24,6 +24,7 @@ class LightBox extends Container3D{
         cover1.rotate(-Math.PI, 0, 0, 1);
         cover1.id = 4;
         cover1.street = true;
+        cover1.highway = true;
 
         var cover2 = new BoxCover(null, true);
         cover2.setShaderProgram(shader);
@@ -31,6 +32,7 @@ class LightBox extends Container3D{
         cover2.translate(0, 0, -0.5);
         cover2.id = 4;
         cover2.street = true;
+        cover2.highway = true;
 
         this.addChild(box);
         this.addChild(cover1);

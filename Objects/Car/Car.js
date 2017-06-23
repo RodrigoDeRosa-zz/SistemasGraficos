@@ -7,6 +7,7 @@ class Car extends Container3D{
         var body = new CarBody(new Blue(2, 16), shader);
         body.setShaderProgram(shader);
         body.build();
+        body.highway = true;
 
         var chassis = new Container3D();
         chassis.setShaderProgram(shader);

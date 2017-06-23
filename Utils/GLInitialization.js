@@ -266,11 +266,12 @@ function initStreetShader(rawVertex, rawFragment){
     streetShader.directionalColorUniform = gl.getUniformLocation(streetShader, "uDirectionalColor");
     streetShader.specularColorUniform = gl.getUniformLocation(streetShader, "uSpecularColor");
 
-    /*streetShader.spotlightsPosArray = gl.getUniformLocation(streetShader, "uSpotLightPos");
+    streetShader.spotlightsPosArray = gl.getUniformLocation(streetShader, "uSpotLightPos");
     streetShader.spotlightsDirArray = gl.getUniformLocation(streetShader, "uSpotLightDir");
-    streetShader.spotlightsColorArray = gl.getUniformLocation(streetShader, "uSpotLightColor");*/
+    streetShader.spotlightsColorArray = gl.getUniformLocation(streetShader, "uSpotLightColor");
 
     streetShader.shininess = gl.getUniformLocation(streetShader, "uShininess");
+    streetShader.useSpot = gl.getUniformLocation(streetShader, "uUseSpot");
 
     streetShader.x = gl.getUniformLocation(streetShader, "scaleX");
     streetShader.y = gl.getUniformLocation(streetShader, "scaleY");

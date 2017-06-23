@@ -19,6 +19,7 @@ class CarTyre extends Object3D{
 
         this.scale(1, 1, 0.125);
         this.translate(0.075, 0, 0);
+        this.highway = true;
 
         var cover1 = new CarTyreCover(null, -1, SHAPE_POINTS);
         cover1.setShaderProgram(shader);
@@ -27,6 +28,7 @@ class CarTyre extends Object3D{
         cover1.rotate(-Math.PI/2, 0, 0, 1);
         cover1.rotate(Math.PI, 0, 1, 0);
         this.addChild(cover1);
+        cover1.highway = true;
 
         var cover2 = new CarTyreCover(null, 1, SHAPE_POINTS);
         cover2.setShaderProgram(shader);
@@ -35,6 +37,7 @@ class CarTyre extends Object3D{
         cover2.rotate(-Math.PI/2, 0, 0, 1);
         cover2.rotate(Math.PI, 0, 1, 0);
         this.addChild(cover2);
+        cover2.highway = true;
 
         this.id = 7;
         this.street = false;

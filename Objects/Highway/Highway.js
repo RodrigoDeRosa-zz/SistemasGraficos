@@ -59,23 +59,28 @@ class Highway extends Container3D{
             light.applyMatrix(matrix);
             light.rotate(-Math.PI/2, 0, 0, 1);
             this.addChild(light);
-            /*if (k < 2){
-                //Posicion de cada spot
+            if (k < 2){
                 var spotMatrix = mat4.create();
-                var spotPos = [0, 0, 0];
-                mat4.translate(spotMatrix, spotMatrix, vec3.fromValues(pos.x, pos.y+1.2, pos.z));
+                mat4.scale(spotMatrix, spotMatrix, 60, 60, 60);
+                mat4.translate(spotMatrix, spotMatrix, vec3.fromValues(pos.x, pos.y+1.2, pos.z+10.0));
                 if (k%2 == 0) mat4.rotate(spotMatrix, spotMatrix, Math.PI, 0, 1, 0);
                 mat4.multiply(spotMatrix, spotMatrix, matrix);
                 mat4.rotate(spotMatrix, spotMatrix, -Math.PI/2, 0, 0, 1);
+                //Posicion de cada spot
+                var spotPos = [0, 0, 0];
                 vec3.transformMat4(spotPos, spotPos, spotMatrix);
-                spotLightPos.push(spotPos);
                 //Direccion de cada spot
                 var spotDir = [0, -1, 0];
-                spotLightDir.push(spotDir);
                 //Color de cada spot
-                var spotColor = [1.0, 1.0, 1.0];
-                spotLightColor.push(spotColor);
-            }*/
+                var spotColor = [0.70, 0.70, 0.70];
+                if (k==0) spotPos = [0.0, 40.0, 0.0];
+                else spotPos = [-60.0, 40.0, 0.0];
+                for (var j = 0; j < 3; j++){
+                    spotLightPos.push(spotPos[j]);
+                    spotLightDir.push(spotDir[j]);
+                    spotLightColor.push(spotColor[j]);
+                }
+            }
             k++;
         }
     }

@@ -25,6 +25,7 @@ class CarBody extends Object3D{
         cover1.rotate(-Math.PI/2, 0, 0, 1);
         cover1.rotate(Math.PI, 0, 1, 0);
         this.addChild(cover1);
+        cover1.highway = true;
 
         var cover2 = new CarBodyCover(coverC, 1);
         cover2.setShaderProgram(shader);
@@ -33,6 +34,7 @@ class CarBody extends Object3D{
         cover2.rotate(-Math.PI/2, 0, 0, 1);
         cover2.rotate(Math.PI, 0, 1, 0);
         this.addChild(cover2);
+        cover2.highway = true;
 
         this.id = 7;
         this.shininess = 0.5;

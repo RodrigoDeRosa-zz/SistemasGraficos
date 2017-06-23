@@ -9,6 +9,7 @@ class Light extends Container3D{
         lightBody.build();
         lightBody.rotate(Math.PI/2, 0, 0, 1);
         lightBody.rotate(Math.PI/2, 1, 0, 0);
+        lightBody.highway = true;
 
         var lightBox = new LightBox(shader);
         lightBox.setShaderProgram(shader);

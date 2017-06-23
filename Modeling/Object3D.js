@@ -5,7 +5,7 @@ class Object3D extends Container3D{
 
         /*Animacion*/
         this.id = null;
-        this.building = false;
+        this.building = false; this.highway = false;
         this.street = false;
         this.x; this.y;
         this.shininess = 0.5;
@@ -220,9 +220,10 @@ class Object3D extends Container3D{
             if (this.shininess > 1.0) gl.uniform3fv(this.shaderProgram.specularColorUniform, [0.75, 0.55, 0.45]);
             else gl.uniform3fv(this.shaderProgram.specularColorUniform, [0.05, 0.035, 0.025]);
             //Spotlights
-            /*gl.uniform3fv(this.shaderProgram.spotlightsPosArray, 2, spotLightPos);
-            gl.uniform3fv(this.shaderProgram.spotlightsDirArray, 2, spotLightDir);
-            gl.uniform3fv(this.shaderProgram.spotlightsColorArray, 2, spotLightColor);*/
+            gl.uniform1i(this.shaderProgram.useSpot, this.highway);
+            gl.uniform3fv(this.shaderProgram.spotlightsPosArray, spotLightPos);
+            gl.uniform3fv(this.shaderProgram.spotlightsDirArray, spotLightDir);
+            gl.uniform3fv(this.shaderProgram.spotlightsColorArray, spotLightColor);
         } else if (this.sky){
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, streetTextures[streetTextures.length-1]);
