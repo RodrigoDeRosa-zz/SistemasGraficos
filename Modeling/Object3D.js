@@ -221,10 +221,11 @@ class Object3D extends Container3D{
             else gl.uniform3fv(this.shaderProgram.specularColorUniform, [0.05, 0.035, 0.025]);
             //Spotlights
             gl.uniform1i(this.shaderProgram.useSpot, this.highway);
+            gl.uniform1i(this.shaderProgram.spotsOn, spotsOn);
             gl.uniform3fv(this.shaderProgram.spotlightsPosArray, spotLightPos);
-            gl.uniform3fv(this.shaderProgram.spotlightsDirArray, spotLightDir);
-            gl.uniform3fv(this.shaderProgram.spotlightsColorArray, spotLightColor);
+            gl.uniform3fv(this.shaderProgram.spotlightsColor, spotLightColor);
         } else if (this.sky){
+            gl.uniform1i(this.shaderProgram.spotsOn, spotsOn);
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, streetTextures[streetTextures.length-1]);
             gl.uniform1i(skyShader.texSampler, 0);

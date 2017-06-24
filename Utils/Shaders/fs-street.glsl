@@ -4,8 +4,9 @@ precision highp float;
 uniform vec3 uAmbientColor;
 uniform vec3 uSpecularColor;
 uniform bool uUseSpot;
+uniform bool uSpotsOn;
 uniform vec3 uDirectionalColor;
-uniform vec3 uSpotLightColor[2];
+uniform vec3 uSpotLightColor;
 
 uniform float uShininess; //Brillo de un objeto
 
@@ -13,8 +14,8 @@ varying vec2 vTextureCoord;
 varying vec3 vVertexNormal;
 varying vec3 vLightDir;
 varying vec3 vViewDir;
-varying vec3 vSpotLightPos[2];
-varying vec3 vSpotLightDir[2];
+varying vec3 vSpotLightPos[23];
+varying vec3 vSpotLightDir;
 
 uniform float scaleY; //Escala de la textura
 uniform float scaleX; //Escala de la textura
@@ -45,18 +46,18 @@ void main(void) {
     }
 
     vec3 spotLightIntensity = vec3(0.0, 0.0, 0.0);
-    if (uUseSpot){
-        const float spotlightCutOff = 0.7; // en radianes
-        const float spotLightExponent = 2.0;
+    if (uUseSpot && uSpotsOn){
+        const float spotlightCutOff = 0.3; // en radianes
+        const float spotLightExponent = 1.0;
 
         // Attenuation constants
         const float constantAtt = 1.0;
-        const float linearAtt = 0.0001;
-        const float quadraticAtt = 0.01;
+        const float linearAtt = 0.001;
+        const float quadraticAtt = 0.08;
 
         // Calculos spotlights
         //Para cada spot se hace el calculo
-        for (int i = 0; i < 2; i++){
+        for (int i = 0; i < 23; i++){
             vec3 spotPos = vSpotLightPos[i];
             float diffuseLightWeighting = max(dot(normal, spotPos), 0.0);
 
@@ -64,14 +65,14 @@ void main(void) {
                 // Calculate attenuation
                 float dist = length(spotPos);
                 float att = 1.0/(constantAtt + linearAtt * dist + quadraticAtt * dist * dist);
-                float spotEffect = dot(normalize(vSpotLightDir[i]), normalize(-spotPos));
+                float spotEffect = dot(normalize(vSpotLightDir), normalize(-spotPos));
 
                 if (spotEffect > spotlightCutOff) {
                     spotEffect = pow(spotEffect, spotLightExponent);
                     vec3 reflectionVector =	normalize(reflect(-spotPos,	normal));
                     float rdotv = max(dot(reflectionVector, vViewDir), 0.0);
                     float specularLightWeighting = pow(rdotv, shininess);
-                    spotLightIntensity += spotEffect * att * (uSpotLightColor[i] * diffuseLightWeighting + uSpotLightColor[i] * specularLightWeighting);
+                    spotLightIntensity += spotEffect * att * (uSpotLightColor * diffuseLightWeighting + uSpotLightColor * specularLightWeighting);
                 }
             }
         }

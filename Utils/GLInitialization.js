@@ -14,6 +14,7 @@ function webGLStart(){
     var rawStreetVertex = getStreetRawVertexShader();
     var rawStreetFragment = getStreetRawFragmentShader();
     initStreetShader(rawStreetVertex, rawStreetFragment);
+
     /*Configuracion de eventos de jquery*/
     setButtons();
     /*Se crean las texturas*/
@@ -171,6 +172,7 @@ function initSkyShader(rawVertex, rawFragment){
     skyShader.ViewMatrixUniform = gl.getUniformLocation(skyShader, "uViewMatrix");
     skyShader.ModelMatrixUniform = gl.getUniformLocation(skyShader, "uModelMatrix");
     skyShader.texSampler = gl.getUniformLocation(skyShader, "uSampler");
+    skyShader.spotsOn = gl.getUniformLocation(skyShader, "uSpotsOn");
 }
 
 /**Inicializa el buildingShader
@@ -267,11 +269,11 @@ function initStreetShader(rawVertex, rawFragment){
     streetShader.specularColorUniform = gl.getUniformLocation(streetShader, "uSpecularColor");
 
     streetShader.spotlightsPosArray = gl.getUniformLocation(streetShader, "uSpotLightPos");
-    streetShader.spotlightsDirArray = gl.getUniformLocation(streetShader, "uSpotLightDir");
-    streetShader.spotlightsColorArray = gl.getUniformLocation(streetShader, "uSpotLightColor");
+    streetShader.spotlightsColor = gl.getUniformLocation(streetShader, "uSpotLightColor");
 
     streetShader.shininess = gl.getUniformLocation(streetShader, "uShininess");
     streetShader.useSpot = gl.getUniformLocation(streetShader, "uUseSpot");
+    streetShader.spotsOn = gl.getUniformLocation(streetShader, "uSpotsOn");
 
     streetShader.x = gl.getUniformLocation(streetShader, "scaleX");
     streetShader.y = gl.getUniformLocation(streetShader, "scaleY");

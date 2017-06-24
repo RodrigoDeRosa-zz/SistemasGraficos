@@ -1,12 +1,13 @@
 precision highp float;
 varying vec2 vTextureCoord;
-varying vec3 vLightWeighting;
 
 uniform sampler2D uSampler;
 
+uniform bool uSpotsOn;
+
 void main(void){
-    vec2 auxUV = vTextureCoord;
-    auxUV.x = auxUV.x * 0.5;
-    vec4 textureColor = texture2D(uSampler, auxUV);
-    gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+    vec4 textureColor = texture2D(uSampler, vTextureCoord);
+    vec3 light = vec3(1.0, 1.0, 1.0);
+    if (uSpotsOn) light = vec3(0.1, 0.1, 0.15);
+    gl_FragColor = vec4(textureColor.rgb * light, textureColor.a);
 }

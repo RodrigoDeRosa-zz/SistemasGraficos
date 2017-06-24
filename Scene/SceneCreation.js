@@ -2,6 +2,8 @@
 function createScene(){
     frame = 0.0;
 
+    spotLightPos = [];
+
     scene = new Container3D();
     scene.setShaderProgram(skyShader);
     scene.useLight = false;

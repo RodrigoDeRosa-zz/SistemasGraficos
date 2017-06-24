@@ -35,6 +35,10 @@ function setButtons(){
         if(e.keyCode == 68) cameraController.moveRight();//D
         if(e.keyCode == 87) cameraController.moveForward();//W
         if(e.keyCode == 90) stopCars = !stopCars;//Z
+        if(e.keyCode == 89){ //Y
+            (currentTime == 0) ? currentTime = 1 : currentTime= 0;
+            spotsOn = !spotsOn;
+        }
     });
 
     $("#curveCanvas").mousemove(function(e){

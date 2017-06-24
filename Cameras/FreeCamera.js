@@ -15,9 +15,9 @@ class FreeCamera extends Camera{
 		this.theta = 3*Math.PI/4;
 		this.phi = Math.PI/2;
 
-		var lookX = 1000*Math.sin(this.theta)*Math.sin(this.phi);
-        var lookY = 1000*Math.cos(this.phi);
-        var lookZ = 1000*Math.cos(this.theta)*Math.sin(this.phi);
+		var lookX = 500*Math.sin(this.theta)*Math.sin(this.phi);
+        var lookY = 500*Math.cos(this.phi);
+        var lookZ = 500*Math.cos(this.theta)*Math.sin(this.phi);
 
 		vec3.set(this.lookAtVec, lookX, lookY, lookZ);
 

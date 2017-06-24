@@ -22,12 +22,11 @@ function drawScene(){
     mat4.multiply(CameraMatrix, CameraMatrix, camera.getMatrix());
     //////////////////////////////////////////////////////////////
     //Dibujado
-    scene.setupLighting(vec3.fromValues(0.0, 200.0, 2000.0), vec3.fromValues(0.6, 0.5, 0.4),
-        vec3.fromValues(0.35, 0.275, 0.125));
+    scene.setupLighting(sunPos[currentTime], ambientColor[currentTime], diffuseColor[currentTime]);
     if (!stopCars) carControl.tick();
     gl.useProgram(buildingShader);
     var t = gl.getUniformLocation(buildingShader, "t");
     gl.uniform1f(t, frame);
     scene.draw(mat4.create(), CameraMatrix, pMatrix, false);
-    frame += 0.5;
+    frame += 1.75;
 }

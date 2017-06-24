@@ -33,7 +33,7 @@ class Highway extends Container3D{
     /*Agrega las luces de la autopista dependiendo de la curva*/
     addLights(shader){
         var k = 0;
-        for (var i = 0.5; i < 4.5; i += 0.0875){
+        for (var i = 0.5; i < 4.5; i += 0.175){
             var light = new Light(shader);
             light.scale(0.25, 0.25, 0.25);
             /*Se traslada a la posicion de la curva*/
@@ -59,26 +59,21 @@ class Highway extends Container3D{
             light.applyMatrix(matrix);
             light.rotate(-Math.PI/2, 0, 0, 1);
             this.addChild(light);
-            if (k < 2){
+            if (k < 23){
+                var dir;
+                (k%2 == 0) ? dir = -1 : dir = 1;
                 var spotMatrix = mat4.create();
-                mat4.scale(spotMatrix, spotMatrix, 60, 60, 60);
-                mat4.translate(spotMatrix, spotMatrix, vec3.fromValues(pos.x, pos.y+1.2, pos.z+10.0));
-                if (k%2 == 0) mat4.rotate(spotMatrix, spotMatrix, Math.PI, 0, 1, 0);
+                mat4.scale(spotMatrix, spotMatrix, vec3.fromValues(60, 60, 60));
+                mat4.scale(spotMatrix, spotMatrix, vec3.fromValues(0.25, 0.4, 0.25));
+                mat4.translate(spotMatrix, spotMatrix, vec3.fromValues(pos.x, pos.y+1.2, pos.z+dir*0.3));
+                if (k%2 == 0) mat4.rotate(spotMatrix, spotMatrix, Math.PI, vec3.fromValues(0, 1, 0));
                 mat4.multiply(spotMatrix, spotMatrix, matrix);
-                mat4.rotate(spotMatrix, spotMatrix, -Math.PI/2, 0, 0, 1);
+                mat4.rotate(spotMatrix, spotMatrix, -Math.PI/2, vec3.fromValues(0, 0, 1));
                 //Posicion de cada spot
                 var spotPos = [0, 0, 0];
                 vec3.transformMat4(spotPos, spotPos, spotMatrix);
-                //Direccion de cada spot
-                var spotDir = [0, -1, 0];
-                //Color de cada spot
-                var spotColor = [0.70, 0.70, 0.70];
-                if (k==0) spotPos = [0.0, 40.0, 0.0];
-                else spotPos = [-60.0, 40.0, 0.0];
                 for (var j = 0; j < 3; j++){
                     spotLightPos.push(spotPos[j]);
-                    spotLightDir.push(spotDir[j]);
-                    spotLightColor.push(spotColor[j]);
                 }
             }
             k++;

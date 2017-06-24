@@ -68,7 +68,7 @@ void main(void) {
         specular = pow(specAngle, shininess);
     }
     //Calculo total de la luz
-    vec3 lightIntensity =  uAmbientColor + lambertian*uDirectionalColor + specular*uDirectionalColor*0.3;
+    vec3 lightIntensity =  uAmbientColor + lambertian*uDirectionalColor*1.3 + specular*uDirectionalColor*0.15;
 
     gl_FragColor = vec4(textureColor.rgb * lightIntensity, 1.0);
 }

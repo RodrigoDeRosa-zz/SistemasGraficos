@@ -12,9 +12,9 @@ class CurveController{
     }
     /*Define los puntos de control inciales de la curva*/
     setControlPoints(){
-        var p0 = new Point(-10, 200, 0);
-        var p1 = new Point(120, 200, 0);
-        var p2 = new Point(220, 200, 0);
+        var p0 = new Point(-10, 120, 0);
+        var p1 = new Point(120, 120, 0);
+        var p2 = new Point(220, 180, 0);
         var p3 = new Point(320, 200, 0);
         var p4 = new Point(410, 200, 0);
 

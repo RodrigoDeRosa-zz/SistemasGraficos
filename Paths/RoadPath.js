@@ -4,7 +4,7 @@ class RoadPath extends Path{
         super(levels, true, [false, false, false]);
         this.controlPoints = this.adaptPoints(controlPoints);
         this.curve = new QuadraticBSplinePath(this.controlPoints);
-        this.points = 7.0;
+        this.points = 28.0;
         /*Shape methods*/
         this.setPositions(); this.setNormals(); this.setTangents();
         /*Path methods*/

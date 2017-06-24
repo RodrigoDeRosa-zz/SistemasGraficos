@@ -30,8 +30,14 @@ var stopCars = false;
 
 /*Spots*/
 var spotLightPos = [];
-var spotLightDir = [];
-var spotLightColor = [];
+var spotLightColor = [0.7, 0.7, 0.7];
+/*Directional*/
+var diffuseColor = [[0.6, 0.6, 0.4], [0.2, 0.2, 0.4]];
+var ambientColor = [[0.8, 0.8, 0.6], [0.3, 0.3, 0.5]];
+var sunPos = [[0.0, 200.0, 2000.0], [0.0, 200.0, -2000.0]];
+/*Illumination flag*/
+var currentTime = 0;
+var spotsOn = false;
 
 /*Texture lists*/
 var lowerTextures = [];

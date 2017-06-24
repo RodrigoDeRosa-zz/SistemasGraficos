@@ -7,7 +7,6 @@ uniform mat4 uModelMatrix;
 uniform mat4 uPMatrix;
 ////
 varying vec2 vTextureCoord;
-varying vec3 vLightWeighting;
 
 void main(void){
     //Se transforma al vertice al espacio de camara
@@ -16,6 +15,4 @@ void main(void){
     gl_Position = uPMatrix * pos_camera_view;
     //El color no se modifica
     vTextureCoord = aTextureCoord;
-    /********************************************/
-    vLightWeighting = vec3(1.0, 1.0, 1.0);
 }

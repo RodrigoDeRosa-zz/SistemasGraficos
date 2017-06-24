@@ -3,7 +3,7 @@ class Concrete extends Object3D{
     constructor(){
         super();
 
-        var SWEPT_LEVELS = 70;
+        var SWEPT_LEVELS = 280;
         var SHAPE_POINTS = 32;
         this.rows = SWEPT_LEVELS;
         this.cols = SHAPE_POINTS;
@@ -28,7 +28,7 @@ class Concrete extends Object3D{
         var u, v;
         /*En cada nivel se calcula la componente v*/
         for (var i = 0; i < pathLevels; i++){
-            v = (i / (pathLevels-1))*30; //Entre 0 y 5
+            v = (i / (pathLevels-1))*120; //Entre 0 y 5
             /*Para cada punto se calcula la componente u*/
             for (var j = 0; j < shapeLevels; j++){
                 u = (j / (shapeLevels-1))*6; //Entre 0 y 2
