@@ -62,7 +62,7 @@ class ConcreteShape extends Shape{
             up, diagRight,
             diagRight, up,
             up, left,
-            left,
+            down,
             //down,
             down,
             down, right,
@@ -72,7 +72,7 @@ class ConcreteShape extends Shape{
             up, diagRight,
             diagRight, up,
             up, left,
-            left
+            down
         ];
     }
     setTangents(){

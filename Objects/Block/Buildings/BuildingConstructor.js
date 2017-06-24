@@ -30,23 +30,36 @@ class BuildingConstructor{
     getBody(type, shader, roof, number){
         var body = new Box(null, true, 0.5);
         body.setShaderProgram(shader);
-        this.modifyBuilding(type, body, roof);
-        body.build();
 
         /*Seleccion de textura*/
         var k = (Math.random())*20; //Se pasa al rango 0 al 19
         k = Math.floor(k); //Se le saca lo decimal
         body.id = k; //Se define el tipo de edificio
         switch (k){ //Se definen las escalas de las texturas segun el tipo
-            case 0: case 7: case 1: case 13: this.scaleXLow = 0.5; break;
-            case 2: case 4: this.scaleYTop = 0.5; break;
-            case 3: case 6: case 10: case 16: case 15: this.scaleXLow = 0.25; break;
-            case 5: case 11: this.scaleYTop = 0.5; this.scaleXLow = 0.25; break;
-            case 8: case 14: this.scaleXLow = 0.25; break;
-            case 9: case 12: case 19: this.scaleYTop = 0.5; this.scaleXLow = 0.5; break;
-            case 17: this.scaleXTop = 0.5; this.scaleXLow = 0.5; break;
-            case 18: break; //Es 1x1 en ambos
+            case 0: body.y = 0.74 - 0.25*Math.floor(Math.random()*3); this.scaleXLow = 0.5; break;
+            case 1: body.y = 0.85 - 0.25*Math.floor(Math.random()*3); this.scaleXLow = 0.5; break;
+            case 2: body.y = 0.85 - 0.25*Math.floor(Math.random()*3); this.scaleYTop = 0.5; break;
+            case 3: body.y = 0.85 - 0.25*Math.floor(Math.random()*3); this.scaleXLow = 0.25; break;
+            case 4: body.y = 1.3 - 0.25*Math.floor(Math.random()*4); this.scaleYTop = 0.5; break;
+            case 5: body.y = 0.85 - 0.25*Math.floor(Math.random()*3); this.scaleYTop = 0.5; this.scaleXLow = 0.25; break;
+            case 6: body.y = 1.35 - 0.25*Math.floor(Math.random()*4); this.scaleXLow = 0.25; break;
+            case 7: body.y = 1.1 - 0.25*Math.floor(Math.random()*4); this.scaleXLow = 0.5; break;
+            case 8: body.y = 1.105 - 0.25*Math.floor(Math.random()*4); this.scaleXLow = 0.25; break;
+            case 9: body.y = 1.35 - 0.25*Math.floor(Math.random()*4); this.scaleYTop = 0.5; this.scaleXLow = 0.5; break;
+            case 10: body.y = 1.1 - 0.25*Math.floor(Math.random()*4); this.scaleXLow = 0.25; break;
+            case 11: body.y = 1.35 - 0.25*Math.floor(Math.random()*4); this.scaleYTop = 0.5; this.scaleXLow = 0.25; break;
+            case 12: body.y = 1.35 - 0.25*Math.floor(Math.random()*4); this.scaleYTop = 0.5; this.scaleXLow = 0.5; break;
+            case 13: body.y = 1.1 - 0.25*Math.floor(Math.random()*4); this.scaleXLow = 0.5; break;
+            case 14: body.y = 1.1 - 0.25*Math.floor(Math.random()*4); this.scaleXLow = 0.25; break;
+            case 15: body.y = 1.1 - 0.25*Math.floor(Math.random()*4); this.scaleXLow = 0.25; break;
+            case 16: body.y = 0.85 - 0.25*Math.floor(Math.random()*3); this.scaleXLow = 0.25; break;
+            case 17: body.y = 1.35 - 0.25*Math.floor(Math.random()*4); this.scaleXTop = 0.5; this.scaleXLow = 0.5; break;
+            case 18: body.y = 1.1 - 0.25*Math.floor(Math.random()*4); break; //Es 1x1 en ambos
+            case 19: body.y = 1.35 - 0.25*Math.floor(Math.random()*4); this.scaleYTop = 0.5; this.scaleXLow = 0.5; break;
         }
+
+        this.modifyBuilding(type, body, roof);
+        body.build();
         body.rotate(Math.PI/2.0, 1, 0, 0); //Para que quede "parado"
 
         body.lim = number;
@@ -82,15 +95,12 @@ class BuildingConstructor{
             case 3: x = 0.19; break;
             case 4: x = 0.09; break;
         }
-        var y = this.getRandomY();
         var z = 0.25;
         building.x = x;
-        building.y = y;
 
-        //building.translate(0, y/2, 0);
-        building.scale(x, y, z);
+        building.scale(x, building.y, z);
 
-        roof.translate(0, y, 0);
+        roof.translate(0, building.y, 0);
         roof.rotate(Math.PI/2, 1, 0, 0);
         roof.scale(x, z, 0);
     }

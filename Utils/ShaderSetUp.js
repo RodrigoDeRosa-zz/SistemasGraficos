@@ -336,7 +336,7 @@ function getStreetRawFragmentShader(){
             const float spotLightExponent = 1.0;
 
             // Attenuation constants
-            const float constantAtt = 1.0;
+            const float constantAtt = 0.8;
             const float linearAtt = 0.001;
             const float quadraticAtt = 0.08;
 

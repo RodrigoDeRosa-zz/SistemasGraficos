@@ -14,6 +14,7 @@ class Asphalt extends Object3D{
         this.setIndexCreator(new VertexGrid(SWEPT_LEVELS, SHAPE_POINTS));
         this.setTextureCreator(this);
         this.street = true;
+        this.uShininess = 5.0;
         this.id = 0;
         this.setPosCreator(this.surface);
         this.setNormalCreator(this.surface);

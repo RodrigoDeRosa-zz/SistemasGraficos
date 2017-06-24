@@ -218,7 +218,7 @@ class Object3D extends Container3D{
             gl.uniform1i(streetShader.normalSampler, 1);
             //Specular
             if (this.shininess > 1.0) gl.uniform3fv(this.shaderProgram.specularColorUniform, [0.75, 0.55, 0.45]);
-            else gl.uniform3fv(this.shaderProgram.specularColorUniform, [0.05, 0.035, 0.025]);
+            else gl.uniform3fv(this.shaderProgram.specularColorUniform, [0.15, 0.135, 0.125]);
             //Spotlights
             gl.uniform1i(this.shaderProgram.useSpot, this.highway);
             gl.uniform1i(this.shaderProgram.spotsOn, spotsOn);
